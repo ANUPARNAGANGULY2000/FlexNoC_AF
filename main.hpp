@@ -162,8 +162,15 @@ class Injector: public Primitive{
 	void activeFlag() override{isActive=true;}
 
         double getInjectionRate() const{return injection_rate;}
+	double setInjectionRate(double &updated_injection_rate){
+	       injection_rate = updated_injection_rate;
+	}
+	
         //coeff_inter_arrival_time ---> Squared Coefficient of variation of interarrival time
         double getCoeffInterArrivalTime() const{return coeff_interarrival_time;}
+	double setCoeffInterArrivalTime(double updated_coeff_interarrival_time){
+		coeff_interarrival_time = updated_coeff_interarrival_time;
+	}
         double getWaitingTime() const {return waiting_time;}
         void setWaitingTime(double &new_waiting_time){
             waiting_time=new_waiting_time;
@@ -274,8 +281,9 @@ class Split : public Primitive{
 class Arbiter : public Primitive {
     public:
         //more than one nodes get connected to arbiter
-        Arbiter( double service_time , double coeff_service_time):
-           service_time(service_time) , coeff_service_time(coeff_service_time){}
+        //Arbiter( double service_time , double coeff_service_time):
+          // service_time(service_time) , coeff_service_time(coeff_service_time){}
+       Arbiter(double zero_load_latency): zero_load_latency(zero_load_latency){}
 
 	bool isArbiter() const override{return isActive;}
 	bool isSplit() const override{return false;}
@@ -292,7 +300,8 @@ class Arbiter : public Primitive {
         virtual vector<double> arbiter()=0;
 	virtual void setServiceTime(double& new_service_time) = 0;
 	virtual void setCoeffServiceTime(double& new_coeff_service_time) = 0;
-
+        virtual double getZeroLoadLatency()=0;
+	virtual void setZeroLoadLatency(double& new_zero_load_latency) = 0;
         //override the setnodes function for arbiter
         void setNodes(const vector<Node*> &nodes) override{
             this->nodes=nodes;
@@ -302,21 +311,23 @@ class Arbiter : public Primitive {
         vector<Node*> nodes;
         double service_time;
         double coeff_service_time;
+	double zero_load_latency;
 	bool isActive = false;
 };
 
 //derived class implementing round robin
 class RoundRobinArbiter : public Arbiter{
     public:
-	   RoundRobinArbiter(double service_time , double coeff_service_time):
-          Arbiter( service_time , coeff_service_time){}
+	   //RoundRobinArbiter(double service_time , double coeff_service_time):
+          //Arbiter( service_time , coeff_service_time){}
+        RoundRobinArbiter(double zero_load_latency):Arbiter(zero_load_latency){}
 
         bool isRRarbiter() const override{return isActive;}
 	bool isSplit() const override{return false;}
         bool isServer() const override{return false;}
         bool isQueue() const override{return false;}
         bool isInjector() const override{return false;}
-        bool isArbiter() const override{return false;}
+        bool isArbiter() const override{return isActive;}
         bool isMerge() const override{return false;}
         bool isSink() const override{return false;}
         bool isPRarbiter() const override{return false;}
@@ -349,6 +360,11 @@ class RoundRobinArbiter : public Arbiter{
         vector<double> primitive() override{
             return{};
         }
+
+	double getZeroLoadLatency() override { return zero_load_latency;}
+	void setZeroLoadLatency(double& new_zero_load_latency) override{
+		zero_load_latency = new_zero_load_latency;
+	}	
 	void setServiceTime(double& new_service_time) override{
 		service_time = new_service_time;
 	}
@@ -362,15 +378,16 @@ class RoundRobinArbiter : public Arbiter{
 //derived class implementing priority model
 class PriorityArbiter :  public Arbiter{
     public:
-        PriorityArbiter(double service_time , double coeff_service_time):
-          Arbiter(service_time , coeff_service_time){}
+        //PriorityArbiter(double service_time , double coeff_service_time):
+         // Arbiter(service_time , coeff_service_time){}
+        PriorityArbiter(double zero_load_latency): Arbiter(zero_load_latency){}
 
         bool isPRarbiter() const override{return isActive;}
 	bool isSplit() const override{return false;}
         bool isServer() const override{return false;}
         bool isQueue() const override{return false;}
         bool isInjector() const override{return false;}
-        bool isArbiter() const override{return false;}
+        bool isArbiter() const override{return isActive;}
         bool isMerge() const override{return false;}
         bool isSink() const override{return false;}
         bool isRRarbiter() const override{return false;}
@@ -398,6 +415,11 @@ class PriorityArbiter :  public Arbiter{
         vector<double> primitive() override{
             return{};
         }
+        double getZeroLoadLatency() override { return zero_load_latency;}
+	void setZeroLoadLatency(double& new_zero_load_latency) override{
+		zero_load_latency = new_zero_load_latency;
+	}
+
 	void setServiceTime(double& new_service_time) override{
 		service_time = new_service_time;
 	}

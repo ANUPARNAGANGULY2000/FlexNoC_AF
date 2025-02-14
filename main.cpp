@@ -20,9 +20,13 @@ map<string, string> server_track;
 
 //function declaration 
 void back_tracking(Node*,Queue*);
-void set_Q_Sink(Primitive* primitive_in);
-void sink_full_check_and_update(double lambda_a_sink,double ca_square_sink,double service_time,double cs_square_sink,int buffer_size);
+//void set_Q_Sink(Primitive* primitive_in);
+void update_arbiter_service_process(Primitive* server_primitive, double t_cap, double Cs_square_cap);
+void update_injection_process(vector<double> lambda_a,vector<double> Ca_square, double t_cap, vector<int>BUFFER_SIZE,vector<Queue*>& queues, vector<Node*>& nodes);
+void update_arbiter_service_process(Primitive* server_primitive, double t_cap, double Cs_square_cap);
+void set_network_primitive(Primitive* primitive_in);
 double single_queue_waiting_time(double injection_rate, double service_time);
+double* update_service_process(double lambda_a_sink,double ca_square_sink,double service_time, double cs_square_sink, int buffer_size);
 vector<double> Merging_flow(vector<double>injection_rates,vector<double>coeff_inter_arrival_time);
 
 //reads the file statistics.txt and creates the primitives
@@ -105,7 +109,7 @@ void read_statistics(const string &filename){
         
 	}
 	else if(field.substr(0,2)=="RR"){
-	        primitive=new RoundRobinArbiter(0.0,0.0);
+	        primitive=new RoundRobinArbiter(stod(firstValue));
                 primitive->activeFlag();
                 cout<<"Created a RoundRobinArbiter\n";
                 primitive_map[field]=primitive;
@@ -113,7 +117,8 @@ void read_statistics(const string &filename){
 
 	}
 	else if(field.substr(0,2)=="PR"){
-                primitive=new PriorityArbiter(0.0,0.0);
+               // primitive=new PriorityArbiter(0.0,0.0);
+	        primitive=new PriorityArbiter(stod(firstValue));
                 primitive->activeFlag();
                 cout<<"Created a PriorityArbiter\n";
                 primitive_map[field]=primitive;
@@ -142,6 +147,10 @@ void set_nodes_for_primitive(Primitive* primitive, const vector<string> &node_na
       if(dynamic_cast<RoundRobinArbiter*>(primitive)){
 	      RoundRobinArbiter* rr_arbiter = dynamic_cast<RoundRobinArbiter*>(primitive);
 	     vector<double>waiting_time = rr_arbiter->arbiter();
+	     double zero_load_latency = rr_arbiter->getZeroLoadLatency();
+	     for(int i=0; i<waiting_time.size(); ++i){
+	      waiting_time[i]=waiting_time[i] + zero_load_latency;
+	     }
 	     for(const auto& node:nodes){
 		     Primitive* primitive_in = node->getPrimitiveIn();
 		     if(primitive_in){
@@ -160,6 +169,10 @@ void set_nodes_for_primitive(Primitive* primitive, const vector<string> &node_na
       if(dynamic_cast<PriorityArbiter*>(primitive)){
 		 PriorityArbiter* pr_arbiter = dynamic_cast<PriorityArbiter*>(primitive);
 		 vector<double>waiting_time = pr_arbiter->arbiter();
+		 double zero_load_latency = pr_arbiter->getZeroLoadLatency();
+		 for(int i=0;i<waiting_time.size();++i){
+		 waiting_time[i] = waiting_time[i]+zero_load_latency;
+		 }
 		 for(const auto& node:nodes){
 			 Primitive* primitive_in = node->getPrimitiveIn();
 			 if(primitive_in){
@@ -548,40 +561,59 @@ void read_network_line(const string &line){
     string destination=src_dest.substr(pos+1);
     create_node(node_name,source,destination);
 }
-void set_Q_Sink(Primitive* primitive_in){
+void set_network_primitive(Primitive* primitive){
 
- double injection_rate_sink=0.0,coeff_interarrival_time_sink=0.0;
-  double service_time_sink=0.0,coeff_service_time=0.0;
+  double injection_rate=0.0,coeff_interarrival_time=0.0;
+  double service_time=0.0,coeff_service_time=0.0;
   int Buffer_size=0;
+  
+  double t_cap=0.0, Cs_square_cap=0.0;
   string source;
-  Queue* queue = dynamic_cast<Queue*>(primitive_in);
-  for(auto itr=primitive_map.begin();itr!=primitive_map.end();++itr){
-  if(itr->second==primitive_in){
-   source = itr->first;
-  for(auto it=node_connections.begin();it!=node_connections.end();++it){
-  if(it->second == source){
-        string key_node=it->first;
-        Node* prev_node = node_data[key_node];
-        if(prev_node){
-        injection_rate_sink = prev_node->getInjectionRate();
-        coeff_interarrival_time_sink = prev_node->getCoeffInterArrivalTime();
-        Buffer_size = queue->getBufferSize();
-        for(auto iter=node_connections.begin();iter!=node_connections.end();++iter){
-        if(iter->second==key_node){
-                string server_name = iter->first;
-                Server* server = dynamic_cast<Server*>(primitive_map[server_name]);
-                service_time_sink = server->getServiceTime();
-                coeff_service_time = server->getCoeffServiceTime();
-        }
-       }
-     }
+
+  //taking corresponding string of the primitive_in
+  if(primitive){
+  for(auto it=primitive_map.begin();it!=primitive_map.end();++it){
+  	if(it->second == primitive){
+	source = it->first;
+	}
+    } 
   }
 
-}
-}
-}
-sink_full_check_and_update(injection_rate_sink,coeff_interarrival_time_sink,service_time_sink,coeff_service_time,Buffer_size);
+  //taking injection_rate,coeff_inter_arrival_time and buffersize from the queue.
+  Queue* queue = dynamic_cast<Queue*>(primitive);
+  injection_rate = queue->getInjectionRate();
+  coeff_interarrival_time = queue->getCoeffInterArrivalTime();
+  Buffer_size = queue->getBufferSize();
 
+//checking which node is connected to that queue.
+for(auto it=node_connections.begin();it!=node_connections.end();++it){
+ if(it->second == source){
+ string connected_node = it->first;
+ Node* node = node_data[connected_node];
+ Primitive* primitive_in = node->getPrimitiveIn();
+ //primitive_in is a server
+ if(primitive_in->isServer()){
+    Server* server_primitive = dynamic_cast<Server*>(primitive_in);
+    service_time = server_primitive->getServiceTime();
+    coeff_service_time = server_primitive->getCoeffServiceTime();
+    double* service_process = update_service_process(injection_rate,coeff_interarrival_time,service_time,coeff_service_time,Buffer_size);
+    t_cap = service_process[0];
+    Cs_square_cap = service_process[1];
+    
+    //update the sevice time of the arbiter connected to that server
+    update_arbiter_service_process(primitive_in,t_cap,Cs_square_cap);
+ 
+ }
+
+ //primitive_in is a Injector
+ else if(primitive_in->isInjector()){}
+
+ //primitive_in is a merge
+ else if(primitive_in->isMerge()){}
+
+ //primitive_in is a split
+     }
+   }
 }
 void read_network(const string &filename){     
     //open the second input file
@@ -597,9 +629,10 @@ void read_network(const string &filename){
     	if(it->second == "Sink"){
 	 Node* get_node = node_data[it->first];
 	 Primitive* primitive_in = get_node->getPrimitiveIn();//address of the connected Queue.
-	 set_Q_Sink(primitive_in);
+	 set_network_primitive(primitive_in);
 	}
     }
+    set_nodes();
    cout<<"printing node_names.."<<endl;
    for(auto it=node_names.begin();it!=node_names.end();++it){
 	cout<<"primitive: "<<it->first<<" connected nodes: ";
@@ -648,10 +681,10 @@ void waiting_time_calc(){
     }
 }
 
-void run_custom_input() {
+void run_custom_input(const std::string &statistics_file, const std::string &network_file) {
     // Perform the main logic for a single custom input
-    read_statistics("statistics15.txt");
-    read_network("network15.txt");
+    read_statistics(statistics_file);
+    read_network(network_file);
     waiting_time_calc();
     //want to see after updation.
    // cout<<"priniting primitive_map"<<endl;
@@ -720,54 +753,160 @@ vector<double> Merging_flow(vector<double>injection_rates,vector<double>coeff_in
 	merging_flow.push_back(avg_coeff_inter_arrival_time);
 return merging_flow;
 }
-//Q_Sink is full or not checking
-void sink_full_check_and_update(double lambda_a_sink, double ca_square_sink, double service_time,double cs_square_sink, int buffer_size){
 
+//update arbiter's service process
+void update_arbiter_service_process(Primitive* server_primitive, double t_cap, double Cs_square_cap){
+
+string server;
+for(auto it=primitive_map.begin(); it!=primitive_map.end(); ++it){
+if(it->second==server_primitive){
+	server = it->first;
+     }
+ }
+
+//check which arbiter is connected to that server
+string connected_primitive = server_track[server];
+
+Primitive* primitive = primitive_map[connected_primitive];
+
+if(primitive->isArbiter()){
+  if(primitive->isRRarbiter()){
+  RoundRobinArbiter* arbiter = dynamic_cast<RoundRobinArbiter*>(primitive);
+  //update the service process of the RoundRobin arbiter
+  arbiter->setServiceTime(t_cap);
+  arbiter->setCoeffServiceTime(Cs_square_cap);
+  }
+  else if(primitive->isPRarbiter()){
+  PriorityArbiter* arbiter = dynamic_cast<PriorityArbiter*>(primitive);
+  //update the service_process od the Priority arbiter
+  arbiter->setServiceTime(t_cap);
+  arbiter->setCoeffServiceTime(Cs_square_cap);
+  }
+
+  //check node_names to get which nodes is connected to that arbiter
+  vector<string> nodes_list = node_names[connected_primitive];
+  vector<Node*>nodes;
+  vector<Queue*>queues;
+  vector<double> injection_rate_list;
+  vector<double>Ca_square_list;
+  vector<int>Buffer_size_list;
+
+  double injection_rate=0.0, Ca_square=0.0;
+  int buffer_size = 0;
+
+  //taking list of the nodes connected to that arbiter
+ for(const auto& node_name:nodes_list)
+ {
+	auto it_node = node_data.find(node_name);
+	if(it_node!=node_data.end()){
+		nodes.push_back(it_node->second);
+	}
+ } 
+
+ //taking list of the queues connected to that arbiter
+ for(const auto& node:nodes){
+	Primitive* primitive_in=node->getPrimitiveIn();
+	if(primitive_in->isQueue()){
+	Queue* queue = dynamic_cast<Queue*>(primitive_in);
+	injection_rate = queue->getInjectionRate();
+	Ca_square = queue->getCoeffInterArrivalTime();
+	buffer_size = queue->getBufferSize();
+	queues.push_back(queue);
+	injection_rate_list.push_back(injection_rate);
+	Ca_square_list.push_back(Ca_square);
+	Buffer_size_list.push_back(buffer_size);	
+	}
+ } 
+ update_injection_process(injection_rate_list, Ca_square_list, t_cap, Buffer_size_list, queues, nodes);
+ //check the node_files
+ for(const auto& node_name:nodes){
+ 	for(auto it=node_files.begin(); it!=node_files.end(); ++it){
+	if(it->second == node_name){
+	Node* node_prev = it->first;
+	injection_rate = node_name->getInjectionRate();
+	Ca_square = node_name->getCoeffInterArrivalTime();
+	node_prev->setInjectionRate(injection_rate);
+	node_prev->setCoeffInterArrivalTime(Ca_square);
+	Primitive* primitive_in_node = node_prev->getPrimitiveIn();
+	Primitive* primitive_out_node = node_prev->getPrimitiveOut();
+
+	//if server is connected to the Queue
+	if(primitive_in_node->isServer() && primitive_out_node->isQueue()){
+		set_network_primitive(primitive_out_node);
+	}
+
+	//if Injector is connected to the Queue
+	else if(primitive_in_node->isInjector() && primitive_out_node->isQueue()){
+		Injector* injector = dynamic_cast<Injector*>(primitive_in_node);
+		double updated_injection_rate=0.0, updated_Ca_square =0.0;
+		updated_injection_rate = node_prev->getInjectionRate();
+		updated_Ca_square = node_prev->getCoeffInterArrivalTime();
+		injector->setInjectionRate(updated_injection_rate);
+		injector->setCoeffInterArrivalTime(updated_Ca_square);
+	}
+	}
+	}
+ }
+}
+else if(primitive->isQueue()){}
+}
+
+//update the Injection process
+void update_injection_process(vector<double> lambda_a,vector<double> Ca_square, double t_cap, vector<int>BUFFER_SIZE,vector<Queue*>& queues, vector<Node*>& nodes){
+vector<double> lambda_a_cap = lambda_a;
+vector<double> Ca_square_cap = Ca_square;
+vector<double> rho(lambda_a.size(), 0.0);
+vector<double> n(lambda_a.size(), 0.0);
+vector<double> pi_j(lambda_a.size(), 0.0);
+
+  for (size_t l = 0; l < lambda_a.size(); ++l) {
+           // rho[l] = t_cap[l] * lambda_a_cap[l];
+            rho[l] = t_cap * lambda_a[l];
+            // Average occupancy calculation
+            n[l] = rho[l] * (rho[l] - 1 + Ca_square_cap[l] + Ca_square_cap[l] * rho[l]) / (2 - 2 * rho[l]) + rho[l];
+
+            // Probability of full queue using maximum entropy
+                double sum_p_j = 0.0;
+                for (int k = 0; k < BUFFER_SIZE[l]; ++k) {
+                    double pow_val = (n[l] - rho[l]) / n[l];
+                    sum_p_j += rho[l] * rho[l] * pow(pow_val, k + 1) / (n[l] - rho[l]);
+                }
+                pi_j[l] = rho[l] - sum_p_j;
+            // Update lambda_a_cap and Ca_square_cap based on pi_j
+            lambda_a_cap[l] =lambda_a[l]* (1 - pi_j[l]);
+            Ca_square_cap[l] = Ca_square_cap[l] * (1 - pi_j[l]) + pi_j[l];
+	    queues[l]->setInjectionRate(lambda_a_cap[l]);
+	    queues[l]->setCoeffInterArrivalTime(Ca_square_cap[l]);
+	    nodes[l]->setInjectionRate(lambda_a_cap[l]);
+	    nodes[l]->setCoeffInterArrivalTime(Ca_square_cap[l]);
+        }
+
+
+}
+double* update_service_process(double lambda_a_sink,double ca_square_sink,double service_time, double cs_square_sink, int buffer_size){
+	
 	double n_sink=0.0, p_sink=0.0, pi_sink=0.0,rho_sink=0.0,sum_p_sink=0.0;
-	double t_cap =0.0,cs_square_cap=0.0;
+        double t_cap =0.0,cs_square_cap=0.0;
+        double* service_process;
 
-	rho_sink = lambda_a_sink * service_time;
-	//The average occupancy of Q_sink
-	n_sink = rho_sink*(rho_sink - 1 + ca_square_sink + rho_sink*ca_square_sink)/(2-2*rho_sink)+rho_sink;
+        rho_sink = lambda_a_sink * service_time;
+        //The average occupancy of Q_sink
+        n_sink = rho_sink*(rho_sink - 1 + ca_square_sink + rho_sink*ca_square_sink)/(2-2*rho_sink)+rho_sink;
 
-	//the probability that Q_sink contains k packets
-	for(int k=0; k<buffer_size; ++k){
-		double pow_val = (n_sink - rho_sink)/n_sink;
-		sum_p_sink = rho_sink * rho_sink * pow(pow_val,k+1)/(n_sink - rho_sink);
-	}
-	//probability  that Qsink is full
-	pi_sink = rho_sink - sum_p_sink;
+        //the probability that Q_sink contains k packets
+        for(int k=0; k<buffer_size; ++k){
+                double pow_val = (n_sink - rho_sink)/n_sink;
+                sum_p_sink = rho_sink * rho_sink * pow(pow_val,k+1)/(n_sink - rho_sink);
+        }
+        //probability  that Qsink is full
+        pi_sink = rho_sink - sum_p_sink;
 
-	//Modified service process
-	t_cap = service_time / (1 - pi_sink);
-	cs_square_sink = pi_sink + cs_square_sink*(1 - pi_sink);
-
-	//update all server's service_time and coeff_service_time
-	for(auto it = server_track.begin(); it!=server_track.end(); ++it){
-		string server_name = it->first;
-		string arbiter_name = it->second;
-		auto key = primitive_map.find(server_name);
-		auto key2 = primitive_map[arbiter_name];
-		if(key!=primitive_map.end() && key2) {
-		Server* server = dynamic_cast<Server*>(primitive_map[server_name]);
-		if(key2->isArbiter()){
-		if(key2->isRRarbiter()){
-		RoundRobinArbiter* rr_arbiter = dynamic_cast<RoundRobinArbiter*>(key2);
-		rr_arbiter->setServiceTime(t_cap);
-		rr_arbiter->setCoeffServiceTime(cs_square_sink);
-		}
-		else if(key2->isPRarbiter()){
-		PriorityArbiter* pr_arbiter = dynamic_cast<PriorityArbiter*>(key2);
-		pr_arbiter->setServiceTime(t_cap);
-		pr_arbiter->setCoeffServiceTime(cs_square_sink);		
-		}
-		}
-		server->setServiceTime(t_cap);
-		server->setCoeffServiceTime(cs_square_sink);
-		}
-		
-	}
-	set_nodes();
+        //Modified service process
+        t_cap = service_time / (1 - pi_sink);
+        cs_square_sink = pi_sink + cs_square_sink*(1 - pi_sink);
+        service_process[0]=t_cap;
+	service_process[1]=cs_square_sink;
+return service_process;
 }
 
 //Single Queue Waiting Time calculation
@@ -804,18 +943,8 @@ vector<double> roundrobin_model(vector<double> injection_rates, vector<double> i
                 if(injection_rates[l] != 0){
                 // Calculate utilization rho
                 rho[l] = t_cap[l] * lambda_a_cap[l];
-                // Occupancy equation from finite WRR paper
+		// Occupancy equation from finite WRR paper
                 n[l] = rho[l] * (rho[l] - 1 + ca_square_cap[l] + ca_square_cap[l] * rho[l]) / (2 - 2 * rho[l]) + rho[l];
-                // Probability of full queue using maximum entropy
-                double sum_p_j = 0.0;
-                for (int k = 0; k < buffer_sizes[l]; ++k) {
-                    double pow_val = (n[l] - rho[l]) / n[l];
-                    sum_p_j += rho[l] * rho[l] * pow(pow_val, k + 1) / (n[l] - rho[l]);
-                }
-                pi_j[l] = rho[l] - sum_p_j;
-                // Update lambda_a_cap and ca_square_cap based on p_full
-                lambda_a_cap[l] = lambda_a_cap[l] * (1 - pi_j[l]);
-                ca_square_cap[l] = ca_square_cap[l] * (1 - pi_j[l]) + pi_j[l];
             }
         }
             for(int l=0; l<injection_rates.size();++l)
@@ -887,7 +1016,6 @@ vector<double> priority_model(const vector<double>& lambda_a, const vector<doubl
     vector<double> t_cap(lambda_a.size(), service_time);
     vector<double> waiting_times(lambda_a.size(), 0.0); // To store W1 and W2
     vector<double> residual_time(lambda_a.size(), 0.0); //To store residual time
-   // double residual_time = 0.0;
     double den = 0,num = 0, utilization = 0;
 
     int iter = 12;// Number of iterations for convergence
@@ -902,93 +1030,53 @@ vector<double> priority_model(const vector<double>& lambda_a, const vector<doubl
     }
 
     total_injection_rates = total_injection_rates * service_time;
+   
     // calculating waiting time before saturation
    if(total_injection_rates < 0.998){    
    for (int i = 0; i < iter; ++i) {
-	   //Sink backpressure
-	    for(int i=0;i<lambda_a.size();++i){ 
-		  lambda_a_sink+= lambda_a[i];
-	          Ca_square_sink+= lambda_a[i] * Ca_square_cap[i];   
-	    } 
-	    Ca_square_sink=Ca_square_sink / lambda_a_sink;
-	    rho_sink = service_time * lambda_a_sink;
-	 
-	    //occupancy equation taken from finite WRR paper
-	    n_sink = rho_sink*(rho_sink - 1 + Ca_square_sink + Ca_square_sink*rho_sink)/(2-2*rho_sink) + rho_sink ; 
-
-	    //calculation of probability of full queue
-	    pi_j_sink = rho_sink - rho_sink*rho_sink*((n_sink - rho_sink)/n_sink)/(n_sink - rho_sink);
- 	   
-	    //transformation to get t_cap using p_full
-	    for(int i=1; i<lambda_a.size();++i){
-	    	for(int j=0;j<i;++j){
-			sum_lambda_a_cap +=lambda_a_cap[j];
-		}
-	//	t_cap[i] = service_time/(1-pi_j_sink) * (1 - sum_lambda_a_cap*service_time);
-	    }	    
 
         for (size_t l = 0; l < lambda_a.size(); ++l) {
-           // rho[l] = t_cap[l] * lambda_a_cap[l];
 	    rho[l] = t_cap[l] * lambda_a[l];
-            // Average occupancy calculation
-            n[l] = rho[l] * (rho[l] - 1 + Ca_square_cap[l] + Ca_square_cap[l] * rho[l]) / (2 - 2 * rho[l]) + rho[l];
-
-            // Probability of full queue using maximum entropy
-                double sum_p_j = 0.0;
-                for (int k = 0; k < BUFFER_SIZE[l]; ++k) {
-                    double pow_val = (n[l] - rho[l]) / n[l];
-                    sum_p_j += rho[l] * rho[l] * pow(pow_val, k + 1) / (n[l] - rho[l]);
-                }
-                pi_j[l] = rho[l] - sum_p_j;
-            // Update lambda_a_cap and Ca_square_cap based on pi_j
-            lambda_a_cap[l] =lambda_a[l]* (1 - pi_j[l]);
-            Ca_square_cap[l] = Ca_square_cap[l] * (1 - pi_j[l]) + pi_j[l];
         }
 
-  //  Residual time calculation
+ 	 //  Residual time calculation
      	 for(int i=0;i<lambda_a.size(); ++i){
 	 //for higher priority class
 	 if(i==0){
 	 	residual_time[0] = 0.5*rho[0]*(service_time-1);
-	
-	 }
+	  }
 	 //for lower priority class
 	 else{
-		 residual_time[i] = 0;
+		residual_time[i] = 0;
 	 	for(int l=0;l<i;++l){
 		residual_time[i] += 0.5*rho[l]*(service_time+1);
 		}
-		residual_time[i] = residual_time[i]+(0.5*rho[i]*service_time*(service_time - 1));
-		
-	 }
+		residual_time[i] = residual_time[i]+(0.5*rho[i]*(service_time - 1));
+	     } 
        }
        
-  //Waiting time calculation W = R/1-rho 
+        //Waiting time calculation W = R/1-rho 
  	for (size_t l = 0; l < lambda_a.size(); ++l){
     	//for higher priority queues
-    if(l==0)
-    {
-	
-        waiting_times[0] =residual_time[0] / (1 - rho[0]);
-	
-    }
-    //for lower_priority queues
-    else{
-        utilization = 0;
-       for (size_t k = 0;k < l; ++k){
-            utilization += rho[k]*waiting_times[k];
-         }
-       den = 0;
-       for(size_t i=0;i<= l; ++i){
-       	   den +=rho[i];
-       }
-       waiting_times[l] = (residual_time[l] + utilization) / (1 - den);
-       
-    }
-   }
-  
-   }
-}
+         if(l==0)
+         {
+             waiting_times[0] =residual_time[0] / (1 - rho[0]);
+	 }
+        //for lower_priority queues
+        else{
+            utilization = 0;
+            for (size_t k = 0;k < l; ++k){
+                   utilization += rho[k]*waiting_times[k];
+             } 
+            den = 0;
+            for(size_t i=0;i<= l; ++i){
+       	      den +=rho[i];
+            }
+           waiting_times[l] = (residual_time[l] + utilization) / (1 - den); 
+          }
+        } 
+      }
+  }
  // calculating waiting time after saturation
  if(total_injection_rates >=0.998){
 	 cout<<"this is after saturation"<<endl;
@@ -1032,16 +1120,24 @@ return waiting_times;
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " <mode>\n";
+        
+	std::cerr<<"Usage: "<<argv[0]<<" <mode> [statistics_file] [network_file]\n";
         std::cerr << "Modes:\n";
-        std::cerr << "  custom - Run custom input logic\n";
+        std::cerr<<" custom <statistics_file> <network_file> - Run custom input logic\n";
         std::cerr << "  compare - Run comparison logic\n";
+
         return 1;
     }
 
     std::string mode = argv[1];
     if (mode == "custom") {
-        run_custom_input();
+	if(argc<4){
+		std::cerr<<"Error: Please provide both statistics and network files.\n";
+		return 1;
+	}
+	std::string stats_file = argv[2];
+	std::string network_file = argv[3];
+        run_custom_input(stats_file,network_file);
     } else if (mode == "regression_suite") {
         regression_suite();
     } else {
