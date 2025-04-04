@@ -71,40 +71,28 @@ set(LANG_SOURCE_DIR ${CMAKE_SOURCE_DIR}/lang)
 set(ANTLR_OUTPUT_DIR ${CMAKE_SOURCE_DIR}/lang/.antlr_generated)
 set(ANTLR_JAR ${LANG_SOURCE_DIR}/antlr-4.13.2-complete.jar)
 
+file(MAKE_DIRECTORY ${ANTLR_OUTPUT_DIR})
+
 add_custom_command(
-    OUTPUT ${ANTLR_OUTPUT_DIR}/DOTLexer.cpp ${ANTLR_OUTPUT_DIR}/DOTParser.cpp ${ANTLR_OUTPUT_DIR}/DOTBaseListener.cpp ${ANTLR_OUTPUT_DIR}/DOTListener.cpp ${ANTLR_OUTPUT_DIR}/DOTVisitor.cpp
+    OUTPUT ${ANTLR_OUTPUT_DIR}/DOTLexer.cpp ${ANTLR_OUTPUT_DIR}/DOTParser.cpp ${ANTLR_OUTPUT_DIR}/DOTBaseListener.cpp ${ANTLR_OUTPUT_DIR}/DOTListener.cpp ${ANTLR_OUTPUT_DIR}/DOTVisitor.cpp ${ANTLR_OUTPUT_DIR}/DOTLexer.tokens ${ANTLR_OUTPUT_DIR}/DOTLexer.interp
     COMMAND java -jar ${ANTLR_JAR} -Dlanguage=Cpp -visitor -o ${ANTLR_OUTPUT_DIR} ${LANG_SOURCE_DIR}/DOT.g4
     DEPENDS ${CMAKE_SOURCE_DIR}/lang/DOT.g4
     COMMENT "Running ANTLR on DOT.g4"
 )
-# add_custom_command(
-#     COMMAND antlr4 -Dlanguage=Cpp -o ${ANTLR_OUTPUT_DIR} ${CMAKE_SOURCE_DIR}/lang/DOT.g4
-#     DEPENDS ${CMAKE_SOURCE_DIR}/lang/DOT.g4
-#     COMMENT "Running ANTLR on DOT.g4"
-# )
-
-# set(ANTLR_SOURCES
-#     ${ANTLR_OUTPUT_DIR}/DOTLexer.cpp
-#     ${ANTLR_OUTPUT_DIR}/DOTParser.cpp
-#     ${ANTLR_OUTPUT_DIR}/DOTBaseListener.cpp
-#     ${ANTLR_OUTPUT_DIR}/DOTListener.cpp
-#     ${ANTLR_OUTPUT_DIR}/DOTVisitor.cpp
-# )
-
-file(GLOB ANTLR_SOURCES "${ANTLR_OUTPUT_DIR}/*.cpp")
-file(GLOB ANTLR_HEADERS "${ANTLR_OUTPUT_DIR}/*.h" "${ANTLR_OUTPUT_DIR}/*.hpp")
 
 set(sources
     src/Node.cpp
     src/Injector.cpp
     src/dot_compiler.cpp
     src/node_factory.cpp
-    ${ANTLR_SOURCES}
+    ${ANTLR_OUTPUT_DIR}/DOTLexer.cpp
+    ${ANTLR_OUTPUT_DIR}/DOTParser.cpp
+    ${ANTLR_OUTPUT_DIR}/DOTBaseListener.cpp
     )
 
 add_library(dot_dsl ${sources})
-target_include_directories(dot_dsl PUBLIC include ${ANTLR_OUTPUT_DIR})
 
+target_include_directories(dot_dsl PUBLIC include ${ANTLR_OUTPUT_DIR})
 set_target_properties(dot_dsl PROPERTIES
     VERSION ${CONAN_PACKAGE_VERSION})
 
