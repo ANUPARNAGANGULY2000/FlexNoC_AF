@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -8,9 +7,13 @@
 #include <utility>
 #include <math.h>
 using namespace std;
-
-vector<double> roundrobin_model(vector<double> injection_rates, vector<double> interarrival_times, double service_time, vector<int> buffer_sizes);
-vector<double> priority_model(const vector<double>& lambda_a, const vector<double>& Ca_square, double service_time,vector<int>& BUFFER_SIZE);
+class Queue;
+class RoundRobinArbiter;
+class PriorityArbiter;
+//vector<double> roundrobin_model(vector<double> injection_rates, vector<double> interarrival_times, double service_time, vector<int> buffer_sizes);
+void roundrobin_model(vector<Queue*>& queues, RoundRobinArbiter* RRarbiter);
+void priority_model(vector<Queue*>& queues, PriorityArbiter* PRarbiter);
+//vector<double> priority_model(const vector<double>& lambda_a, const vector<double>& Ca_square, double service_time,vector<int>& BUFFER_SIZE);
 //vector<double> priority_model(vector<double> injection_rates, vector<double> interarrival_times, double service_time){return {0,0};}
 
 //Forward declaration of node class
@@ -92,10 +95,19 @@ class Server : public Primitive{
 		vector<double> primitive() override{
 			return{};
 		}
+
+		//active is_service_time_updated
+		void activeServiceTimeFlag() {
+			is_service_time_updated = true;
+			cout<<"activate Service time flag"<<endl;
+		}
+
+		bool isServiceTimeUpdated() { return is_service_time_updated; }
 	protected:
 		double service_time;
 		double coeff_service_time;
 		bool isActive = false;
+		bool is_service_time_updated = false;
 };
 
 
@@ -124,6 +136,7 @@ class Queue : public Primitive{
 	double getCoeffInterArrivalTime() const{return coeff_interarrival_time;}
 	void setInjectionRate(double &new_injection_rate){
 		injection_rate=new_injection_rate;
+		cout<<"new injection_rate is set : "<<injection_rate<<endl;
 	}
 	void setCoeffInterArrivalTime(double &new_coeff_interarrival_time){
 		coeff_interarrival_time = new_coeff_interarrival_time;
@@ -131,16 +144,29 @@ class Queue : public Primitive{
 	void setWaitingTime(double &new_waiting_time){
 		waiting_time=new_waiting_time;
 	}
+	double getServiceTime() const{return service_time;}
+	void setServiceTime(double &new_service_time){
+		service_time = new_service_time;
+	}
         vector<double> primitive() override{
             return{};
         }
         
+	//activate is_injection_rate_updated_after_saturation variable if after saturation the injection rate get modified.
+	void activeInjectionRateUpdateFlag(){
+	     is_injection_rate_updated_after_saturation = true;
+	     cout<<"is_injection_rate_updated_after_saturation is activated "<<endl;
+	}
+
+	bool isInjectionRateUpdated(){ return is_injection_rate_updated_after_saturation; }
     protected:
         int buffer_size;
         double waiting_time;
 	double injection_rate;
 	double coeff_interarrival_time;
+	double service_time;
 	bool isActive =  false;
+	bool is_injection_rate_updated_after_saturation = false;
 };
 
 //class representing an injector
@@ -162,13 +188,13 @@ class Injector: public Primitive{
 	void activeFlag() override{isActive=true;}
 
         double getInjectionRate() const{return injection_rate;}
-	double setInjectionRate(double &updated_injection_rate){
+        void setInjectionRate(double &updated_injection_rate){
 	       injection_rate = updated_injection_rate;
 	}
 	
         //coeff_inter_arrival_time ---> Squared Coefficient of variation of interarrival time
         double getCoeffInterArrivalTime() const{return coeff_interarrival_time;}
-	double setCoeffInterArrivalTime(double updated_coeff_interarrival_time){
+	void setCoeffInterArrivalTime(double updated_coeff_interarrival_time){
 		coeff_interarrival_time = updated_coeff_interarrival_time;
 	}
         double getWaitingTime() const {return waiting_time;}
@@ -297,9 +323,12 @@ class Arbiter : public Primitive {
 
 	//active flaf variable for Arbiter
 	void activeFlag() override{isActive = true;}
-        virtual vector<double> arbiter()=0;
+        //virtual vector<double> arbiter()=0;
+	virtual void arbiter() = 0;
 	virtual void setServiceTime(double& new_service_time) = 0;
+	virtual double getServiceTime()=0;
 	virtual void setCoeffServiceTime(double& new_coeff_service_time) = 0;
+	virtual double getCoeffServiceTime()=0;
         virtual double getZeroLoadLatency()=0;
 	virtual void setZeroLoadLatency(double& new_zero_load_latency) = 0;
         //override the setnodes function for arbiter
@@ -309,6 +338,7 @@ class Arbiter : public Primitive {
 
     protected:
         vector<Node*> nodes;
+	//vector<Queue*> queues;
         double service_time;
         double coeff_service_time;
 	double zero_load_latency;
@@ -334,28 +364,32 @@ class RoundRobinArbiter : public Arbiter{
 
        //active flag for RoundRobinArbiter 
        	void activeFlag() override{isActive = true;}
-
-	
-
-        vector<double> arbiter() override{
-            vector<double> injection_rates;
-            vector<double> coeff_interarrival_times;
-            vector<int> buffer_sizes;
-      
+        //vector<double> arbiter() override{
+         void arbiter() override{    
+      	//vector<double> injection_rates;
+            //vector<double> coeff_interarrival_times;
+            //vector<int> buffer_sizes;
+	   vector<Queue*> queues;
+	   RoundRobinArbiter* RRarbiter=nullptr ;
         //extract injection rate and inter arrival times
        for (const auto& node : nodes) {
-                injection_rates.push_back(node->getInjectionRate());
-                coeff_interarrival_times.push_back(node->getCoeffInterArrivalTime());
-
+                //injection_rates.push_back(node->getInjectionRate());
+                //coeff_interarrival_times.push_back(node->getCoeffInterArrivalTime());
+		
             // Attempt to cast the input primitive to a Queue
             Queue* queue_in = dynamic_cast<Queue*>(node->getPrimitiveIn());
             if (queue_in) {
-                     buffer_sizes.push_back(queue_in->getBufferSize());
+             //  buffer_sizes.push_back(queue_in->getBufferSize());
+	         queues.push_back(queue_in);
+
             }
+	    RRarbiter = dynamic_cast<RoundRobinArbiter*>(node->getPrimitiveOut());
          
        }
-     
-        return roundrobin_model(injection_rates,coeff_interarrival_times,service_time,buffer_sizes);
+        if(RRarbiter){
+        //return roundrobin_model(injection_rates,coeff_interarrival_times,service_time,buffer_sizes);
+	  roundrobin_model(queues,RRarbiter);
+	}
         }
         vector<double> primitive() override{
             return{};
@@ -368,11 +402,16 @@ class RoundRobinArbiter : public Arbiter{
 	void setServiceTime(double& new_service_time) override{
 		service_time = new_service_time;
 	}
+	double getServiceTime() override {return service_time;}
 	void setCoeffServiceTime(double& new_coeff_service_time) override{
 		coeff_service_time = new_coeff_service_time;
 	}
+	double getCoeffServiceTime() override{ return coeff_service_time;}
     protected:
 	bool isActive = false;
+	//vector<Queue*> queues;
+        //RoundRobinArbiter* RRarbiter=nullptr ;
+
 };
 
 //derived class implementing priority model
@@ -394,23 +433,30 @@ class PriorityArbiter :  public Arbiter{
 
        //active flag for RoundRobinArbiter
         void activeFlag() override{isActive = true;}
-        vector<double> arbiter() override{
-            vector<double> injection_rates;
-            vector<double> coeff_interarrival_times;
-            vector<int> buffer_sizes;
-
+        //vector<double> arbiter() override{
+        void arbiter() override{    
+       	    //vector<double> injection_rates;
+            //vector<double> coeff_interarrival_times;
+            //vector<int> buffer_sizes;
+            vector<Queue*> queues;
+	    PriorityArbiter* PRarbiter=nullptr;
         //extract injection rate and inter arrival times from queues
         for (const auto& node : nodes) {
-            injection_rates.push_back(node->getInjectionRate());
-            coeff_interarrival_times.push_back(node->getCoeffInterArrivalTime());
+            //injection_rates.push_back(node->getInjectionRate());
+            //coeff_interarrival_times.push_back(node->getCoeffInterArrivalTime());
 
             // Attempt to cast the input primitive to a Queue
             Queue* queue_in = dynamic_cast<Queue*>(node->getPrimitiveIn());
             if (queue_in) {
-                     buffer_sizes.push_back(queue_in->getBufferSize());
+                  //   buffer_sizes.push_back(queue_in->getBufferSize());
+		  queues.push_back(queue_in);
             }
+	    PRarbiter=dynamic_cast<PriorityArbiter*>(node->getPrimitiveOut());
         }
-        return priority_model(injection_rates ,coeff_interarrival_times ,service_time,buffer_sizes);
+	if(PRarbiter){
+	  priority_model(queues,PRarbiter);
+	}
+       // return priority_model(injection_rates ,coeff_interarrival_times ,service_time,buffer_sizes);
         }
         vector<double> primitive() override{
             return{};
@@ -423,9 +469,11 @@ class PriorityArbiter :  public Arbiter{
 	void setServiceTime(double& new_service_time) override{
 		service_time = new_service_time;
 	}
+	double getServiceTime() override{ return service_time;}
 	void setCoeffServiceTime(double& new_coeff_service_time) override{
 		coeff_service_time = new_coeff_service_time;
 	}
+	double getCoeffServiceTime() override{ return coeff_service_time;}
 
    protected:
 	bool isActive=false;

@@ -1,0 +1,40 @@
+digraph G {
+    rankdir=LR;  // Left-to-right layout
+
+  
+
+    // Define Nodes with Labels (Values from statistics.txt)
+    F1 [label="rate = 0.3, coeff_interarrival_time = 0.90", shape=box, style=filled, fillcolor=lightyellow];
+    F2 [label="rate = 0.3, coeff_interarrival_time = 0.90", shape=box, style=filled, fillcolor=lightyellow];
+    Q1 [label="buffer_size = 3, mode = 1", shape=ellipse, style=filled, fillcolor=lightblue];
+    Q2 [label="buffer_size = 3, mode = 1", shape=ellipse, style=filled, fillcolor=lightblue];
+    RR1 [label="zero_load_latency = 0.0", shape=hexagon, style=filled, fillcolor=lightpink]; // RoundRobin Arbiter
+    SR1 [label="Service_time = 1.0, coeff_service_time = 0.0", shape=circle, style=filled, fillcolor=lightgray];
+    F3 [label="rate = 0.5, coeff_interarrival_time = 0.95", shape=box, style=filled, fillcolor=lightyellow];
+    Q4 [label="buffer_size = 3, mode = 1", shape=ellipse, style=filled, fillcolor=lightblue];
+    Q3 [label="buffer_size = 3, mode = 1", shape=ellipse, style=filled, fillcolor=lightblue];
+    PR1 [label="zero_load_latency = 0.0", shape=trapezium, style=filled, fillcolor=orange]; // Priority Arbiter
+    SR2 [label="Service_time = 1.0, coeff_service_time = 0.0", shape=circle, style=filled, fillcolor=lightgray];
+    Q5 [label="buffer_size = 3, mode = 1", shape=ellipse, style=filled, fillcolor=lightblue];
+    SR3 [label="Service_time = 1.0, coeff_service_time = 0.0", shape=circle, style=filled, fillcolor=lightgray];
+    
+// Define Sink Node
+    Sink [label="Sink", shape=doublecircle, style=filled, fillcolor=red];
+    
+
+    // Define Edges with Labels
+    F1 -> Q1 [label="N1"];
+    F2 -> Q2 [label="N2"];
+    Q1 -> RR1 [label="N3"];
+    Q2 -> RR1[label="N4"];
+    RR1 -> SR1 [label="N5"];
+    SR1 -> Q4 [label="N6"];
+    F3 -> Q3 [label="N7"];
+    Q4 -> PR1 [label="N8"];
+    Q3 -> PR1 [label="N9"];
+    PR1 -> SR2 [label="N10"];
+    SR2 -> Q5 [label="N11"];
+    Q5 -> SR3 [label="N12"];
+    SR3 -> Sink [label="N13"];
+}
+
