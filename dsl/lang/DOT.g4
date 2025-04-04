@@ -94,6 +94,7 @@ cv_attr
 
 depth_attr
     : DEPTH '=' NUMBER (';' | ',')?
+    | SIZE '=' NUMBER (';' | ',')?
     ;
 
 priority_attr
@@ -169,6 +170,10 @@ CV
 
 DEPTH
     : [Dd] [Ee] [Pp] [Tt] [Hh]
+    ;
+
+SIZE
+    : [Ss] [Ii] [Zz] [Ee]
     ;
 
 PRIORITY
