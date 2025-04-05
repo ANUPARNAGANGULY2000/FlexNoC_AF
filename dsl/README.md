@@ -12,6 +12,16 @@ To build the project, you can use Conan, a package manager for C and C++ librari
 
 1. Install Conan by following the instructions in the [Conan documentation](https://docs.conan.io/en/latest/installation.html).
 
+    **Note** the conanfile.py used here relies upon conan version < 2.0.  If you have a python installation, you can install using e.g., 
+    ```bash
+    python -m pip install conan==1.66.0
+    ```
+2. Ensure conancenter is added as a remote to grab dependencies:
+
+    ```bash
+    conan remote add conancenter https://center.conan.io
+    ```
+
 2. Clone the DSL project repository from the following location:
 
     ```bash
@@ -47,6 +57,8 @@ To build the project, you can use Conan, a package manager for C and C++ librari
     conan build ..
     ```
 
-This final build step invokes cmake to build the project and run any tests in the `dsl/test` directory.
+This final build step invokes cmake to build the project and runs any tests in the `dsl/test` directory.
 
 **Note:** Java is required to run ANTLR4, which is included as a .jar file.
+
+For more information on antlr4, please see [their documentation](https://www.antlr.org/).
