@@ -1,6 +1,8 @@
 #pragma once
-#include <Node.h>
-#include <Injector.h>
+#include <string>
+#include <map>
+#include <memory>
+#include "Node.h"
 
 namespace dot_lang {
     class NodeFactory {
@@ -8,6 +10,6 @@ namespace dot_lang {
         NodeFactory() {};
         ~NodeFactory() = default;
 
-        std::shared_ptr<Node> getNodeFromType(node_types _type, std::string name="");
+	std::shared_ptr<Node> getNodeFromType(node_types _type, std::string name, std::map<std::string, std::string>& attributes);
     };
 }

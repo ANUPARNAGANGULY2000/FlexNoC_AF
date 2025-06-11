@@ -23,6 +23,7 @@ private:
     void _optimize();
     void _codegen();
     Network* network;
+    Mapping mapping;
 };
 
 }

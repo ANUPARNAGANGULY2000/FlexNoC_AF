@@ -1,33 +1,46 @@
 #include <Injector.h>
-
+#include <sstream>
 using namespace dot_lang;
 
-Injector::Injector() : Node(dot_lang::node_types::SOURCE) {
-    _rate = 0.99;
-}
+dot_lang::Injector::Injector(double injection_rate, double coeff_interarrival_time,double waiting_time):
+           injection_rate(injection_rate), coeff_interarrival_time(coeff_interarrival_time),waiting_time(waiting_time) {}
 
-std::string
-Injector::_shape() {
-    return "shape=\"rarrow\"";
-}
+        bool dot_lang::Injector::isInjector() const {return isActive;}
+        bool dot_lang::Injector::isQueue() const {return false;}
+        bool dot_lang::Injector::isServer() const {return false;}
+        bool dot_lang::Injector::isArbiter() const {return false;}
+        bool dot_lang::Injector::isMerge() const {return false;}
+        bool dot_lang::Injector::isSplit() const {return false;}
+        bool dot_lang::Injector::isSink() const {return false;}
+        bool dot_lang::Injector::isRRarbiter() const {return false;}
+        bool dot_lang::Injector::isPRarbiter() const {return false;}
+        //active flag variable for Injector
+        void dot_lang::Injector::activeFlag() {isActive=true;}
 
-std::string
-Injector::getGraphVizProperties() {
-    std::string label = "label=\"ID: " + std::to_string(getID()) + " | CV2: " + std::to_string(_rate) + "\"";
-    return label + ", " + _shape() + ", cv2=" + std::to_string(_rate);
-}
+        double dot_lang::Injector::getInjectionRate() const{return injection_rate;}
+        void dot_lang::Injector::setInjectionRate(double &updated_injection_rate){
+               injection_rate = updated_injection_rate;
+        }
 
-Queue::Queue() : Node(dot_lang::node_types::QUEUE) {
-    _size = 4;
-}
+        double dot_lang::Injector::getCoeffInterArrivalTime() const{return coeff_interarrival_time;}
+        void dot_lang::Injector::setCoeffInterArrivalTime(double updated_coeff_interarrival_time){
+                coeff_interarrival_time = updated_coeff_interarrival_time;
+        }
+        double dot_lang::Injector::getWaitingTime() const {return waiting_time;}
+        void dot_lang::Injector::setWaitingTime(double &new_waiting_time){
+            waiting_time=new_waiting_time;
+        }
+	
+	std::vector<double>dot_lang::Injector::primitive() {
+	    	return {};
+	}
 
-std::string
-Queue::_shape() {
-    return "shape=\"cylinder\"";
-}
+	std::string dot_lang::Injector::getGraphVizProperties() {
+    		 std::string label = "label=\"ID: " + std::to_string(getID()) + " | rate: " + std::to_string(injection_rate) + "\"";
+ 		  return label + ", " + _shape() + ", injection=" + std::to_string(injection_rate);
+	}
 
-std::string
-Queue::getGraphVizProperties() {
-    std::string label = "label=\"ID: " + std::to_string(getID()) + " | Depth: " + std::to_string(_size) + "\"";
-    return label + ", " + _shape() + ", depth=" + std::to_string(_size);
-}
+	std::string dot_lang::Injector::_shape() {
+    		return "\"rarrow\"";  // Example shape for a injector
+	}	
+

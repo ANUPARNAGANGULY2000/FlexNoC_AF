@@ -1,16 +1,27 @@
 // top level
 #include <iostream>
 #include <dot_compiler.h>
+#include<defines.h>
 #include <Injector.h>
+#include <Queue.h>
+#include <Primitive.h>
 #include <node_factory.h>
 #include <network.h>
+#include <Mapping.h>
+#include "Node.h"
 #include <vector>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <fstream>
 #include <sstream>
-
+#include <DOTLexer.h>
+#include <DOTParser.h>
+#include <TypeCheckVisitor.h>
+#include <NodeVisitor.h>
+#include <DOTBaseVisitor.h>
 #include <antlr4-runtime.h>
+#include <memory>
+
 
 using namespace dot_lang;
 using namespace boost;
@@ -22,10 +33,10 @@ typedef graph_traits<Graph>::edge_descriptor Edge;
 
 static Graph example_use_BGL();
 static void writeGraph(Graph testG);
-
 DOT::DOT(std::string pathToDOTFile) {
     // initialize the network object
     network = new Network();
+    dot_lang::Mapping mapping;
     // use antlr4 to compile
     _compile(pathToDOTFile);
 }
@@ -38,29 +49,44 @@ DOT::DOT(std::string pathToDOTFile) {
 void DOT::_translate(std::string pathToDOTFile) {
     // open the DOT file using pathToDOTFile
     std::ifstream file(pathToDOTFile);
+    if(!file.is_open()){
+    	std::cerr<<"Failed to open DOT file: "<<pathToDOTFile<<std::endl;
+	return;
+    }
     std::stringstream buffer;
     buffer << file.rdbuf();
+    //file.close();
+
     antlr4::ANTLRInputStream inputStream(buffer.str());
     DOTLexer lexer(&inputStream);
     antlr4::CommonTokenStream tokens(&lexer);
     DOTParser parser(&tokens);
     antlr4::tree::ParseTree* tree = parser.graph();
-    if (parser.getNumberOfSyntaxErrors() > 0) {
+    if (parser.getNumberOfSyntaxErrors() > 0 ) {
         std::cerr << "Syntax errors found during parsing." << std::endl;
         return;
     }
-
+   
+    //print parse tree
+    //std::cout<<tree->toStringTree(&parser)<<std::endl;
+    //token generation
+    //tokens.fill();
+    /*for(auto token : tokens.getTokens()){
+    	std::cout<<token->toString()<<std::endl;
+    }*/
+	
     // visit the parse tree, building symbol table, type checking, etc, generating objects for nodes and edges
     // visit nodes, then edges, then type check
-    std::vector<std::unique_ptr<DOTBaseVisitor>> visitors;
-    visitors.push_back(std::make_unique<NodeVisitor>(network));
-    visitors.push_back(std::make_unique<EdgeVisitor>(network));
-    // could use network structure itself to type check -- i.e., injectors only connect to queues, etc.
-    visitors.push_back(std::make_unique<TypeCheckVisitor>(network));
+   
+    NodeVisitor nv(network, mapping);
+    nv.visit(tree); // builds all nodes
 
-    for (const auto& visitorPass : visitors) {
-        visitorPass->visit(tree);
-    }
+    /*for (const auto& [key, value] : SymbolTable) {
+        std::cout << key << " => " << value << std::endl;
+    }*/
+   EdgeVisitor ev(network, mapping);
+   ev.visit(tree); // builds all edges
+
 }
 
 void DOT::_optimize() {}
@@ -94,24 +120,24 @@ static Graph example_use_BGL() {
     //  generating graph with polymorphic Node objects
     Graph testG;
     
-    std::vector<Vertex> nodes;
+    /*std::vector<Vertex> nodes;
 
     NodeFactory factory;
     for (auto i = 0; i < 10; ++i) {
-        std::shared_ptr<Node> node = factory.getNodeFromType(node_types(i%5));
+        std::shared_ptr<dot_lang::Node> node = factory.getNodeFromType(node_types(i%5));
 
         std::cout << "made Node: " << node->getID() << " with type: " << node->getType();
         if (node->getType() == SOURCE)
-            std::cout << " injector type has rate: " << dynamic_cast<Injector*>(node.get())->getRate();
+            std::cout << " injector type has rate: " << dynamic_cast<dot_lang::Injector*>(node.get())->getInjectionRate();
         else if (node->getType() == QUEUE)
-            std::cout << " queue depth: " << dynamic_cast<Queue*>(node.get())->getSize();
+            std::cout << " queue depth: " << dynamic_cast<dot_lang::Queue*>(node.get())->getBufferSize();
         std::cout << std::endl;
         auto v = add_vertex(node, testG);
         nodes.push_back(v);
     }
 
     for (auto i = 0; i < nodes.size()-1; i++)
-        add_edge(nodes[i], nodes[i+1], testG);
+        add_edge(nodes[i], nodes[i+1], testG);*/
 
     return testG;
 }
@@ -122,15 +148,28 @@ static void writeGraph(Graph testG) {
         out << "[" << testG[v]->getGraphVizProperties() << "]";
     };
 
-    auto edge_writer = [&](std::ostream& out, const Edge& v) {
-        out;
-    };
+    auto edge_writer = [](std::ostream& out, const Edge& ) {};
 
     auto graph_writer = [&](std::ostream& out) {
         out << "rankdir=\"LR\"\n";
     };
 
     std::ofstream out_file("graph_out.dot");
-    boost::write_graphviz(out_file, testG, vertex_writer, edge_writer, graph_writer);
-    system("dot -Tpng graph_out.dot -o graph_out.png");
+/*    boost::write_graphviz(out_file, testG, vertex_writer, edge_writer, boost::make_graph_attributes_writer(boost::dummy_property_map(),
+        boost::dummy_property_map(),
+        boost::dummy_property_map()));
+    system("dot -Tpng graph_out.dot -o graph_out.png");*/
+
+    std::map<std::string, std::string> graph_attrs;
+std::map<std::string, std::string> vertex_attrs;
+std::map<std::string, std::string> edge_attrs;
+
+boost::write_graphviz(
+    out_file,
+    testG,
+    vertex_writer,
+    edge_writer,
+    boost::make_graph_attributes_writer(graph_attrs, vertex_attrs, edge_attrs)
+);
+
 }

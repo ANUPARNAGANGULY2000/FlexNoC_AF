@@ -1,0 +1,11 @@
+digraph TestGraph {
+    server1 [type=server, t_serv=4];
+    injector1 [type=source, rate=10];
+    queue1 [type=queue, depth=20];
+    arbiter1 [type=arbiter, zero_load = 2];
+
+    injector1 -> queue1;
+    queue1 -> arbiter1;
+    arbiter1 -> server1;
+}
+

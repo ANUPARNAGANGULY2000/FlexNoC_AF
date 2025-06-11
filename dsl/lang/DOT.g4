@@ -86,11 +86,26 @@ generic_attr
     | depth_attr
     | priority_attr
     | rate_attr
+    | service_time_attr
+    | coeff_service_time_attr
+    | zero_load_latency_attr
     ;
 
 cv_attr
     : CV '=' NUMBER (';' | ',')?
     ;
+
+service_time_attr
+    : T_SERV '=' NUMBER (';' | ',')?
+    ;
+
+coeff_service_time_attr
+    : COEFF_VAR '=' NUMBER (';' | ',')?
+    ;
+
+zero_load_latency_attr
+    : ZERO_LOAD '=' NUMBER (';' | ',')?
+    ; 
 
 depth_attr
     : DEPTH '=' NUMBER (';' | ',')?
@@ -166,6 +181,18 @@ id_
 // syntactic elements specialized for noc
 CV
     : [Cc] [Vv] ('2')?
+    ;
+
+T_SERV
+    : [Tt] '_'? [Ss] [Ee] [Rr] [Vv]
+    ;
+
+COEFF_VAR
+    : [Cc] [Oo] [Ee] [Ff] [Ff] '_'? [Vv] [Aa] [Rr]
+    ;
+
+ZERO_LOAD
+    : [Zz] [Ee] [Rr] [Oo] '_'? [Ll] [Oo] [Aa] [Dd]
     ;
 
 DEPTH
