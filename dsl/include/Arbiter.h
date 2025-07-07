@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Primitive.h"
 #include "Junction.h"
+#include "Mapping.h"
 
 namespace dot_lang {
 
@@ -25,7 +26,7 @@ class Arbiter : public Primitive {
         bool isRRarbiter() const override;
         bool isPRarbiter() const override;
         void activeFlag() override;
-        virtual void arbiter() = 0;
+        virtual void arbiter(Mapping& mapping) = 0;
 
         //get
         virtual double getServiceTime()=0;
@@ -36,12 +37,12 @@ class Arbiter : public Primitive {
         virtual void setCoeffServiceTime(double& new_coeff_service_time) = 0;
         virtual void setZeroLoadLatency(double& new_zero_load_latency) = 0;
         //override the setnodes function for arbiter
-        void setJunction(const std::vector<dot_lang::Junc*> &junction) override;
+        void setJunction(const std::vector<std::shared_ptr<dot_lang::Junc>> &junction) override;
 	 std::string getGraphVizProperties() override;
 
    protected:
       std::string _shape() override;
-    std::vector<dot_lang::Junc*> junction;
+    std::vector<std::shared_ptr<dot_lang::Junc>> junction;
         //vector<Queue*> queues;
         double service_time;
         double coeff_service_time;

@@ -1,9 +1,10 @@
-#include<getUtils.h>
-#include<Mapping.h>
-#include<Server.h>
+#include "getUtils.h"
+#include "Mapping.h"
+#include "Server.h"
 
-std::string getPrimitiveName(std::shared_ptr<dot_lang::Primitive> primitive){
-	dot_lang::Mapping mapping;
+namespace dot_lang{
+std::string getPrimitiveName(std::shared_ptr<dot_lang::Primitive> primitive, Mapping& mapping){
+
 	std::string primitive_name;
 	for(auto key=mapping.primitive_map.begin(); key!=mapping.primitive_map.end(); ++key){
 	    if(key->second == primitive){
@@ -13,8 +14,8 @@ std::string getPrimitiveName(std::shared_ptr<dot_lang::Primitive> primitive){
  return primitive_name;
 }
 
-std::string getConnectedNode(std::string primitive_string){
-	dot_lang::Mapping mapping;
+std::string getConnectedNode(std::string primitive_string, Mapping& mapping){
+
 	std::string key_string;
         for(auto key=mapping.node_connections.begin(); key!=mapping.node_connections.end(); ++key){
          if(key->second == primitive_string){
@@ -24,9 +25,8 @@ std::string getConnectedNode(std::string primitive_string){
      return key_string;
 }
 
-std::shared_ptr<Server> getServer(std::shared_ptr<dot_lang::Junc> node){
+std::shared_ptr<dot_lang::Server> getServer(std::shared_ptr<dot_lang::Junc> node, Mapping& mapping){
 
-	dot_lang::Mapping mapping;
 	std::shared_ptr<dot_lang::Primitive> primitive_out = node->getPrimitiveOut();
         if(primitive_out->isServer()){
 		std::shared_ptr<dot_lang::Server> server = std::dynamic_pointer_cast<dot_lang::Server>(primitive_out);
@@ -35,7 +35,9 @@ std::shared_ptr<Server> getServer(std::shared_ptr<dot_lang::Junc> node){
        else{
   	 std::shared_ptr<dot_lang::Junc> next_node = mapping.node_files[node];
    	 if(next_node){
- 		return getServer(next_node);}
+ 		return getServer(next_node, mapping);
+	 }
        }
    return nullptr;
+}
 }

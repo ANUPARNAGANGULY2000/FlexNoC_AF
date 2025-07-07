@@ -24,7 +24,6 @@ double dot_lang::Queue::getServiceTime() const { return service_time; }
 
 void dot_lang::Queue::setInjectionRate(double &new_injection_rate) {
     injection_rate = new_injection_rate;
-    std::cout << "new injection_rate is set: " << injection_rate << std::endl;
 }
 
 void dot_lang::Queue::setCoeffInterArrivalTime(double &new_coeff_interarrival_time) {
@@ -42,6 +41,14 @@ void dot_lang::Queue::setServiceTime(double &new_service_time) {
 std::vector<double> dot_lang::Queue::primitive() {
     return {}; // Your actual primitive logic
 }
+
+//activate is_injection_rate_updated_after_saturation variable if after saturation the injection rate get modified.
+	void dot_lang::Queue::activeInjectionRateUpdateFlag(){
+	     is_injection_rate_updated_after_saturation = true;
+	     std::cout<<"is_injection_rate_updated_after_saturation is activated "<<std::endl;
+	}
+
+	bool dot_lang::Queue::isInjectionRateUpdated(){ return is_injection_rate_updated_after_saturation; }
 
 std::string dot_lang::Queue::getGraphVizProperties() {
      std::string label = "label=\"ID: " + std::to_string(getID()) + " | Depth: " + std::to_string(buffer_size) + "\"";

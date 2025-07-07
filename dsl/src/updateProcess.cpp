@@ -1,14 +1,20 @@
-#include<updateProcess.h>
-#include<Mapping.h>
-#include<Primitive.h>
-#include<setNetworkPrimitives.h>
-#include<getUtils.h>
-#include<SingleQueue.h>
+#include "updateProcess.h"
+#include "Mapping.h"
+#include "Primitive.h"
+#include "setNetworkPrimitives.h"
+#include "getUtils.h"
+#include "SingleQueue.h"
+#include "RoundRobin.h"
+#include "Injector.h"
+#include "Priority.h"
+#include "findQueue.h"
+#include <cmath>
 //using dot_lang namespace;
+namespace dot_lang{
 
-void server_to_arbiter_track(std::shared_ptr<dot_lang::Server> server){
-	dot_lang::Mapping mapping;
-	std::string server_string = getPrimitiveName(server);
+void server_to_arbiter_track(std::shared_ptr<dot_lang::Server> server, Mapping& mapping){
+
+	std::string server_string = getPrimitiveName(server,mapping);
         //check which primitive(arbiter) is connected to that server
 	std::string connected_primitive = mapping.server_track[server_string];
         std::shared_ptr<dot_lang::Primitive> primitive = mapping.primitive_map[connected_primitive];
@@ -24,7 +30,7 @@ void server_to_arbiter_track(std::shared_ptr<dot_lang::Server> server){
 			if(primitive_in->isQueue()){
 				std::shared_ptr<dot_lang::Queue> queue= std::dynamic_pointer_cast<dot_lang::Queue>(primitive_in);
 				if(queue->isInjectionRateUpdated()){
-					finding_queue(queue);	
+					finding_queue(queue, mapping);	
 				}
 			}
                   }
@@ -32,9 +38,8 @@ void server_to_arbiter_track(std::shared_ptr<dot_lang::Server> server){
 }
 
 
-void update_arbiter_service_process(std::shared_ptr<dot_lang::Server> server_primitive, double t_cap, double Cs_square_cap){
+void update_arbiter_service_process(std::shared_ptr<dot_lang::Server> server_primitive, double t_cap, double Cs_square_cap, Mapping& mapping){
 	std::string server;
-	dot_lang::Mapping mapping;
 	for(auto it=mapping.primitive_map.begin(); it!=mapping.primitive_map.end(); ++it){
 		if(it->second==server_primitive){
 			server = it->first;
@@ -103,17 +108,17 @@ void update_arbiter_service_process(std::shared_ptr<dot_lang::Server> server_pri
 				std::shared_ptr<dot_lang::Primitive> primitive_out_node = node_prev->getPrimitiveOut();
 		    		//if server is connected to the Queue
 	       	    		if(primitive_in_node->isServer() && primitive_out_node->isQueue()){
-					set_network_primitive(primitive_out_node);
+					set_network_primitive(primitive_out_node, mapping);
 	             		}
 
 	          		//if Injector is connected to the Queue
-	         	  else if(primitive_in_node->isInjector() && primitive_out_node->isQueue()){
-				  std::shared_ptr<dot_lang::Injector> injector = std::dynamic_pointer_cast<dot_lang::Injector>(primitive_in_node);
-		    		  double updated_injection_rate=0.0, updated_Ca_square =0.0;
-		    		   updated_injection_rate = node_prev->getInjectionRate();
-		    		   updated_Ca_square = node_prev->getCoeffInterArrivalTime();
-		    		   injector->setInjectionRate(updated_injection_rate);
-		    		   injector->setCoeffInterArrivalTime(updated_Ca_square);
+	         	         else if(primitive_in_node->isInjector() && primitive_out_node->isQueue()){
+				        std::shared_ptr<dot_lang::Injector> injector = std::dynamic_pointer_cast<dot_lang::Injector>(primitive_in_node);
+		    		        double updated_injection_rate=0.0, updated_Ca_square =0.0;
+		    		         updated_injection_rate = node_prev->getInjectionRate();
+		    		         updated_Ca_square = node_prev->getCoeffInterArrivalTime();
+		    		          injector->setInjectionRate(updated_injection_rate);
+		    		          injector->setCoeffInterArrivalTime(updated_Ca_square);
      	                   }
 	                } 
 	               }
@@ -139,7 +144,7 @@ void update_injection_process(std::vector<double> lambda_a, std::vector<double> 
                 double sum_p_j = 0.0;
                 for (int k = 0; k < BUFFER_SIZE[l]; ++k) {
                     double pow_val = (n[l] - rho[l]) / n[l];
-                    sum_p_j += rho[l] * rho[l] * pow(pow_val, k + 1) / (n[l] - rho[l]);
+                    sum_p_j += rho[l] * rho[l] * std::pow(pow_val, k + 1) / (n[l] - rho[l]);
                 }
                 pi_j[l] = rho[l] - sum_p_j;
             // Update lambda_a_cap and Ca_square_cap based on pi_j
@@ -152,7 +157,7 @@ void update_injection_process(std::vector<double> lambda_a, std::vector<double> 
         }
 }
 
-void update_injection_process_after_saturation(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, double updated_injection_rate){
+void update_injection_process_after_saturation(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, double updated_injection_rate, Mapping& mapping){
 
 	double sum_of_injection_rate = 0.0;
    		//calculating total injection_rate
@@ -169,20 +174,20 @@ void update_injection_process_after_saturation(std::vector<std::shared_ptr<dot_l
 	queues[queue_index]->setInjectionRate(update_injection_rate_of_queue);
 	queues[queue_index]->setCoeffInterArrivalTime(update_coeff_inter_arrival_time_of_queue);
 	queues[queue_index]->activeInjectionRateUpdateFlag();
-	finding_queue(queues[queue_index]);
+	finding_queue(queues[queue_index], mapping);
    }
    
 }
 
 //update service process
-std::shared_ptr<double> update_service_process(double lambda_a_sink,double ca_square_sink,double service_time, double cs_square_sink, int buffer_size){
+std::shared_ptr<double[]> update_service_process(double lambda_a_sink,double ca_square_sink,double service_time, double cs_square_sink, int buffer_size, Mapping& mapping){
 
 	double n_sink=0.0, pi_sink=0.0,rho_sink=0.0,sum_p_sink=0.0;
         double t_cap =0.0,cs_square_cap=0.0;
-	std::shared_ptr<double> service_process = (double*)malloc(2*sizeof(double));
+//	std::shared_ptr<double> service_process = std::make_shared<double>();
+	std::shared_ptr<double[]> service_process(new double[2], std::default_delete<double[]>());
+
 	std::vector<double> p_sink(buffer_size,0.0);
-	std::cout<<"injection_rate: "<<lambda_a_sink<<" Ca_square_sink: "<<ca_square_sink<<std::endl;
-	std::cout<<"service_time: "<<service_time<<" cs_square_sink: "<<cs_square_sink<<" buffer_size: "<<buffer_size<<std::endl;
         rho_sink = lambda_a_sink * service_time;
 
 	if(rho_sink<=0.998){
@@ -194,13 +199,13 @@ std::shared_ptr<double> update_service_process(double lambda_a_sink,double ca_sq
         	//the probability that Q_sink contains k packets
         	for(int k=0; k<buffer_size; ++k){
                		double pow_val = (n_sink - rho_sink)/n_sink;
-              		 p_sink[k] = (rho_sink * rho_sink)/(n_sink - rho_sink) * pow(pow_val,k+1);
+              		 p_sink[k] = (rho_sink * rho_sink)/(n_sink - rho_sink) * std::pow(pow_val,k+1);
 			//p_sink[k]=(1-rho_sink)*pow(rho_sink,k);
 			sum_p_sink = sum_p_sink + p_sink[k];
         	}
        		 //probability  that Qsink is full
         	 pi_sink = rho_sink - sum_p_sink;
-		 std::cout<<"rho_sink: "<<rho_sink<<" sum_p_sink "<<sum_p_sink<<"pi_sink: "<<pi_sink<<std::endl;
+		 
 
                 //Modified service process
    		if(pi_sink<1.0){
@@ -211,10 +216,10 @@ std::shared_ptr<double> update_service_process(double lambda_a_sink,double ca_sq
 	     t_cap = service_time;
 	     pi_sink = 1.0;
 	}
-       std::cout<<"previous service time was: "<<service_time<<std::endl;
-       std::cout<<"updated service time is : "<<t_cap<<std::endl;
+       
         cs_square_sink = pi_sink + cs_square_sink*(1 - pi_sink);
-        service_process[0]=t_cap;
-	service_process[1]=cs_square_sink;
+        service_process.get()[0]=t_cap;
+	service_process.get()[1]=cs_square_sink;
 return service_process;
+}
 }

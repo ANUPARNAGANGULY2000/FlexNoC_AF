@@ -31,7 +31,6 @@ dot_lang::Server:: Server(double service_time,double coeff_service_time):
                 //active is_service_time_updated
                 void dot_lang::Server::activeServiceTimeFlag() {
                         is_service_time_updated = true;
-			std::cout<<"activate Service time flag"<<std::endl;
                 }
 
                 bool dot_lang::Server::isServiceTimeUpdated() { return is_service_time_updated; }

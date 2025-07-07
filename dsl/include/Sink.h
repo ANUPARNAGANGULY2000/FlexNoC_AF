@@ -10,6 +10,8 @@ namespace dot_lang {
 //class sink if there is no destination primitive for a node
 class Sink : public Primitive{
     public:
+	    Sink();
+	    virtual ~Sink()= default;
         bool isSink() const override;
         bool isServer() const override;
         bool isQueue() const override;
@@ -20,7 +22,7 @@ class Sink : public Primitive{
         bool isPRarbiter() const override;
         bool isRRarbiter() const override;
         void activeFlag() override;
-        vector<double> primitive() override;
+	std::vector<double> primitive() override;
 
 	std::string getGraphVizProperties() override;
 
@@ -30,5 +32,7 @@ class Sink : public Primitive{
 
    private:
         bool isActive = false;
+
 };
+}
 

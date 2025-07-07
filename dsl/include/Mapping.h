@@ -4,21 +4,22 @@
 #include <vector>
 #include <string>
 #include <memory>
-
+#include <iostream>
 #include "Primitive.h"
 #include "Queue.h"
 #include "Injector.h"
 #include "Junction.h"
 
 namespace dot_lang{
-class Mapping{
+
+	class Mapping{
 
 	public:
 //map from the name of primitive to its pointer
-	std::map <std::string,std::shared_ptr<dot_lang::Primitive>> primitive_map;
+	std::map <std::string, std::shared_ptr<dot_lang::Primitive>> primitive_map;
 
 //maps the injector to the primitives in the flow
-	std::map<std::shared_ptr<dot_lang::Primitive>,std::shared_ptr<dot_lang::Injector>> primitive_flow;
+	std::map<std::shared_ptr<dot_lang::Primitive>, std::shared_ptr<dot_lang::Injector>> primitive_flow;
 
 //maps the injector to the queues in the flow
 	std::map<std::shared_ptr<dot_lang::Injector>,std::vector<std::shared_ptr<dot_lang::Queue>>> queue_flow;

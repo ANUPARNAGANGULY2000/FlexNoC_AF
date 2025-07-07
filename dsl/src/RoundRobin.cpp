@@ -1,5 +1,6 @@
 #include "RoundRobin.h"
 #include <iostream>
+#include "RoundRobinModel.h"
 
 dot_lang::RoundRobinArbiter::RoundRobinArbiter(double zero_load_latency)
     : dot_lang::Arbiter(zero_load_latency) {}
@@ -16,7 +17,7 @@ bool dot_lang::RoundRobinArbiter::isPRarbiter() const { return false; }
 
 void dot_lang::RoundRobinArbiter::activeFlag() { isActive = true; }
 
-void dot_lang::RoundRobinArbiter::arbiter() {
+void dot_lang::RoundRobinArbiter::arbiter(Mapping& mapping) {
     std::vector<std::shared_ptr<Queue>> queues;
     std::shared_ptr<RoundRobinArbiter> RRarbiter = nullptr;
 
@@ -29,7 +30,7 @@ void dot_lang::RoundRobinArbiter::arbiter() {
     }
 
     if (RRarbiter) {
-        //roundrobin_model(queues, RRarbiter);
+        roundrobin_model(queues, RRarbiter, mapping);
     }
 }
 

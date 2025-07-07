@@ -23,7 +23,7 @@ class PriorityArbiter : public Arbiter{
         bool isPRarbiter() const override;
         void activeFlag() override;
 
-         void arbiter() override;
+         void arbiter(Mapping& mapping) override;
 	 std::vector<double> primitive() override;
 
         double getZeroLoadLatency() override;

@@ -1,6 +1,7 @@
 #pragma once
 #include "Arbiter.h"
 #include "Queue.h"
+#include "Mapping.h"
 
 namespace dot_lang {
 
@@ -22,7 +23,7 @@ class RoundRobinArbiter : public Arbiter{
         bool isPRarbiter() const override;
         void activeFlag() override;
 
-         void arbiter() override;
+         void arbiter(Mapping& mapping) override;
 	 std::vector<double> primitive() override;
 
         double getZeroLoadLatency() override;

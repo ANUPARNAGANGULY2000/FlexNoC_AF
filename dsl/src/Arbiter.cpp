@@ -15,7 +15,7 @@ bool dot_lang::Arbiter::isPRarbiter() const { return false; }
 
 void dot_lang::Arbiter::activeFlag() { isActive = true; }
 
-void dot_lang::Arbiter::setJunction(const std::vector<dot_lang::Junc*> &junction) {
+void dot_lang::Arbiter::setJunction(const std::vector<std::shared_ptr<dot_lang::Junc>> &junction) {
     this->junction = junction;
 }
 

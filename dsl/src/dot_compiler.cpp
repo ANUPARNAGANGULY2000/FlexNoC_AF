@@ -68,10 +68,10 @@ void DOT::_translate(std::string pathToDOTFile) {
     }
    
     //print parse tree
-    //std::cout<<tree->toStringTree(&parser)<<std::endl;
+   /* std::cout<<tree->toStringTree(&parser)<<std::endl;
     //token generation
-    //tokens.fill();
-    /*for(auto token : tokens.getTokens()){
+    tokens.fill();
+    for(auto token : tokens.getTokens()){
     	std::cout<<token->toString()<<std::endl;
     }*/
 	
@@ -79,11 +79,16 @@ void DOT::_translate(std::string pathToDOTFile) {
     // visit nodes, then edges, then type check
    
     NodeVisitor nv(network, mapping);
-    nv.visit(tree); // builds all nodes
+    //nv.visit(tree); // builds all nodes
 
-    /*for (const auto& [key, value] : SymbolTable) {
-        std::cout << key << " => " << value << std::endl;
-    }*/
+    try {
+    		nv.visit(tree); // builds all nodes
+	} catch (const std::exception& ex) {
+    		std::cerr << "Exception: " << ex.what() << std::endl;
+	} catch (...) {
+    		std::cerr << "Unknown exception occurred." << std::endl;
+	}
+
    EdgeVisitor ev(network, mapping);
    ev.visit(tree); // builds all edges
 
@@ -100,8 +105,7 @@ void DOT::_codegen() {
 }
 
 void DOT::_compile(std::string pathToDOTFile) {
-    std::cout << "hello from dot compiler" << std::endl;
-
+    
     // phase1: translation (i.e., lexing, parsing, symbol table generation, and type checking)
     _translate(pathToDOTFile);
 

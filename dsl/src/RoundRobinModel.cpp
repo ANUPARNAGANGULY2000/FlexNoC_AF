@@ -4,13 +4,12 @@
 
 
 //Round Robin Arbitration
-void roundrobin_model(std::vector<std::shared_ptr<Queue>>& queues, std::shared_ptr<RoundRobinArbiter> RRarbiter){
+void roundrobin_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, std::shared_ptr<dot_lang::RoundRobinArbiter> RRarbiter, Mapping& mapping){
 
 	std::vector<double> injection_rates;
 	std::vector<double> interarrival_times;
 	std::vector<int> buffer_sizes;
 
-	std::cout<<"It's now in the round robinarbiter "<<std::endl;
     //getting injection_rates,interarrival_times,buffer_sizes from queue
     for(auto queue_number=0; queue_number<queues.size(); ++queue_number){
     double injection_rate = queues[queue_number]->getInjectionRate();
@@ -64,7 +63,7 @@ void roundrobin_model(std::vector<std::shared_ptr<Queue>>& queues, std::shared_p
                         }
                     }
 		    //modified service process for each queues
-                    t_cap[queue_number] = service_time + service_time *min(1.0,(t_cap[queue_number] * lambda_a_cap[queue_number])) * min(1.0,t_cap[queue_number]*sum_min_occupancy);
+                    t_cap[queue_number] = service_time + service_time *std::min(1.0,(t_cap[queue_number] * lambda_a_cap[queue_number])) * std::min(1.0,t_cap[queue_number]*sum_min_occupancy);
 		    //cout<<"updated t_cap for queue "<<queue_number<<" is: "<<t_cap[queue_number]<<endl;
                }
             }
@@ -87,7 +86,7 @@ void roundrobin_model(std::vector<std::shared_ptr<Queue>>& queues, std::shared_p
         for (size_t index = 0; index < injection_rates.size(); ++index) {
                 if(injection_rates[index]!= 0){
                     double other_sum = total_utilization - injection_rates[index];
-                    lambda_a_cap[index] = min(injection_rates[index], max(0.5, 1 - other_sum));
+                    lambda_a_cap[index] = std::min(injection_rates[index], std::max(0.5, 1 - other_sum));
 		    queues[index]->setInjectionRate(lambda_a_cap[index]);
 		    queues[index]->activeInjectionRateUpdateFlag();
                 }
@@ -117,7 +116,7 @@ void roundrobin_model(std::vector<std::shared_ptr<Queue>>& queues, std::shared_p
 		    queues[queue_number]->setWaitingTime(waiting_times[queue_number]);
                 }
         }
-	update_node_from_Queue(queues);
+	update_node_from_Queue(queues, mapping);
  }
    // return waiting_times;
 

@@ -13,8 +13,8 @@ using namespace dot_lang;
 
 void MakeConnection::create_connection(const std::string &node_name,const std::string &source, const std::string &destination, Mapping &mapping){
 
-	std::shared_ptr<Primitive> primitive_out = nullptr;
-        std::shared_ptr<Primitive> primitive_in = nullptr;
+	std::shared_ptr<dot_lang::Primitive> primitive_out = nullptr;
+        std::shared_ptr<dot_lang::Primitive> primitive_in = nullptr;
         double injection_rate=0.0;
         double coeff_interarrival_time=0.0;
 
@@ -34,9 +34,9 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
             if(iter!=mapping.primitive_flow.end()){
                 //if present and also it is a queue then add it to queue_flow map
                 if(primitive_in->isQueue()){
-                   std::shared_ptr<Injector> injector = std::dynamic_pointer_cast<Injector>(mapping.primitive_flow[primitive_in]);
+                   std::shared_ptr<dot_lang::Injector> injector = std::dynamic_pointer_cast<dot_lang::Injector>(mapping.primitive_flow[primitive_in]);
                     if(injector){
-			    std::shared_ptr<Queue> queue = std::dynamic_pointer_cast<Queue>(primitive_in);
+			    std::shared_ptr<dot_lang::Queue> queue = std::dynamic_pointer_cast<dot_lang::Queue>(primitive_in);
                         if(queue){
                                 auto& queues =mapping.queue_flow[injector];
                                 if(std::find(queues.begin(),queues.end(),queue)==queues.end()){
@@ -49,7 +49,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
 
 	     //injection_rate and coeff_interrarrival_times for node obtained from that of injector
           if(primitive_in->isInjector()){
-             std::shared_ptr<Injector> injector = std::dynamic_pointer_cast<Injector>(primitive_in);
+             std::shared_ptr<dot_lang::Injector> injector = std::dynamic_pointer_cast<dot_lang::Injector>(primitive_in);
                 if(injector){
                     injection_rate = injector->getInjectionRate();
                     coeff_interarrival_time = injector->getCoeffInterArrivalTime();
@@ -63,7 +63,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
             }
 
             //create the node
-	    std::shared_ptr<Junc> node = std::make_shared<Junc>(primitive_in, primitive_out, injection_rate, coeff_interarrival_time);
+	    std::shared_ptr<dot_lang::Junc> node = std::make_shared<dot_lang::Junc>(primitive_in, primitive_out, injection_rate, coeff_interarrival_time);
             //update the node_data here
             mapping.node_data[node_name]=node;
 
@@ -74,7 +74,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
 	    
 	    //for Q,PR,RR,M
               if(!primitive_in->isInjector()){
-		      std::shared_ptr<Junc> node_in = nullptr;
+		      std::shared_ptr<dot_lang::Junc> node_in = nullptr;
                       //iterate over node_connections
                       for(auto it = mapping.node_connections.begin(); it!=mapping.node_connections.end(); it++){
                         if(it->second == source){
@@ -88,7 +88,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
                       }
                }
          if(primitive_in->isInjector() && primitive_out->isQueue()){
-              std::shared_ptr<Queue> queue = std::dynamic_pointer_cast<Queue>(primitive_out);
+              std::shared_ptr<dot_lang::Queue> queue = std::dynamic_pointer_cast<dot_lang::Queue>(primitive_out);
                if(queue){
                   queue->setInjectionRate(injection_rate);
                   queue->setCoeffInterArrivalTime(coeff_interarrival_time);
@@ -97,19 +97,19 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
                }
          }  
 	if(primitive_in->isRRarbiter() || primitive_in->isPRarbiter() && primitive_out->isServer()){
-              std::shared_ptr<Server> server =  std::dynamic_pointer_cast<Server>(primitive_out);
+              std::shared_ptr<dot_lang::Server> server =  std::dynamic_pointer_cast<dot_lang::Server>(primitive_out);
               if(server){
                   double service_time=0.0;
                   double coeff_service_time=0.0;
                   service_time = server->getServiceTime();
                   coeff_service_time = server->getCoeffServiceTime();
                    if(primitive_in->isPRarbiter()){
-			   std::shared_ptr<PriorityArbiter> PrArbiter = std::dynamic_pointer_cast<PriorityArbiter>(primitive_in);
+			   std::shared_ptr<dot_lang::PriorityArbiter> PrArbiter = std::dynamic_pointer_cast<dot_lang::PriorityArbiter>(primitive_in);
                            PrArbiter->setServiceTime(service_time);
                             PrArbiter->setCoeffServiceTime(coeff_service_time);
                     }
                    else if(primitive_in->isRRarbiter()){
-			   std::shared_ptr<RoundRobinArbiter> RRarbiter = std::dynamic_pointer_cast<RoundRobinArbiter>(primitive_in);
+			   std::shared_ptr<dot_lang::RoundRobinArbiter> RRarbiter = std::dynamic_pointer_cast<dot_lang::RoundRobinArbiter>(primitive_in);
                            RRarbiter->setServiceTime(service_time);
                            RRarbiter->setCoeffServiceTime(coeff_service_time);
                     } 
@@ -129,7 +129,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
                   for(const auto& nodes:node_name){
                         auto node_it = mapping.node_data.find(nodes);
                         if(node_it!=mapping.node_data.end()){
-				std::shared_ptr<Junc> N = node_it->second;
+				std::shared_ptr<dot_lang::Junc> N = node_it->second;
                                 injection_rates = N->getInjectionRate();
                                 coeff_inter_arrival_times = N->getCoeffInterArrivalTime();
                                  injection_rates_list.push_back(injection_rates);
@@ -147,7 +147,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
 
       }
      if(primitive_in->isQueue() && primitive_out->isRRarbiter() || primitive_out->isPRarbiter()|| primitive_out->isServer()){
-	     std::shared_ptr<Queue> queue = std::dynamic_pointer_cast<Queue>(primitive_in);
+	     std::shared_ptr<dot_lang::Queue> queue = std::dynamic_pointer_cast<dot_lang::Queue>(primitive_in);
             if(queue){
                     injection_rate = queue->getInjectionRate();
                     coeff_interarrival_time = queue->getCoeffInterArrivalTime();
@@ -157,8 +157,8 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
     }
     //Single Queue is Connected with server
     if(primitive_in->isQueue() && primitive_out->isServer()){
-	    std::shared_ptr<Queue> queue = std::dynamic_pointer_cast<Queue>(primitive_in);
-	    std::shared_ptr<Server> server = std::dynamic_pointer_cast<Server>(primitive_out);
+	    std::shared_ptr<dot_lang::Queue> queue = std::dynamic_pointer_cast<dot_lang::Queue>(primitive_in);
+	    std::shared_ptr<dot_lang::Server> server = std::dynamic_pointer_cast<dot_lang::Server>(primitive_out);
             if(queue && server){
                 double injection_rate = queue->getInjectionRate();
                 double coeff_inter_arrival_rate = queue->getCoeffInterArrivalTime();
@@ -174,7 +174,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
         for(auto it=mapping.node_connections.begin();it!=mapping.node_connections.end();it++){
                 if(it->second==source){
                 auto& nodes = it->first;
-		std::shared_ptr<Junc> node_address = mapping.node_data[nodes];
+		std::shared_ptr<dot_lang::Junc> node_address = mapping.node_data[nodes];
                 injection_rate = node_address->getInjectionRate();
                 coeff_interarrival_time = node_address->getCoeffInterArrivalTime();
                 node->setInjectionRate(injection_rate);
@@ -221,10 +221,10 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
 	    std::vector<double> merged_flows;
 
             //new function implementation start
-	    std::shared_ptr<Queue> queue = std::dynamic_pointer_cast<Queue>(primitive_out);
+	    std::shared_ptr<dot_lang::Queue> queue = std::dynamic_pointer_cast<dot_lang::Queue>(primitive_out);
             for(auto itr=mapping.node_files.begin();itr!=mapping.node_files.end();++itr){
                 if(itr->second == node){
-			std::shared_ptr<Junc> prev_node = itr->first;
+			std::shared_ptr<dot_lang::Junc> prev_node = itr->first;
 			MakeConnection::back_tracking(prev_node,queue,mapping);
                 }
             }
@@ -233,7 +233,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
                     for(const auto& nodes:node_name){
                         auto node_it = mapping.node_data.find(nodes);
                         if(node_it != mapping.node_data.end()){
-				std::shared_ptr<Junc> N= node_it->second;
+				std::shared_ptr<dot_lang::Junc> N= node_it->second;
                                 injection_rate = N->getInjectionRate();
                                 coeff_interarrival_time = N->getCoeffInterArrivalTime();
                                 injection_rates.push_back(injection_rate);
@@ -251,12 +251,12 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
                                 if(connected_queue[0]=='Q'){
                                 // if it is a queue then check the primitive flow and get the corresponding injection rate.
 
-					std::shared_ptr<Primitive> primitive_new=mapping.primitive_map[connected_queue];
+					std::shared_ptr<dot_lang::Primitive> primitive_new=mapping.primitive_map[connected_queue];
                                                 if(primitive_new){
-							std::shared_ptr<Injector> injector = std::dynamic_pointer_cast<Injector>(mapping.primitive_flow[primitive_new]);
+							std::shared_ptr<dot_lang::Injector> injector = std::dynamic_pointer_cast<dot_lang::Injector>(mapping.primitive_flow[primitive_new]);
                                                         if(injector){
                                                                 auto& queues = mapping.queue_flow[injector];
-								std::shared_ptr<Queue> queue = std::dynamic_pointer_cast<Queue>(primitive_out);
+								std::shared_ptr<dot_lang::Queue> queue = std::dynamic_pointer_cast<dot_lang::Queue>(primitive_out);
                                                                 if(queue && std::find(queues.begin(),queues.end(),queue)==queues.end()){
                                                                                         mapping.queue_flow[injector].push_back(queue);
 
@@ -270,7 +270,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
                         }
                     node->setInjectionRate(avg_injection_rate);
                     node->setCoeffInterArrivalTime(avg_coeff_interarrival_time);
-		    std::shared_ptr<Queue> queue = std::dynamic_pointer_cast<Queue>(primitive_out);
+		    std::shared_ptr<dot_lang::Queue> queue = std::dynamic_pointer_cast<dot_lang::Queue>(primitive_out);
                     if(queue){
                             queue->setInjectionRate(avg_injection_rate);
                             queue->setCoeffInterArrivalTime(avg_coeff_interarrival_time);
@@ -281,7 +281,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
 
     }
     //connections made from source to destination with the help of this node
-     std::cout<<"Connected: "<<source<<" -> "<<destination<<"\n";
+   // std::cout<<"Connected: "<<source<<" -> "<<destination<<"\n";
 }
 
 //Merging the flows
@@ -303,7 +303,7 @@ return merging_flow;
 //back tracking the nodes
 void MakeConnection::back_tracking(std::shared_ptr<dot_lang::Junc> node, std::shared_ptr<dot_lang::Queue> queue, Mapping &mapping){
 
-	std::shared_ptr<Primitive> primitive_in = node->getPrimitiveIn();
+	std::shared_ptr<dot_lang::Primitive> primitive_in = node->getPrimitiveIn();
 	std::string injector_name;
         for(auto it=mapping.primitive_map.begin();it!= mapping.primitive_map.end();++it){
                 if(it->second == primitive_in){
@@ -312,7 +312,7 @@ void MakeConnection::back_tracking(std::shared_ptr<dot_lang::Junc> node, std::sh
                 }
         }
         if(injector_name[0]=='F'){
-		std::shared_ptr<Injector> injector = std::dynamic_pointer_cast<Injector>(primitive_in);
+		std::shared_ptr<dot_lang::Injector> injector = std::dynamic_pointer_cast<dot_lang::Injector>(primitive_in);
                 if(injector){
                         auto& queues = mapping.queue_flow[injector];
                         if(queue && std::find(queues.begin(),queues.end(),queue)==queues.end()){
@@ -323,7 +323,7 @@ void MakeConnection::back_tracking(std::shared_ptr<dot_lang::Junc> node, std::sh
         else{
                 for(auto it=mapping.node_files.begin();it!=mapping.node_files.end();++it){
                         if(it->second == node){
-				std::shared_ptr<Junc> prev_node = it->first;
+				std::shared_ptr<dot_lang::Junc> prev_node = it->first;
 				MakeConnection::back_tracking(prev_node, queue,mapping);
                         }
                 }

@@ -23,20 +23,14 @@ namespace dot_lang {
             // get id
             auto nodeName = visitNode_id(ctx->node_id());
 	    std::string node_name = std::any_cast<std::string>(nodeName);
-	    //std::cout<<"node_name: "<<node_name<<std::endl;
             // find type attribute in node_attr_list to create node:
             auto nodeType = std::any_cast<node_types>(visitType_(ctx->node_attr_list()->type_attr(0)->type_()));
 	    std::string TypeAttribute = convertToString(nodeType);
-	    //std::cout<<"node_type: "<<TypeAttribute<<std::endl;
 	    SymbolTable[node_name]=TypeAttribute;
 	    std::transform(TypeAttribute.begin(), TypeAttribute.end(), TypeAttribute.begin(),
                    [](unsigned char c) { return std::tolower(c); });
             // set node properties from node_attr_list
              std::map<std::string, std::string> attrs = std::any_cast<std::map<std::string, std::string>>(visitNode_attr_list(ctx->node_attr_list()));
-
-	    /* for(const auto& pair : attrs){
-	     	std::cout<<"key:  "<<pair.first<<" value: "<<pair.second<<std::endl;
-	     }*/
 	     attrs["type"] = TypeAttribute;
 
 	     //type validation
@@ -63,10 +57,7 @@ namespace dot_lang {
             }
 	     // create node
             std::shared_ptr<Node> node = nodeFactory.getNodeFromType(nodeType, std::any_cast<std::string>(nodeName), attrs);
-	    /*for(const auto& pair : attrs){
-                std::cout<<"key:  "<<pair.first<<" value: "<<pair.second<<std::endl;
-             }*/
-
+	    
 	    // create a Primitive
 	    std::shared_ptr<Primitive> PrimitivePtr = std::dynamic_pointer_cast<Primitive>(node);
 	    std::string PrimitiveName = std::any_cast<std::string>(nodeName);
@@ -107,6 +98,10 @@ namespace dot_lang {
                 return std::any(QUEUE);
             } else if (ctx->ARBITER()) {
                 return std::any(ARBITER);
+            } else if (ctx->ROUNDROBIN()){
+	        return std::any(ROUNDROBIN);
+	    } else if (ctx->PRIORITY()){
+		return std::any(PRIORITY);
             } else if (ctx->SERVER()) {
                 return std::any(SERVER);
             } else if (ctx->SINK()) {
@@ -120,6 +115,8 @@ namespace dot_lang {
         	case SOURCE: return "SOURCE";
         	case QUEUE: return "QUEUE";
        	        case ARBITER: return "ARBITER";
+	        case ROUNDROBIN: return "ROUNDROBIN";
+		case PRIORITY: return "PRIORITY"; 
         	case SERVER: return "SERVER";
         	case SINK: return "SINK";
         	default: return "UNKNOWN";

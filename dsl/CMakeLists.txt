@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+
 # ─── Include the Conan‑generated toolchain ────────────────────────────────────
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)   # Injects include paths, libs, compile flags
@@ -39,6 +40,16 @@ add_library(dot_dsl
     src/TypeCheckVisitor.cpp
     src/MakeConnection.cpp
     src/SingleQueue.cpp
+    src/RoundRobinModel.cpp
+     src/PriorityModel.cpp
+    src/setNetwork.cpp
+    src/setNetworkPrimitives.cpp
+    src/UpdateNodeQueue.cpp
+    src/updateProcess.cpp
+     src/WaitingTime.cpp
+    src/getUtils.cpp
+    src/findQueue.cpp
+    src/Sink.cpp
 
     # Add other source files if needed
 )

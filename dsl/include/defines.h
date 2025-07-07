@@ -6,15 +6,17 @@
 #include<iostream>
 
 namespace dot_lang {
-enum node_types {SOURCE=0, SINK, QUEUE, SERVER, ARBITER};
+enum node_types {SOURCE=0, SINK, QUEUE, SERVER, ARBITER, ROUNDROBIN, PRIORITY, NODE_TYPE_COUNT };
 }
 
-const std::string _nodeTypeToString[] = {
+const std::string _nodeTypeToString[dot_lang::NODE_TYPE_COUNT] = {
     "Source",
     "Sink",
     "Queue",
     "Server",
-    "Arbiter"
+    "Arbiter",
+    "roundrobin",
+    "priority"
 };
 
 struct NodeSchema {
@@ -26,15 +28,18 @@ struct NodeSchema {
 extern std::map<std::string, std::string> SymbolTable;
 
 inline const std::map<std::string, NodeSchema> NODE_SCHEMAS = {
-
-	{"source", {{"rate"}, {"rate", "cv", "label", "shape","type"}}},
-	{"queue", {{"depth"}, {"depth", "label", "shape","type"}}},
-	{"server", {{"t_serv", "coeff_var"},{"t_serv", "coeff_var", "label", "shape","type"}}},
-	{"arbiter", {{"zero_load"}, {"zero_load", "label", "shape","type"}}},
-	{"sink", {{}, {"label", "shape","type"}}}
+	
+	{"source", {{"rate"}, {"rate", "cv", "label", "shape","type","depth","t_serv","coeff_var","zero_load"}}},
+	{"queue", {{"depth"}, {"depth", "label", "shape","type","rate","cv","t_serv","coeff_var","zero_load"}}},
+	{"server", {{"t_serv", "coeff_var"},{"t_serv", "coeff_var", "label", "shape","type","rate","cv","depth","zero_load"}}},
+	{"arbiter", {{"zero_load"}, {"zero_load", "label", "shape","type","rate","cv","depth","t_serv","coeff_var"}}},
+	{"roundrobin", {{"zero_load"}, {"zero_load", "label", "shape","type","rate","cv","depth","t_serv","coeff_var"}}},
+	{"priority", {{"zero_load"}, {"zero_load", "label", "shape","type","rate","cv","depth","t_serv","coeff_var"}}},
+	{"sink", {{"type"}, {"label", "shape","type"}}}
 };
 
 inline NodeSchema getNodeSchema(const std::string &type) {
+	
 	auto find_type = NODE_SCHEMAS.find(type);
 	if(find_type == NODE_SCHEMAS.end()) {
 	     

@@ -16,6 +16,7 @@ public:
     // example api to get the network object
     Network* getNetwork() { return network; }
 
+    Mapping& getMapping() { return mapping; }
     int test() { return 1; }
 private:
     void _compile(std::string);

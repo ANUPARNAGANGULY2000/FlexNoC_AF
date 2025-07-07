@@ -7,6 +7,7 @@
 #include "Server.h"
 #include "RoundRobin.h"
 #include "Priority.h"
+#include "Sink.h"
 
 namespace dot_lang
 {
@@ -20,19 +21,25 @@ namespace dot_lang
 			 double rate = std::stod(attributes.at("rate"));
                          double cv = std::stod(attributes.at("cv"));
             		 node = std::make_shared<Injector>(rate,cv,0.0);
-			 if(node){
+			 /*if(node){
 			 	 std::cout<<"created an Injector: "<<name<<std::endl;
-			 }
+			 }*/
 			}
 			 break;
-       		 case SINK:
+       		 case SINK:{
+			   node = std::make_shared<Sink>();
+			  /* if(node){
+			   	std::cout<<"created a Sink"<<std::endl;
+			    }*/
+			   }
+			   break;
         	 case QUEUE:
 			 {
                          int depth = std::stod(attributes.at("depth"));
 			 node = std::make_shared<Queue>(depth,0.0,0.0,0.0);
-			 if(node){
+			 /*if(node){
                                  std::cout<<"created a Queue: "<<name<<std::endl;
-                          }
+                          }*/
 			 }
            		 break;
         	case SERVER:
@@ -40,20 +47,39 @@ namespace dot_lang
                            double t_serv = std::stod(attributes.at("t_serv"));
                            double coeff_var = std::stod(attributes.at("coeff_var"));
                            node = std::make_shared<Server>(t_serv,coeff_var);
-                           if(node){
+                           /*if(node){
                                   std::cout<<"created a server: "<<name<<std::endl;
-                          }
+                          }*/
                         }
 		        break;
         	case ARBITER:
 			{
                            double zero_load = std::stod(attributes.at("zero_load"));
                            node = std::make_shared<RoundRobinArbiter>(zero_load);
-                           if(node){
+                           /*if(node){
                                   std::cout<<"created an arbiter: "<<name<<std::endl;
-                           }
+                           }*/
                         }
 			break;
+		case ROUNDROBIN:
+                        {
+                           double zero_load = std::stod(attributes.at("zero_load"));
+                           node = std::make_shared<RoundRobinArbiter>(zero_load);
+                           /*if(node){
+                                  std::cout<<"created an roundrobin arbiter: "<<name<<std::endl;
+                           }*/
+                        }
+                        break;
+		case PRIORITY:
+                        {
+                           double zero_load = std::stod(attributes.at("zero_load"));
+                           node = std::make_shared<PriorityArbiter>(zero_load);
+                           /*if(node){
+                                  std::cout<<"created an priority arbiter: "<<name<<std::endl;
+                           }*/
+                        }
+                        break;
+
         	default:
             	node = std::make_shared<Injector>(0.05,0.91,0.0);
     	}
@@ -69,3 +95,4 @@ namespace dot_lang
     	return node;
 	}
 }
+

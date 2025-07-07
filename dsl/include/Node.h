@@ -1,5 +1,5 @@
 #pragma once
-#include <defines.h>
+#include "defines.h"
 
 namespace dot_lang {
     class Node {

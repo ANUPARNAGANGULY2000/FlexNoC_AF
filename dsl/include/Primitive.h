@@ -23,7 +23,7 @@ public:
 
     virtual void activeFlag() = 0;
     virtual std::vector<double> primitive() = 0;
-    virtual void setJunction(const std::vector<Junc*>& junction) {}
+    virtual void setJunction(const std::vector<std::shared_ptr<dot_lang::Junc>>& junction) {}
 
     virtual ~Primitive() = default;
 

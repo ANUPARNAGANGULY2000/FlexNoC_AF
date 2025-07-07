@@ -1,6 +1,9 @@
 #ifndef WAITING_TIME_CALCULATION_H
 #define WAITING_TIME_CALCULATION_H
 
-void waiting_time_calc();
+#include "Mapping.h"
 
+namespace dot_lang{
+	void waiting_time_calc(Mapping& mapping);
+};
 #endif

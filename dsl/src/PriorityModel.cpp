@@ -1,13 +1,12 @@
-#include<PriorityModel.h>
-#include<iostream>
-#include<UpdateNodeQueue.h>
+#include "PriorityModel.h"
+#include "iostream"
+#include "UpdateNodeQueue.h"
 
 
 //Priority Arbitration
-void priority_model(std::vector<std::shared_ptr<Queue>>& queues, std::shared_ptr<PriorityArbiter> PRarbiter){
+void priority_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, std::shared_ptr<dot_lang::PriorityArbiter> PRarbiter, Mapping& mapping){
 	//getting service_time and zero_load_latency from the Priority arbiter
 	double service_time = PRarbiter->getServiceTime();
-	std::cout<<"service_time of priority_model is : "<<service_time<<std::endl;
 	double zero_load_latency = PRarbiter->getZeroLoadLatency();
 	// Initialization of intermediate parameters
 	std::vector<double> lambda;
@@ -27,7 +26,6 @@ void priority_model(std::vector<std::shared_ptr<Queue>>& queues, std::shared_ptr
         for(auto queue_index=0;queue_index<queues.size(); ++queue_index){
            double injection_rate = queues[queue_index]->getInjectionRate();
 	   int buffer_size = queues[queue_index]->getBufferSize();
-	   std::cout<<"injection_rate: "<<injection_rate<<std::endl;
            lambda.push_back(injection_rate);
 	   Buffer_Size.push_back(buffer_size);
         }
@@ -43,7 +41,7 @@ void priority_model(std::vector<std::shared_ptr<Queue>>& queues, std::shared_ptr
 
     // calculating waiting time before saturation
    if(total_utilization < 0.998){
-	   std::cout<<"before saturation"<<std::endl;
+	   
    	//calculate utilization of each queue
         for(auto queue_index=0;queue_index<lambda.size(); ++queue_index){
            rho[queue_index]=lambda[queue_index] * t[queue_index];
@@ -94,7 +92,7 @@ void priority_model(std::vector<std::shared_ptr<Queue>>& queues, std::shared_ptr
 
         //set that waiting time to each queue
         queues[queue_index]->setWaitingTime(waiting_time[queue_index]);
-	std::cout<<"set wait"<<waiting_time[queue_index]<<std::endl;
+
         }
 
      else if(queue_index==0){
@@ -112,18 +110,18 @@ void priority_model(std::vector<std::shared_ptr<Queue>>& queues, std::shared_ptr
 
         //set that waiting time to each queue
         queues[queue_index]->setWaitingTime(waiting_time[queue_index]);
-	std::cout<<"wait for high "<<waiting_time[queue_index]<<std::endl;
+	
         }
       }
   }
  // calculating waiting time after saturation
 if(total_utilization >=0.998){
-	std::cout<<" it's in the priority model after saturation "<<std::endl;
+	
 	 // effective injection rate of the lower priority class
      for(int priority_queue = 0; priority_queue < lambda.size(); ++priority_queue){
 	 if(priority_queue == 0){
 	 	rho[0]=lambda[0]*t_cap[0];
-		lambda_a_cap[0] = 1.0/service_time * min(1.0,rho[0]);
+		lambda_a_cap[0] = 1.0/service_time * std::min(1.0,rho[0]);
 		Ca_square_cap[0]=1.0 - lambda_a_cap[0];
 		queues[priority_queue]->setInjectionRate(lambda_a_cap[0]);
 		queues[priority_queue]->setCoeffInterArrivalTime(Ca_square_cap[0]);
@@ -143,7 +141,7 @@ if(total_utilization >=0.998){
 
 		}
 		temp = 1.0/service_time * total_rho;
-        	lambda_a_cap[priority_queue] = min(lambda[priority_queue],(1.0-temp));
+        	lambda_a_cap[priority_queue] = std::min(lambda[priority_queue],(1.0-temp));
 		queues[priority_queue]->setInjectionRate(lambda_a_cap[priority_queue]);
 		double p_full = 1 - lambda_a_cap[priority_queue]/lambda[priority_queue];
 		Ca_square_cap[priority_queue] = (1-p_full)*(1 - lambda_a_cap[priority_queue]);
@@ -156,7 +154,7 @@ if(total_utilization >=0.998){
 		queues[priority_queue]->setWaitingTime(waiting_time[priority_queue]);
  	}
     }
-     update_node_from_Queue(queues);
+     update_node_from_Queue(queues, mapping);
   }
 }
 

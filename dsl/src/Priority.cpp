@@ -1,5 +1,6 @@
 #include "Priority.h"
 #include <iostream>
+#include "PriorityModel.h"
 
 dot_lang::PriorityArbiter::PriorityArbiter(double zero_load_latency)
     : dot_lang::Arbiter(zero_load_latency) {}
@@ -16,7 +17,7 @@ bool dot_lang::PriorityArbiter::isPRarbiter() const { return isActive; }
 
 void dot_lang::PriorityArbiter::activeFlag() { isActive = true; }
 
-void dot_lang::PriorityArbiter::arbiter() {
+void dot_lang::PriorityArbiter::arbiter(Mapping& mapping) {
     std::vector<std::shared_ptr<Queue>> queues;
     std::shared_ptr<PriorityArbiter> PRarbiter = nullptr;
 
@@ -29,7 +30,8 @@ void dot_lang::PriorityArbiter::arbiter() {
     }
 
     if (PRarbiter) {
-       // roundrobin_model(queues, RRarbiter);
+   	priority_model(queues, PRarbiter, mapping);
+	    
     }
 }
 

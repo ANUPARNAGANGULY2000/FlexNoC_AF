@@ -1,4 +1,4 @@
-#include <Junction.h>
+#include "Junction.h"
 using namespace dot_lang;
 
      Junc::Junc(std::shared_ptr<Primitive> primitive_in , std::shared_ptr<Primitive> primitive_out, double injection_rate, double coeff_interarrival_time):
@@ -19,4 +19,4 @@ using namespace dot_lang;
                 coeff_interarrival_time = new_coeff_interarrival_time;
         }
 
-	int Junc::JunctionCounter = 1;
+       int Junc::JunctionCounter = 1;

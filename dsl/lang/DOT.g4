@@ -128,6 +128,8 @@ type_
     : SOURCE
     | QUEUE
     | ARBITER
+    | ROUNDROBIN
+    | PRIORITY
     | SERVER
     | SINK
     ;
@@ -175,7 +177,6 @@ id_
     | HTML_STRING
     | NUMBER
     | SOURCE
-    | SINK
     ;
 
 // syntactic elements specialized for noc
@@ -203,10 +204,6 @@ SIZE
     : [Ss] [Ii] [Zz] [Ee]
     ;
 
-PRIORITY
-    : [Pp] [Rr] [Ii] [Oo] [Rr] [Ii] [Tt] [Yy]
-    ;
-
 RATE
     : [Rr] [Aa] [Tt] [Ee]
     ;
@@ -221,6 +218,14 @@ QUEUE
 
 ARBITER
     : [Aa] [Rr] [Bb] [Ii] [Tt] [Ee] [Rr]
+    ;
+
+ROUNDROBIN
+    : [Rr] [Oo] [Uu] [Nn] [Dd] [Rr] [Oo] [Bb] [Ii] [Nn]
+    ;
+
+PRIORITY
+    : [Pp] [Rr] [Ii] [Oo] [Rr] [Ii] [Tt] [Yy]
     ;
 
 SERVER

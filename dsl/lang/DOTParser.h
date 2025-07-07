@@ -14,11 +14,11 @@ public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, CV = 12, T_SERV = 13, COEFF_VAR = 14, 
-    ZERO_LOAD = 15, DEPTH = 16, SIZE = 17, PRIORITY = 18, RATE = 19, SOURCE = 20, 
-    QUEUE = 21, ARBITER = 22, SERVER = 23, SINK = 24, STRICT = 25, GRAPH = 26, 
-    DIGRAPH = 27, NODE = 28, EDGE = 29, SUBGRAPH = 30, NUMBER = 31, STRING = 32, 
-    ID = 33, HTML_STRING = 34, COMMENT = 35, LINE_COMMENT = 36, PREPROC = 37, 
-    WS = 38
+    ZERO_LOAD = 15, DEPTH = 16, SIZE = 17, RATE = 18, SOURCE = 19, QUEUE = 20, 
+    ARBITER = 21, ROUNDROBIN = 22, PRIORITY = 23, SERVER = 24, SINK = 25, 
+    STRICT = 26, GRAPH = 27, DIGRAPH = 28, NODE = 29, EDGE = 30, SUBGRAPH = 31, 
+    NUMBER = 32, STRING = 33, ID = 34, HTML_STRING = 35, COMMENT = 36, LINE_COMMENT = 37, 
+    PREPROC = 38, WS = 39
   };
 
   enum {
@@ -358,6 +358,8 @@ public:
     antlr4::tree::TerminalNode *SOURCE();
     antlr4::tree::TerminalNode *QUEUE();
     antlr4::tree::TerminalNode *ARBITER();
+    antlr4::tree::TerminalNode *ROUNDROBIN();
+    antlr4::tree::TerminalNode *PRIORITY();
     antlr4::tree::TerminalNode *SERVER();
     antlr4::tree::TerminalNode *SINK();
 
@@ -528,7 +530,6 @@ public:
     antlr4::tree::TerminalNode *HTML_STRING();
     antlr4::tree::TerminalNode *NUMBER();
     antlr4::tree::TerminalNode *SOURCE();
-    antlr4::tree::TerminalNode *SINK();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;

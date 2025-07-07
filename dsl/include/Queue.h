@@ -40,6 +40,9 @@ public:
 
     std::vector<double> primitive() override;
 
+
+    void activeInjectionRateUpdateFlag();
+    bool isInjectionRateUpdated();
     // GraphViz override from Node → Primitive → Queue
     std::string getGraphVizProperties() override;
 
@@ -51,5 +54,6 @@ protected:
     double coeff_interarrival_time;
     double service_time;
     bool isActive = false;
+    bool is_injection_rate_updated_after_saturation = false;
 };
 }

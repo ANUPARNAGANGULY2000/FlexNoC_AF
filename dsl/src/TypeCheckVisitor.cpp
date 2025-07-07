@@ -11,7 +11,7 @@ namespace dot_lang{
 			}
 	        }
 		else if(source == "QUEUE" ){
-			if(destination != "ARBITER" && destination != "SERVER"){
+			if(destination != "ARBITER" && destination !="ROUNDROBIN" && destination!= "PRIORITY" && destination != "SERVER"){
 		   	    std::cerr<<"Error: "<<source<<" is connected to "<<destination<<" but it is expected to connected with arbiter or server "<<std::endl;
                            assert(false);
 		        }
@@ -28,5 +28,18 @@ namespace dot_lang{
                             assert(false);
 		  }
 		}
+		 else if(source == "ROUNDROBIN"){
+                        if(destination != "SERVER"){
+                            std::cerr<<"Error: "<<source<<" is connected to "<<destination<<" but it is expected to connected with server "<<std::endl;
+                            assert(false);
+                  }
+                }
+		 else if(source == "PRIORITY"){
+                        if(destination != "SERVER"){
+                            std::cerr<<"Error: "<<source<<" is connected to "<<destination<<" but it is expected to connected with server "<<std::endl;
+                            assert(false);
+                  }
+                }
+
 	}
 }
