@@ -1,10 +1,55 @@
 # DOT Domain-Specific Language (DSL) Extension for Network Topologies
 
-This document provides an overview of the updates made to the DOT language to support custom attributes for queues, arbiters, and other components in order to enforce specific syntax constructs and enable clear specification of the network-on-chip (NoC).
+This project extends the DOT language using ANTLR to define a Domain-Specific Language(DSL) for describing custom Network-on-Chip(NoC) topologies. It supports user-defined attributes for components such as injectors, queues, arbiters, and servers and enable clear specification of the network-on-chip (NoC). The DSL simplifies parsing, validation, and simulation of communication behavior on NoCs using analytical models.
 
 ## Overview
 
 The DSL project is a domain-specific language designed to simplify the development of specific applications within a particular domain. It provides a set of abstractions and syntax tailored to the needs of that domain, making it easier for developers to express their intent and solve problems efficiently.
+
+## DOT File Syntax Guide (DSL Rules)
+
+This DSL extends the DOT language to describe **Network-on-Chip (NoC)** components using custom attributes. The compiler parses these attributes to construct the analytical model.
+Each node must define a `type` attribute. Additional attributes depend on the node type.
+
+### Supported Node Types and their Attributes:
+
+- **injector**
+  - type: `Source`
+  - Required: `rate`
+
+- **queue**
+  - type: `queue`
+  - Required: `depth`
+
+- **arbiter**
+  - type: `arbiter`
+  - Required: `zero_load`
+
+- **RoundRobin**
+  - type: `RoundRobin`
+  - Required: `zero_load`
+
+- **Priority**
+  - type: `Priority`
+  - Required: `zero_load`
+
+- **Server**
+  - type: `server`
+  - Required: `t_serv`, `coeff_var`
+
+- **Sink**
+  - type: `sink`
+
+**Note** 
+- The compiler will validate all **required** attributes. Missing or incorrect attributes will raise an **error**.
+- Ensure every node is connected to correct node and every node is defined properly with its type and parameters.
+
+For real examples, check the provided `.dot` files:
+
+- `graph2.dot`
+- `graph3.dot`
+- `graph4.dot`
+- `graph5.dot`
 
 ## Building with Conan
 
@@ -56,8 +101,26 @@ To build the project, you can use Conan, a package manager for C and C++ librari
     ```bash
     conan build ..
     ```
+This final build step invokes cmake to build the project.
 
-This final build step invokes cmake to build the project and runs any tests in the `dsl/test` directory.
+8. (Optional) Manual Build with CMake and Make:
+
+If `conan build ..` does not automatically compile everything, you can manually configure and compile the project.
+
+   ````bash
+   cmake ..
+   make -j
+   ```
+This will build the main executable `bin/dot_iso`.
+
+9. Running the Executable:
+
+Once the build is complete, run the tool using 
+
+   ````bash
+  ./bin/dot_iso ../graph5.dot
+  ```
+Replace `graph5.dot` with any DOT file containing valid NoC specifications.
 
 **Note:** Java is required to run ANTLR4, which is included as a .jar file.
 
