@@ -105,21 +105,21 @@ This final build step invokes cmake to build the project.
 
 8. (Optional) Manual Build with CMake and Make:
 
-If `conan build ..` does not automatically compile everything, you can manually configure and compile the project.
+    If `conan build ..` does not automatically compile everything, you can manually configure and compile the project.
 
-   ````bash
-   cmake ..
-   make -j
-   ```
+    ```bash
+     cmake ..
+     make -j
+    ```
 This will build the main executable `bin/dot_iso`.
 
 9. Running the Executable:
 
 Once the build is complete, run the tool using 
 
-   ````bash
-  ./bin/dot_iso ../graph5.dot
-  ```
+   ```bash
+   ./bin/dot_iso ../graph5.dot
+   ```
 Replace `graph5.dot` with any DOT file containing valid NoC specifications.
 
 **Note:** Java is required to run ANTLR4, which is included as a .jar file.
