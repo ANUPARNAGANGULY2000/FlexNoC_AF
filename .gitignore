@@ -1,0 +1,39 @@
+# --- Build artifacts ---
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# --- Compiled binaries ---
+*.o
+*.a
+*.so
+*.out
+*.exe
+
+# --- Conan files (auto-generated) ---
+conanbuildinfo.*
+conaninfo.txt
+conan.lock
+
+# --- ANTLR generated files (optional if regenerated) ---
+*.tokens
+*.interp
+
+# --- IDE/editor files ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*~
+
+# --- OS junk files ---
+.DS_Store
+Thumbs.db
+
+# --- Logs ---
+*.log
+
