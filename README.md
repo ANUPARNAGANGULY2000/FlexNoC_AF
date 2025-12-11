@@ -127,21 +127,22 @@ Once the build is complete, run the tool using
    ```
 Replace `hybrid1.dot` with any DOT file containing valid NoC specifications for irregular topology.
 
-10. Auto-generation of DOT files(Regular Mesh Topology)
+10. Auto-generation of DOT files(Regular Mesh Topology):
 
 This mode generates a full DOT file automatically based on parameters supplied in a `.txt` config file.
   
     ```bash
-   ./bin/dot_iso regular ../test/test.txt
-   ```
+    ./bin/dot_iso regular ../test/test.txt
+    ```
 Replace `test.txt` with any `.txt` file containing valid NoC specifications for regular topology.
 
 11. Running regression test mode:
 
 Regression mode automatically executes all test DOT files inside the test directory.
+
     ```bash
-   ./bin/dot_iso regression
-   ```
+    ./bin/dot_iso regression
+    ```
 This is useful for verifying correctness after grammar or compiler updates.
 
 ## Workflow of FlexNoC Framework
