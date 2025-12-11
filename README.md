@@ -30,16 +30,16 @@ Each node must define a `type` attribute. Additional attributes depend on the no
   - Required: `zero_load`
 
 - **Hybrid Arbiter**
-  -type: `hybrid`
-  -Required: `zero_load`
+  - type: `hybrid`
+  - Required: `zero_load`
 
 - **Server**
   - type: `server`
   - Required: `t_serv`, `coeff_var`
 
 - **Split**
-  -type: `split`
-  -Required: `out={port probabilities}`
+  - type: `split`
+  - Required: `out={port probabilities}`
 
 - **Sink**
   - type: `sink`
