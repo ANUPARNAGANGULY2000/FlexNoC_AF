@@ -4,7 +4,7 @@
 
 namespace model{
 //Round Robin Arbitration
-void roundrobin_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, std::shared_ptr<dot_lang::RoundRobinArbiter> RRarbiter, dot_lang::Mapping& mapping){
+void roundrobin_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, double service_time, double zero_load_latency, dot_lang::Mapping& mapping){
 
 	std::vector<double> injection_rates;
 	std::vector<double> interarrival_times;
@@ -20,11 +20,6 @@ void roundrobin_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, std
     buffer_sizes.push_back(buffer_size);
     }
 
-    //getting service_time, zero_load_latency from RoundRobin Arbiter
-    double service_time = RRarbiter->getServiceTime();
-    double zero_load_latency = RRarbiter->getZeroLoadLatency();
-
-
     std::vector<double> waiting_times(injection_rates.size(), 0.0); // To store Waiting time of each queue
      // Initialization of intermediate parameters
     std::vector<double> lambda_a_cap = injection_rates;
@@ -33,7 +28,6 @@ void roundrobin_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, std
     std::vector<double> n(injection_rates.size(), 0.0);
     std::vector<double> pi_j(injection_rates.size(), 0.0);
     std::vector<double> t_cap(injection_rates.size(), service_time);
-
     int total_iteration = 1; // Number of iterations for convergence
     double rate =0;
     double total_utilization = 0.0;

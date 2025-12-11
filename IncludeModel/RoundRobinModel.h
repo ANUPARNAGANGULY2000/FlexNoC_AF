@@ -8,6 +8,6 @@
 #include<memory>
 
 namespace model{
-void roundrobin_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, std::shared_ptr<dot_lang::RoundRobinArbiter> RRarbiter, dot_lang::Mapping& mapping);
+void roundrobin_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, double service_time, double zero_load_latency, dot_lang::Mapping& mapping);
 }
 #endif

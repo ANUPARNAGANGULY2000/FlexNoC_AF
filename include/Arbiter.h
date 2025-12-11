@@ -17,14 +17,15 @@ class Arbiter : public Primitive {
 
        // Type identification
         bool isArbiter() const override;
-        bool isSplit() const override;
         bool isServer() const override;
         bool isQueue() const override;
         bool isInjector() const override;
         bool isMerge() const override;
         bool isSink() const override;
+	bool isSplit() const override;
         bool isRRarbiter() const override;
         bool isPRarbiter() const override;
+	bool isHybridArbiter() const override;
         void activeFlag() override;
         virtual void arbiter(Mapping& mapping) = 0;
 

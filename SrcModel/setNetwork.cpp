@@ -1,14 +1,15 @@
 #include "setNetwork.h"
 #include "Junction.h"
 #include "setNetworkPrimitives.h"
+#include "getUtils.h"
 #include <iostream>
 #include <algorithm>
 #include <string>
 
 namespace model{
 
-void read_network(dot_lang::Mapping& mapping){
-
+//void read_network(dot_lang::Mapping& mapping){
+void Invoke_analytical_model(dot_lang::Mapping& mapping){
     set_nodes(mapping);
 
     //check Sink is getting full or not

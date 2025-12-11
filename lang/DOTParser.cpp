@@ -55,108 +55,120 @@ void dotParserInitialize() {
     std::vector<std::string>{
       "graph", "stmt_list", "stmt", "attr_stmt", "attr_list", "node_attr_list", 
       "edge_attr_list", "generic_attr", "cv_attr", "service_time_attr", 
-      "coeff_service_time_attr", "zero_load_latency_attr", "depth_attr", 
-      "priority_attr", "rate_attr", "type_attr", "type_", "a_list", "attr_", 
-      "edge_stmt", "edgeRHS", "edgeop", "node_stmt", "node_id", "port", 
-      "subgraph", "id_"
+      "coeff_service_time_attr", "split_attr", "zero_load_latency_attr", 
+      "depth_attr", "priority_attr", "rate_attr", "map_attr", "mapPair", 
+      "type_attr", "type_", "a_list", "attr_", "edge_stmt", "edgeRHS", "edgeop", 
+      "node_stmt", "node_id", "port", "subgraph", "id_"
     },
     std::vector<std::string>{
-      "", "'{'", "'}'", "';'", "'='", "'['", "']'", "','", "'type'", "'->'", 
-      "'--'", "':'"
+      "", "'{'", "'}'", "';'", "'='", "'['", "']'", "','", "':'", "'type'", 
+      "'->'", "'--'"
     },
     std::vector<std::string>{
-      "", "", "", "", "", "", "", "", "", "", "", "", "CV", "T_SERV", "COEFF_VAR", 
-      "ZERO_LOAD", "DEPTH", "SIZE", "RATE", "SOURCE", "QUEUE", "ARBITER", 
-      "ROUNDROBIN", "PRIORITY", "SERVER", "SINK", "STRICT", "GRAPH", "DIGRAPH", 
-      "NODE", "EDGE", "SUBGRAPH", "NUMBER", "STRING", "ID", "HTML_STRING", 
-      "COMMENT", "LINE_COMMENT", "PREPROC", "WS"
+      "", "", "", "", "", "", "", "", "", "", "", "", "CV", "T_SERV", "S_ATTR", 
+      "COEFF_VAR", "ZERO_LOAD", "DEPTH", "PRIORITY_NO", "SIZE", "RATE", 
+      "SOURCE", "QUEUE", "ARBITER", "ROUNDROBIN", "PRIORITY", "HYBRID", 
+      "SERVER", "SPLIT", "SINK", "STRICT", "GRAPH", "DIGRAPH", "NODE", "EDGE", 
+      "SUBGRAPH", "NUMBER", "STRING", "ID", "HTML_STRING", "COMMENT", "LINE_COMMENT", 
+      "PREPROC", "WS"
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,39,254,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	4,1,43,287,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
   	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,
   	14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,
-  	21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,1,0,3,0,56,8,0,1,
-  	0,1,0,3,0,60,8,0,1,0,1,0,1,0,1,0,1,0,1,1,1,1,3,1,69,8,1,5,1,71,8,1,10,
-  	1,12,1,74,9,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,84,8,2,1,3,1,3,1,3,
-  	1,4,1,4,1,4,1,4,4,4,93,8,4,11,4,12,4,94,1,5,1,5,5,5,99,8,5,10,5,12,5,
-  	102,9,5,1,5,1,5,5,5,106,8,5,10,5,12,5,109,9,5,1,5,1,5,4,5,113,8,5,11,
-  	5,12,5,114,1,6,1,6,4,6,119,8,6,11,6,12,6,120,1,6,1,6,4,6,125,8,6,11,6,
-  	12,6,126,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,3,7,137,8,7,1,8,1,8,1,8,1,8,
-  	3,8,143,8,8,1,9,1,9,1,9,1,9,3,9,149,8,9,1,10,1,10,1,10,1,10,3,10,155,
-  	8,10,1,11,1,11,1,11,1,11,3,11,161,8,11,1,12,1,12,1,12,1,12,3,12,167,8,
-  	12,1,12,1,12,1,12,1,12,3,12,173,8,12,3,12,175,8,12,1,13,1,13,1,13,1,13,
-  	3,13,181,8,13,1,14,1,14,1,14,1,14,3,14,187,8,14,1,15,1,15,1,15,1,15,3,
-  	15,193,8,15,1,16,1,16,1,17,4,17,198,8,17,11,17,12,17,199,1,18,1,18,1,
-  	18,3,18,205,8,18,1,18,3,18,208,8,18,1,19,1,19,3,19,212,8,19,1,19,1,19,
-  	3,19,216,8,19,1,20,1,20,1,20,3,20,221,8,20,4,20,223,8,20,11,20,12,20,
-  	224,1,21,1,21,1,22,1,22,1,22,1,23,1,23,3,23,234,8,23,1,24,1,24,1,24,1,
-  	24,3,24,240,8,24,1,25,1,25,3,25,244,8,25,3,25,246,8,25,1,25,1,25,1,25,
-  	1,25,1,26,1,26,1,26,0,0,27,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,
-  	32,34,36,38,40,42,44,46,48,50,52,0,6,1,0,27,28,2,0,27,27,29,30,2,0,3,
-  	3,7,7,1,0,19,25,1,0,9,10,2,0,19,19,32,35,268,0,55,1,0,0,0,2,72,1,0,0,
-  	0,4,83,1,0,0,0,6,85,1,0,0,0,8,92,1,0,0,0,10,112,1,0,0,0,12,124,1,0,0,
-  	0,14,136,1,0,0,0,16,138,1,0,0,0,18,144,1,0,0,0,20,150,1,0,0,0,22,156,
-  	1,0,0,0,24,174,1,0,0,0,26,176,1,0,0,0,28,182,1,0,0,0,30,188,1,0,0,0,32,
-  	194,1,0,0,0,34,197,1,0,0,0,36,201,1,0,0,0,38,211,1,0,0,0,40,222,1,0,0,
-  	0,42,226,1,0,0,0,44,228,1,0,0,0,46,231,1,0,0,0,48,235,1,0,0,0,50,245,
-  	1,0,0,0,52,251,1,0,0,0,54,56,5,26,0,0,55,54,1,0,0,0,55,56,1,0,0,0,56,
-  	57,1,0,0,0,57,59,7,0,0,0,58,60,3,52,26,0,59,58,1,0,0,0,59,60,1,0,0,0,
-  	60,61,1,0,0,0,61,62,5,1,0,0,62,63,3,2,1,0,63,64,5,2,0,0,64,65,5,0,0,1,
-  	65,1,1,0,0,0,66,68,3,4,2,0,67,69,5,3,0,0,68,67,1,0,0,0,68,69,1,0,0,0,
-  	69,71,1,0,0,0,70,66,1,0,0,0,71,74,1,0,0,0,72,70,1,0,0,0,72,73,1,0,0,0,
-  	73,3,1,0,0,0,74,72,1,0,0,0,75,84,3,44,22,0,76,84,3,38,19,0,77,84,3,6,
-  	3,0,78,79,3,52,26,0,79,80,5,4,0,0,80,81,3,52,26,0,81,84,1,0,0,0,82,84,
-  	3,50,25,0,83,75,1,0,0,0,83,76,1,0,0,0,83,77,1,0,0,0,83,78,1,0,0,0,83,
-  	82,1,0,0,0,84,5,1,0,0,0,85,86,7,1,0,0,86,87,3,8,4,0,87,7,1,0,0,0,88,89,
-  	5,5,0,0,89,90,3,34,17,0,90,91,5,6,0,0,91,93,1,0,0,0,92,88,1,0,0,0,93,
-  	94,1,0,0,0,94,92,1,0,0,0,94,95,1,0,0,0,95,9,1,0,0,0,96,100,5,5,0,0,97,
-  	99,3,14,7,0,98,97,1,0,0,0,99,102,1,0,0,0,100,98,1,0,0,0,100,101,1,0,0,
-  	0,101,103,1,0,0,0,102,100,1,0,0,0,103,107,3,30,15,0,104,106,3,14,7,0,
-  	105,104,1,0,0,0,106,109,1,0,0,0,107,105,1,0,0,0,107,108,1,0,0,0,108,110,
-  	1,0,0,0,109,107,1,0,0,0,110,111,5,6,0,0,111,113,1,0,0,0,112,96,1,0,0,
-  	0,113,114,1,0,0,0,114,112,1,0,0,0,114,115,1,0,0,0,115,11,1,0,0,0,116,
-  	118,5,5,0,0,117,119,3,14,7,0,118,117,1,0,0,0,119,120,1,0,0,0,120,118,
-  	1,0,0,0,120,121,1,0,0,0,121,122,1,0,0,0,122,123,5,6,0,0,123,125,1,0,0,
-  	0,124,116,1,0,0,0,125,126,1,0,0,0,126,124,1,0,0,0,126,127,1,0,0,0,127,
-  	13,1,0,0,0,128,137,3,36,18,0,129,137,3,16,8,0,130,137,3,24,12,0,131,137,
-  	3,26,13,0,132,137,3,28,14,0,133,137,3,18,9,0,134,137,3,20,10,0,135,137,
-  	3,22,11,0,136,128,1,0,0,0,136,129,1,0,0,0,136,130,1,0,0,0,136,131,1,0,
-  	0,0,136,132,1,0,0,0,136,133,1,0,0,0,136,134,1,0,0,0,136,135,1,0,0,0,137,
-  	15,1,0,0,0,138,139,5,12,0,0,139,140,5,4,0,0,140,142,5,32,0,0,141,143,
-  	7,2,0,0,142,141,1,0,0,0,142,143,1,0,0,0,143,17,1,0,0,0,144,145,5,13,0,
-  	0,145,146,5,4,0,0,146,148,5,32,0,0,147,149,7,2,0,0,148,147,1,0,0,0,148,
-  	149,1,0,0,0,149,19,1,0,0,0,150,151,5,14,0,0,151,152,5,4,0,0,152,154,5,
-  	32,0,0,153,155,7,2,0,0,154,153,1,0,0,0,154,155,1,0,0,0,155,21,1,0,0,0,
-  	156,157,5,15,0,0,157,158,5,4,0,0,158,160,5,32,0,0,159,161,7,2,0,0,160,
-  	159,1,0,0,0,160,161,1,0,0,0,161,23,1,0,0,0,162,163,5,16,0,0,163,164,5,
-  	4,0,0,164,166,5,32,0,0,165,167,7,2,0,0,166,165,1,0,0,0,166,167,1,0,0,
-  	0,167,175,1,0,0,0,168,169,5,17,0,0,169,170,5,4,0,0,170,172,5,32,0,0,171,
-  	173,7,2,0,0,172,171,1,0,0,0,172,173,1,0,0,0,173,175,1,0,0,0,174,162,1,
-  	0,0,0,174,168,1,0,0,0,175,25,1,0,0,0,176,177,5,23,0,0,177,178,5,4,0,0,
-  	178,180,5,32,0,0,179,181,7,2,0,0,180,179,1,0,0,0,180,181,1,0,0,0,181,
-  	27,1,0,0,0,182,183,5,18,0,0,183,184,5,4,0,0,184,186,5,32,0,0,185,187,
-  	7,2,0,0,186,185,1,0,0,0,186,187,1,0,0,0,187,29,1,0,0,0,188,189,5,8,0,
-  	0,189,190,5,4,0,0,190,192,3,32,16,0,191,193,7,2,0,0,192,191,1,0,0,0,192,
-  	193,1,0,0,0,193,31,1,0,0,0,194,195,7,3,0,0,195,33,1,0,0,0,196,198,3,36,
-  	18,0,197,196,1,0,0,0,198,199,1,0,0,0,199,197,1,0,0,0,199,200,1,0,0,0,
-  	200,35,1,0,0,0,201,204,3,52,26,0,202,203,5,4,0,0,203,205,3,52,26,0,204,
-  	202,1,0,0,0,204,205,1,0,0,0,205,207,1,0,0,0,206,208,7,2,0,0,207,206,1,
-  	0,0,0,207,208,1,0,0,0,208,37,1,0,0,0,209,212,3,46,23,0,210,212,3,50,25,
-  	0,211,209,1,0,0,0,211,210,1,0,0,0,212,213,1,0,0,0,213,215,3,40,20,0,214,
-  	216,3,12,6,0,215,214,1,0,0,0,215,216,1,0,0,0,216,39,1,0,0,0,217,220,3,
-  	42,21,0,218,221,3,46,23,0,219,221,3,50,25,0,220,218,1,0,0,0,220,219,1,
-  	0,0,0,221,223,1,0,0,0,222,217,1,0,0,0,223,224,1,0,0,0,224,222,1,0,0,0,
-  	224,225,1,0,0,0,225,41,1,0,0,0,226,227,7,4,0,0,227,43,1,0,0,0,228,229,
-  	3,46,23,0,229,230,3,10,5,0,230,45,1,0,0,0,231,233,3,52,26,0,232,234,3,
-  	48,24,0,233,232,1,0,0,0,233,234,1,0,0,0,234,47,1,0,0,0,235,236,5,11,0,
-  	0,236,239,3,52,26,0,237,238,5,11,0,0,238,240,3,52,26,0,239,237,1,0,0,
-  	0,239,240,1,0,0,0,240,49,1,0,0,0,241,243,5,31,0,0,242,244,3,52,26,0,243,
-  	242,1,0,0,0,243,244,1,0,0,0,244,246,1,0,0,0,245,241,1,0,0,0,245,246,1,
-  	0,0,0,246,247,1,0,0,0,247,248,5,1,0,0,248,249,3,2,1,0,249,250,5,2,0,0,
-  	250,51,1,0,0,0,251,252,7,5,0,0,252,53,1,0,0,0,33,55,59,68,72,83,94,100,
-  	107,114,120,126,136,142,148,154,160,166,172,174,180,186,192,199,204,207,
-  	211,215,220,224,233,239,243,245
+  	21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,2,27,7,27,2,28,7,
+  	28,2,29,7,29,1,0,3,0,62,8,0,1,0,1,0,3,0,66,8,0,1,0,1,0,1,0,1,0,1,0,1,
+  	1,1,1,3,1,75,8,1,5,1,77,8,1,10,1,12,1,80,9,1,1,2,1,2,1,2,1,2,1,2,1,2,
+  	1,2,1,2,3,2,90,8,2,1,3,1,3,1,3,1,4,1,4,1,4,1,4,4,4,99,8,4,11,4,12,4,100,
+  	1,5,1,5,5,5,105,8,5,10,5,12,5,108,9,5,1,5,1,5,5,5,112,8,5,10,5,12,5,115,
+  	9,5,1,5,1,5,4,5,119,8,5,11,5,12,5,120,1,6,1,6,4,6,125,8,6,11,6,12,6,126,
+  	1,6,1,6,4,6,131,8,6,11,6,12,6,132,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,
+  	1,7,3,7,145,8,7,1,8,1,8,1,8,1,8,3,8,151,8,8,1,9,1,9,1,9,1,9,3,9,157,8,
+  	9,1,10,1,10,1,10,1,10,3,10,163,8,10,1,11,1,11,1,11,1,11,3,11,169,8,11,
+  	1,12,1,12,1,12,1,12,3,12,175,8,12,1,13,1,13,1,13,1,13,3,13,181,8,13,1,
+  	13,1,13,1,13,1,13,3,13,187,8,13,3,13,189,8,13,1,14,1,14,1,14,1,14,3,14,
+  	195,8,14,1,15,1,15,1,15,1,15,3,15,201,8,15,1,16,1,16,1,16,1,16,1,16,1,
+  	16,5,16,209,8,16,10,16,12,16,212,9,16,1,16,1,16,3,16,216,8,16,1,17,1,
+  	17,1,17,1,17,1,18,1,18,1,18,1,18,3,18,226,8,18,1,19,1,19,1,20,4,20,231,
+  	8,20,11,20,12,20,232,1,21,1,21,1,21,3,21,238,8,21,1,21,3,21,241,8,21,
+  	1,22,1,22,3,22,245,8,22,1,22,1,22,3,22,249,8,22,1,23,1,23,1,23,3,23,254,
+  	8,23,4,23,256,8,23,11,23,12,23,257,1,24,1,24,1,25,1,25,1,25,1,26,1,26,
+  	3,26,267,8,26,1,27,1,27,1,27,1,27,3,27,273,8,27,1,28,1,28,3,28,277,8,
+  	28,3,28,279,8,28,1,28,1,28,1,28,1,28,1,29,1,29,1,29,0,0,30,0,2,4,6,8,
+  	10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,
+  	56,58,0,6,1,0,31,32,2,0,31,31,33,34,2,0,3,3,7,7,1,0,21,29,1,0,10,11,2,
+  	0,21,21,36,39,303,0,61,1,0,0,0,2,78,1,0,0,0,4,89,1,0,0,0,6,91,1,0,0,0,
+  	8,98,1,0,0,0,10,118,1,0,0,0,12,130,1,0,0,0,14,144,1,0,0,0,16,146,1,0,
+  	0,0,18,152,1,0,0,0,20,158,1,0,0,0,22,164,1,0,0,0,24,170,1,0,0,0,26,188,
+  	1,0,0,0,28,190,1,0,0,0,30,196,1,0,0,0,32,202,1,0,0,0,34,217,1,0,0,0,36,
+  	221,1,0,0,0,38,227,1,0,0,0,40,230,1,0,0,0,42,234,1,0,0,0,44,244,1,0,0,
+  	0,46,255,1,0,0,0,48,259,1,0,0,0,50,261,1,0,0,0,52,264,1,0,0,0,54,268,
+  	1,0,0,0,56,278,1,0,0,0,58,284,1,0,0,0,60,62,5,30,0,0,61,60,1,0,0,0,61,
+  	62,1,0,0,0,62,63,1,0,0,0,63,65,7,0,0,0,64,66,3,58,29,0,65,64,1,0,0,0,
+  	65,66,1,0,0,0,66,67,1,0,0,0,67,68,5,1,0,0,68,69,3,2,1,0,69,70,5,2,0,0,
+  	70,71,5,0,0,1,71,1,1,0,0,0,72,74,3,4,2,0,73,75,5,3,0,0,74,73,1,0,0,0,
+  	74,75,1,0,0,0,75,77,1,0,0,0,76,72,1,0,0,0,77,80,1,0,0,0,78,76,1,0,0,0,
+  	78,79,1,0,0,0,79,3,1,0,0,0,80,78,1,0,0,0,81,90,3,50,25,0,82,90,3,44,22,
+  	0,83,90,3,6,3,0,84,85,3,58,29,0,85,86,5,4,0,0,86,87,3,58,29,0,87,90,1,
+  	0,0,0,88,90,3,56,28,0,89,81,1,0,0,0,89,82,1,0,0,0,89,83,1,0,0,0,89,84,
+  	1,0,0,0,89,88,1,0,0,0,90,5,1,0,0,0,91,92,7,1,0,0,92,93,3,8,4,0,93,7,1,
+  	0,0,0,94,95,5,5,0,0,95,96,3,40,20,0,96,97,5,6,0,0,97,99,1,0,0,0,98,94,
+  	1,0,0,0,99,100,1,0,0,0,100,98,1,0,0,0,100,101,1,0,0,0,101,9,1,0,0,0,102,
+  	106,5,5,0,0,103,105,3,14,7,0,104,103,1,0,0,0,105,108,1,0,0,0,106,104,
+  	1,0,0,0,106,107,1,0,0,0,107,109,1,0,0,0,108,106,1,0,0,0,109,113,3,36,
+  	18,0,110,112,3,14,7,0,111,110,1,0,0,0,112,115,1,0,0,0,113,111,1,0,0,0,
+  	113,114,1,0,0,0,114,116,1,0,0,0,115,113,1,0,0,0,116,117,5,6,0,0,117,119,
+  	1,0,0,0,118,102,1,0,0,0,119,120,1,0,0,0,120,118,1,0,0,0,120,121,1,0,0,
+  	0,121,11,1,0,0,0,122,124,5,5,0,0,123,125,3,14,7,0,124,123,1,0,0,0,125,
+  	126,1,0,0,0,126,124,1,0,0,0,126,127,1,0,0,0,127,128,1,0,0,0,128,129,5,
+  	6,0,0,129,131,1,0,0,0,130,122,1,0,0,0,131,132,1,0,0,0,132,130,1,0,0,0,
+  	132,133,1,0,0,0,133,13,1,0,0,0,134,145,3,28,14,0,135,145,3,16,8,0,136,
+  	145,3,26,13,0,137,145,3,30,15,0,138,145,3,18,9,0,139,145,3,20,10,0,140,
+  	145,3,24,12,0,141,145,3,22,11,0,142,145,3,32,16,0,143,145,3,42,21,0,144,
+  	134,1,0,0,0,144,135,1,0,0,0,144,136,1,0,0,0,144,137,1,0,0,0,144,138,1,
+  	0,0,0,144,139,1,0,0,0,144,140,1,0,0,0,144,141,1,0,0,0,144,142,1,0,0,0,
+  	144,143,1,0,0,0,145,15,1,0,0,0,146,147,5,12,0,0,147,148,5,4,0,0,148,150,
+  	5,36,0,0,149,151,7,2,0,0,150,149,1,0,0,0,150,151,1,0,0,0,151,17,1,0,0,
+  	0,152,153,5,13,0,0,153,154,5,4,0,0,154,156,5,36,0,0,155,157,7,2,0,0,156,
+  	155,1,0,0,0,156,157,1,0,0,0,157,19,1,0,0,0,158,159,5,15,0,0,159,160,5,
+  	4,0,0,160,162,5,36,0,0,161,163,7,2,0,0,162,161,1,0,0,0,162,163,1,0,0,
+  	0,163,21,1,0,0,0,164,165,5,14,0,0,165,166,5,4,0,0,166,168,5,36,0,0,167,
+  	169,7,2,0,0,168,167,1,0,0,0,168,169,1,0,0,0,169,23,1,0,0,0,170,171,5,
+  	16,0,0,171,172,5,4,0,0,172,174,5,36,0,0,173,175,7,2,0,0,174,173,1,0,0,
+  	0,174,175,1,0,0,0,175,25,1,0,0,0,176,177,5,17,0,0,177,178,5,4,0,0,178,
+  	180,5,36,0,0,179,181,7,2,0,0,180,179,1,0,0,0,180,181,1,0,0,0,181,189,
+  	1,0,0,0,182,183,5,19,0,0,183,184,5,4,0,0,184,186,5,36,0,0,185,187,7,2,
+  	0,0,186,185,1,0,0,0,186,187,1,0,0,0,187,189,1,0,0,0,188,176,1,0,0,0,188,
+  	182,1,0,0,0,189,27,1,0,0,0,190,191,5,18,0,0,191,192,5,4,0,0,192,194,5,
+  	36,0,0,193,195,7,2,0,0,194,193,1,0,0,0,194,195,1,0,0,0,195,29,1,0,0,0,
+  	196,197,5,20,0,0,197,198,5,4,0,0,198,200,5,36,0,0,199,201,7,2,0,0,200,
+  	199,1,0,0,0,200,201,1,0,0,0,201,31,1,0,0,0,202,203,3,58,29,0,203,204,
+  	5,4,0,0,204,205,5,1,0,0,205,210,3,34,17,0,206,207,5,7,0,0,207,209,3,34,
+  	17,0,208,206,1,0,0,0,209,212,1,0,0,0,210,208,1,0,0,0,210,211,1,0,0,0,
+  	211,213,1,0,0,0,212,210,1,0,0,0,213,215,5,2,0,0,214,216,7,2,0,0,215,214,
+  	1,0,0,0,215,216,1,0,0,0,216,33,1,0,0,0,217,218,3,58,29,0,218,219,5,8,
+  	0,0,219,220,5,36,0,0,220,35,1,0,0,0,221,222,5,9,0,0,222,223,5,4,0,0,223,
+  	225,3,38,19,0,224,226,7,2,0,0,225,224,1,0,0,0,225,226,1,0,0,0,226,37,
+  	1,0,0,0,227,228,7,3,0,0,228,39,1,0,0,0,229,231,3,42,21,0,230,229,1,0,
+  	0,0,231,232,1,0,0,0,232,230,1,0,0,0,232,233,1,0,0,0,233,41,1,0,0,0,234,
+  	237,3,58,29,0,235,236,5,4,0,0,236,238,3,58,29,0,237,235,1,0,0,0,237,238,
+  	1,0,0,0,238,240,1,0,0,0,239,241,7,2,0,0,240,239,1,0,0,0,240,241,1,0,0,
+  	0,241,43,1,0,0,0,242,245,3,52,26,0,243,245,3,56,28,0,244,242,1,0,0,0,
+  	244,243,1,0,0,0,245,246,1,0,0,0,246,248,3,46,23,0,247,249,3,12,6,0,248,
+  	247,1,0,0,0,248,249,1,0,0,0,249,45,1,0,0,0,250,253,3,48,24,0,251,254,
+  	3,52,26,0,252,254,3,56,28,0,253,251,1,0,0,0,253,252,1,0,0,0,254,256,1,
+  	0,0,0,255,250,1,0,0,0,256,257,1,0,0,0,257,255,1,0,0,0,257,258,1,0,0,0,
+  	258,47,1,0,0,0,259,260,7,4,0,0,260,49,1,0,0,0,261,262,3,52,26,0,262,263,
+  	3,10,5,0,263,51,1,0,0,0,264,266,3,58,29,0,265,267,3,54,27,0,266,265,1,
+  	0,0,0,266,267,1,0,0,0,267,53,1,0,0,0,268,269,5,8,0,0,269,272,3,58,29,
+  	0,270,271,5,8,0,0,271,273,3,58,29,0,272,270,1,0,0,0,272,273,1,0,0,0,273,
+  	55,1,0,0,0,274,276,5,35,0,0,275,277,3,58,29,0,276,275,1,0,0,0,276,277,
+  	1,0,0,0,277,279,1,0,0,0,278,274,1,0,0,0,278,279,1,0,0,0,279,280,1,0,0,
+  	0,280,281,5,1,0,0,281,282,3,2,1,0,282,283,5,2,0,0,283,57,1,0,0,0,284,
+  	285,7,5,0,0,285,59,1,0,0,0,36,61,65,74,78,89,100,106,113,120,126,132,
+  	144,150,156,162,168,174,180,186,188,194,200,210,215,225,232,237,240,244,
+  	248,253,257,266,272,276,278
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -274,15 +286,15 @@ DOTParser::GraphContext* DOTParser::graph() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(55);
+    setState(61);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == DOTParser::STRICT) {
-      setState(54);
+      setState(60);
       match(DOTParser::STRICT);
     }
-    setState(57);
+    setState(63);
     _la = _input->LA(1);
     if (!(_la == DOTParser::GRAPH
 
@@ -293,22 +305,22 @@ DOTParser::GraphContext* DOTParser::graph() {
       _errHandler->reportMatch(this);
       consume();
     }
-    setState(59);
+    setState(65);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 64425033728) != 0)) {
-      setState(58);
+      ((1ULL << _la) & 1030794248192) != 0)) {
+      setState(64);
       id_();
     }
-    setState(61);
+    setState(67);
     match(DOTParser::T__0);
-    setState(62);
+    setState(68);
     stmt_list();
-    setState(63);
+    setState(69);
     match(DOTParser::T__1);
-    setState(64);
+    setState(70);
     match(DOTParser::EOF);
    
   }
@@ -374,22 +386,22 @@ DOTParser::Stmt_listContext* DOTParser::stmt_list() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(72);
+    setState(78);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 68317347842) != 0)) {
-      setState(66);
+      ((1ULL << _la) & 1093071273986) != 0)) {
+      setState(72);
       stmt();
-      setState(68);
+      setState(74);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if (_la == DOTParser::T__2) {
-        setState(67);
+        setState(73);
         match(DOTParser::T__2);
       }
-      setState(74);
+      setState(80);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -471,44 +483,44 @@ DOTParser::StmtContext* DOTParser::stmt() {
     exitRule();
   });
   try {
-    setState(83);
+    setState(89);
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 4, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(75);
+      setState(81);
       node_stmt();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(76);
+      setState(82);
       edge_stmt();
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(77);
+      setState(83);
       attr_stmt();
       break;
     }
 
     case 4: {
       enterOuterAlt(_localctx, 4);
-      setState(78);
+      setState(84);
       id_();
-      setState(79);
+      setState(85);
       match(DOTParser::T__3);
-      setState(80);
+      setState(86);
       id_();
       break;
     }
 
     case 5: {
       enterOuterAlt(_localctx, 5);
-      setState(82);
+      setState(88);
       subgraph();
       break;
     }
@@ -588,17 +600,17 @@ DOTParser::Attr_stmtContext* DOTParser::attr_stmt() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(85);
+    setState(91);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 1744830464) != 0))) {
+      ((1ULL << _la) & 27917287424) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {
       _errHandler->reportMatch(this);
       consume();
     }
-    setState(86);
+    setState(92);
     attr_list();
    
   }
@@ -664,17 +676,17 @@ DOTParser::Attr_listContext* DOTParser::attr_list() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(92); 
+    setState(98); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(88);
+      setState(94);
       match(DOTParser::T__4);
-      setState(89);
+      setState(95);
       a_list();
-      setState(90);
+      setState(96);
       match(DOTParser::T__5);
-      setState(94); 
+      setState(100); 
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while (_la == DOTParser::T__4);
@@ -750,39 +762,39 @@ DOTParser::Node_attr_listContext* DOTParser::node_attr_list() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(112); 
+    setState(118); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(96);
+      setState(102);
       match(DOTParser::T__4);
-      setState(100);
+      setState(106);
       _errHandler->sync(this);
       _la = _input->LA(1);
       while ((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & 64433942528) != 0)) {
-        setState(97);
+        ((1ULL << _la) & 1030796341248) != 0)) {
+        setState(103);
         generic_attr();
-        setState(102);
+        setState(108);
         _errHandler->sync(this);
         _la = _input->LA(1);
       }
-      setState(103);
+      setState(109);
       type_attr();
-      setState(107);
+      setState(113);
       _errHandler->sync(this);
       _la = _input->LA(1);
       while ((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & 64433942528) != 0)) {
-        setState(104);
+        ((1ULL << _la) & 1030796341248) != 0)) {
+        setState(110);
         generic_attr();
-        setState(109);
+        setState(115);
         _errHandler->sync(this);
         _la = _input->LA(1);
       }
-      setState(110);
+      setState(116);
       match(DOTParser::T__5);
-      setState(114); 
+      setState(120); 
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while (_la == DOTParser::T__4);
@@ -850,26 +862,26 @@ DOTParser::Edge_attr_listContext* DOTParser::edge_attr_list() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(124); 
+    setState(130); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(116);
+      setState(122);
       match(DOTParser::T__4);
-      setState(118); 
+      setState(124); 
       _errHandler->sync(this);
       _la = _input->LA(1);
       do {
-        setState(117);
+        setState(123);
         generic_attr();
-        setState(120); 
+        setState(126); 
         _errHandler->sync(this);
         _la = _input->LA(1);
       } while ((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & 64433942528) != 0));
-      setState(122);
+        ((1ULL << _la) & 1030796341248) != 0));
+      setState(128);
       match(DOTParser::T__5);
-      setState(126); 
+      setState(132); 
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while (_la == DOTParser::T__4);
@@ -890,8 +902,8 @@ DOTParser::Generic_attrContext::Generic_attrContext(ParserRuleContext *parent, s
   : ParserRuleContext(parent, invokingState) {
 }
 
-DOTParser::Attr_Context* DOTParser::Generic_attrContext::attr_() {
-  return getRuleContext<DOTParser::Attr_Context>(0);
+DOTParser::Priority_attrContext* DOTParser::Generic_attrContext::priority_attr() {
+  return getRuleContext<DOTParser::Priority_attrContext>(0);
 }
 
 DOTParser::Cv_attrContext* DOTParser::Generic_attrContext::cv_attr() {
@@ -900,10 +912,6 @@ DOTParser::Cv_attrContext* DOTParser::Generic_attrContext::cv_attr() {
 
 DOTParser::Depth_attrContext* DOTParser::Generic_attrContext::depth_attr() {
   return getRuleContext<DOTParser::Depth_attrContext>(0);
-}
-
-DOTParser::Priority_attrContext* DOTParser::Generic_attrContext::priority_attr() {
-  return getRuleContext<DOTParser::Priority_attrContext>(0);
 }
 
 DOTParser::Rate_attrContext* DOTParser::Generic_attrContext::rate_attr() {
@@ -920,6 +928,18 @@ DOTParser::Coeff_service_time_attrContext* DOTParser::Generic_attrContext::coeff
 
 DOTParser::Zero_load_latency_attrContext* DOTParser::Generic_attrContext::zero_load_latency_attr() {
   return getRuleContext<DOTParser::Zero_load_latency_attrContext>(0);
+}
+
+DOTParser::Split_attrContext* DOTParser::Generic_attrContext::split_attr() {
+  return getRuleContext<DOTParser::Split_attrContext>(0);
+}
+
+DOTParser::Map_attrContext* DOTParser::Generic_attrContext::map_attr() {
+  return getRuleContext<DOTParser::Map_attrContext>(0);
+}
+
+DOTParser::Attr_Context* DOTParser::Generic_attrContext::attr_() {
+  return getRuleContext<DOTParser::Attr_Context>(0);
 }
 
 
@@ -959,72 +979,81 @@ DOTParser::Generic_attrContext* DOTParser::generic_attr() {
     exitRule();
   });
   try {
-    setState(136);
+    setState(144);
     _errHandler->sync(this);
-    switch (_input->LA(1)) {
-      case DOTParser::SOURCE:
-      case DOTParser::NUMBER:
-      case DOTParser::STRING:
-      case DOTParser::ID:
-      case DOTParser::HTML_STRING: {
-        enterOuterAlt(_localctx, 1);
-        setState(128);
-        attr_();
-        break;
-      }
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 11, _ctx)) {
+    case 1: {
+      enterOuterAlt(_localctx, 1);
+      setState(134);
+      priority_attr();
+      break;
+    }
 
-      case DOTParser::CV: {
-        enterOuterAlt(_localctx, 2);
-        setState(129);
-        cv_attr();
-        break;
-      }
+    case 2: {
+      enterOuterAlt(_localctx, 2);
+      setState(135);
+      cv_attr();
+      break;
+    }
 
-      case DOTParser::DEPTH:
-      case DOTParser::SIZE: {
-        enterOuterAlt(_localctx, 3);
-        setState(130);
-        depth_attr();
-        break;
-      }
+    case 3: {
+      enterOuterAlt(_localctx, 3);
+      setState(136);
+      depth_attr();
+      break;
+    }
 
-      case DOTParser::PRIORITY: {
-        enterOuterAlt(_localctx, 4);
-        setState(131);
-        priority_attr();
-        break;
-      }
+    case 4: {
+      enterOuterAlt(_localctx, 4);
+      setState(137);
+      rate_attr();
+      break;
+    }
 
-      case DOTParser::RATE: {
-        enterOuterAlt(_localctx, 5);
-        setState(132);
-        rate_attr();
-        break;
-      }
+    case 5: {
+      enterOuterAlt(_localctx, 5);
+      setState(138);
+      service_time_attr();
+      break;
+    }
 
-      case DOTParser::T_SERV: {
-        enterOuterAlt(_localctx, 6);
-        setState(133);
-        service_time_attr();
-        break;
-      }
+    case 6: {
+      enterOuterAlt(_localctx, 6);
+      setState(139);
+      coeff_service_time_attr();
+      break;
+    }
 
-      case DOTParser::COEFF_VAR: {
-        enterOuterAlt(_localctx, 7);
-        setState(134);
-        coeff_service_time_attr();
-        break;
-      }
+    case 7: {
+      enterOuterAlt(_localctx, 7);
+      setState(140);
+      zero_load_latency_attr();
+      break;
+    }
 
-      case DOTParser::ZERO_LOAD: {
-        enterOuterAlt(_localctx, 8);
-        setState(135);
-        zero_load_latency_attr();
-        break;
-      }
+    case 8: {
+      enterOuterAlt(_localctx, 8);
+      setState(141);
+      split_attr();
+      break;
+    }
+
+    case 9: {
+      enterOuterAlt(_localctx, 9);
+      setState(142);
+      map_attr();
+      break;
+    }
+
+    case 10: {
+      enterOuterAlt(_localctx, 10);
+      setState(143);
+      attr_();
+      break;
+    }
 
     default:
-      throw NoViableAltException(this);
+      break;
     }
    
   }
@@ -1090,20 +1119,20 @@ DOTParser::Cv_attrContext* DOTParser::cv_attr() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(138);
+    setState(146);
     match(DOTParser::CV);
-    setState(139);
+    setState(147);
     match(DOTParser::T__3);
-    setState(140);
+    setState(148);
     match(DOTParser::NUMBER);
-    setState(142);
+    setState(150);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == DOTParser::T__2
 
     || _la == DOTParser::T__6) {
-      setState(141);
+      setState(149);
       _la = _input->LA(1);
       if (!(_la == DOTParser::T__2
 
@@ -1179,20 +1208,20 @@ DOTParser::Service_time_attrContext* DOTParser::service_time_attr() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(144);
+    setState(152);
     match(DOTParser::T_SERV);
-    setState(145);
+    setState(153);
     match(DOTParser::T__3);
-    setState(146);
+    setState(154);
     match(DOTParser::NUMBER);
-    setState(148);
+    setState(156);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == DOTParser::T__2
 
     || _la == DOTParser::T__6) {
-      setState(147);
+      setState(155);
       _la = _input->LA(1);
       if (!(_la == DOTParser::T__2
 
@@ -1268,20 +1297,109 @@ DOTParser::Coeff_service_time_attrContext* DOTParser::coeff_service_time_attr() 
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(150);
+    setState(158);
     match(DOTParser::COEFF_VAR);
-    setState(151);
+    setState(159);
     match(DOTParser::T__3);
-    setState(152);
+    setState(160);
     match(DOTParser::NUMBER);
-    setState(154);
+    setState(162);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == DOTParser::T__2
 
     || _la == DOTParser::T__6) {
-      setState(153);
+      setState(161);
+      _la = _input->LA(1);
+      if (!(_la == DOTParser::T__2
+
+      || _la == DOTParser::T__6)) {
+      _errHandler->recoverInline(this);
+      }
+      else {
+        _errHandler->reportMatch(this);
+        consume();
+      }
+    }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- Split_attrContext ------------------------------------------------------------------
+
+DOTParser::Split_attrContext::Split_attrContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+tree::TerminalNode* DOTParser::Split_attrContext::S_ATTR() {
+  return getToken(DOTParser::S_ATTR, 0);
+}
+
+tree::TerminalNode* DOTParser::Split_attrContext::NUMBER() {
+  return getToken(DOTParser::NUMBER, 0);
+}
+
+
+size_t DOTParser::Split_attrContext::getRuleIndex() const {
+  return DOTParser::RuleSplit_attr;
+}
+
+void DOTParser::Split_attrContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<DOTListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterSplit_attr(this);
+}
+
+void DOTParser::Split_attrContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<DOTListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitSplit_attr(this);
+}
+
+
+std::any DOTParser::Split_attrContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<DOTVisitor*>(visitor))
+    return parserVisitor->visitSplit_attr(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+DOTParser::Split_attrContext* DOTParser::split_attr() {
+  Split_attrContext *_localctx = _tracker.createInstance<Split_attrContext>(_ctx, getState());
+  enterRule(_localctx, 22, DOTParser::RuleSplit_attr);
+  size_t _la = 0;
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(164);
+    match(DOTParser::S_ATTR);
+    setState(165);
+    match(DOTParser::T__3);
+    setState(166);
+    match(DOTParser::NUMBER);
+    setState(168);
+    _errHandler->sync(this);
+
+    _la = _input->LA(1);
+    if (_la == DOTParser::T__2
+
+    || _la == DOTParser::T__6) {
+      setState(167);
       _la = _input->LA(1);
       if (!(_la == DOTParser::T__2
 
@@ -1345,7 +1463,7 @@ std::any DOTParser::Zero_load_latency_attrContext::accept(tree::ParseTreeVisitor
 
 DOTParser::Zero_load_latency_attrContext* DOTParser::zero_load_latency_attr() {
   Zero_load_latency_attrContext *_localctx = _tracker.createInstance<Zero_load_latency_attrContext>(_ctx, getState());
-  enterRule(_localctx, 22, DOTParser::RuleZero_load_latency_attr);
+  enterRule(_localctx, 24, DOTParser::RuleZero_load_latency_attr);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1357,20 +1475,20 @@ DOTParser::Zero_load_latency_attrContext* DOTParser::zero_load_latency_attr() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(156);
+    setState(170);
     match(DOTParser::ZERO_LOAD);
-    setState(157);
+    setState(171);
     match(DOTParser::T__3);
-    setState(158);
+    setState(172);
     match(DOTParser::NUMBER);
-    setState(160);
+    setState(174);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == DOTParser::T__2
 
     || _la == DOTParser::T__6) {
-      setState(159);
+      setState(173);
       _la = _input->LA(1);
       if (!(_la == DOTParser::T__2
 
@@ -1438,7 +1556,7 @@ std::any DOTParser::Depth_attrContext::accept(tree::ParseTreeVisitor *visitor) {
 
 DOTParser::Depth_attrContext* DOTParser::depth_attr() {
   Depth_attrContext *_localctx = _tracker.createInstance<Depth_attrContext>(_ctx, getState());
-  enterRule(_localctx, 24, DOTParser::RuleDepth_attr);
+  enterRule(_localctx, 26, DOTParser::RuleDepth_attr);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1449,25 +1567,25 @@ DOTParser::Depth_attrContext* DOTParser::depth_attr() {
     exitRule();
   });
   try {
-    setState(174);
+    setState(188);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case DOTParser::DEPTH: {
         enterOuterAlt(_localctx, 1);
-        setState(162);
+        setState(176);
         match(DOTParser::DEPTH);
-        setState(163);
+        setState(177);
         match(DOTParser::T__3);
-        setState(164);
+        setState(178);
         match(DOTParser::NUMBER);
-        setState(166);
+        setState(180);
         _errHandler->sync(this);
 
         _la = _input->LA(1);
         if (_la == DOTParser::T__2
 
         || _la == DOTParser::T__6) {
-          setState(165);
+          setState(179);
           _la = _input->LA(1);
           if (!(_la == DOTParser::T__2
 
@@ -1484,20 +1602,20 @@ DOTParser::Depth_attrContext* DOTParser::depth_attr() {
 
       case DOTParser::SIZE: {
         enterOuterAlt(_localctx, 2);
-        setState(168);
+        setState(182);
         match(DOTParser::SIZE);
-        setState(169);
+        setState(183);
         match(DOTParser::T__3);
-        setState(170);
+        setState(184);
         match(DOTParser::NUMBER);
-        setState(172);
+        setState(186);
         _errHandler->sync(this);
 
         _la = _input->LA(1);
         if (_la == DOTParser::T__2
 
         || _la == DOTParser::T__6) {
-          setState(171);
+          setState(185);
           _la = _input->LA(1);
           if (!(_la == DOTParser::T__2
 
@@ -1532,8 +1650,8 @@ DOTParser::Priority_attrContext::Priority_attrContext(ParserRuleContext *parent,
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* DOTParser::Priority_attrContext::PRIORITY() {
-  return getToken(DOTParser::PRIORITY, 0);
+tree::TerminalNode* DOTParser::Priority_attrContext::PRIORITY_NO() {
+  return getToken(DOTParser::PRIORITY_NO, 0);
 }
 
 tree::TerminalNode* DOTParser::Priority_attrContext::NUMBER() {
@@ -1567,7 +1685,7 @@ std::any DOTParser::Priority_attrContext::accept(tree::ParseTreeVisitor *visitor
 
 DOTParser::Priority_attrContext* DOTParser::priority_attr() {
   Priority_attrContext *_localctx = _tracker.createInstance<Priority_attrContext>(_ctx, getState());
-  enterRule(_localctx, 26, DOTParser::RulePriority_attr);
+  enterRule(_localctx, 28, DOTParser::RulePriority_attr);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1579,20 +1697,20 @@ DOTParser::Priority_attrContext* DOTParser::priority_attr() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(176);
-    match(DOTParser::PRIORITY);
-    setState(177);
+    setState(190);
+    match(DOTParser::PRIORITY_NO);
+    setState(191);
     match(DOTParser::T__3);
-    setState(178);
+    setState(192);
     match(DOTParser::NUMBER);
-    setState(180);
+    setState(194);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == DOTParser::T__2
 
     || _la == DOTParser::T__6) {
-      setState(179);
+      setState(193);
       _la = _input->LA(1);
       if (!(_la == DOTParser::T__2
 
@@ -1656,7 +1774,7 @@ std::any DOTParser::Rate_attrContext::accept(tree::ParseTreeVisitor *visitor) {
 
 DOTParser::Rate_attrContext* DOTParser::rate_attr() {
   Rate_attrContext *_localctx = _tracker.createInstance<Rate_attrContext>(_ctx, getState());
-  enterRule(_localctx, 28, DOTParser::RuleRate_attr);
+  enterRule(_localctx, 30, DOTParser::RuleRate_attr);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1668,20 +1786,20 @@ DOTParser::Rate_attrContext* DOTParser::rate_attr() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(182);
+    setState(196);
     match(DOTParser::RATE);
-    setState(183);
+    setState(197);
     match(DOTParser::T__3);
-    setState(184);
+    setState(198);
     match(DOTParser::NUMBER);
-    setState(186);
+    setState(200);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == DOTParser::T__2
 
     || _la == DOTParser::T__6) {
-      setState(185);
+      setState(199);
       _la = _input->LA(1);
       if (!(_la == DOTParser::T__2
 
@@ -1693,6 +1811,184 @@ DOTParser::Rate_attrContext* DOTParser::rate_attr() {
         consume();
       }
     }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- Map_attrContext ------------------------------------------------------------------
+
+DOTParser::Map_attrContext::Map_attrContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+DOTParser::Id_Context* DOTParser::Map_attrContext::id_() {
+  return getRuleContext<DOTParser::Id_Context>(0);
+}
+
+std::vector<DOTParser::MapPairContext *> DOTParser::Map_attrContext::mapPair() {
+  return getRuleContexts<DOTParser::MapPairContext>();
+}
+
+DOTParser::MapPairContext* DOTParser::Map_attrContext::mapPair(size_t i) {
+  return getRuleContext<DOTParser::MapPairContext>(i);
+}
+
+
+size_t DOTParser::Map_attrContext::getRuleIndex() const {
+  return DOTParser::RuleMap_attr;
+}
+
+void DOTParser::Map_attrContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<DOTListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterMap_attr(this);
+}
+
+void DOTParser::Map_attrContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<DOTListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitMap_attr(this);
+}
+
+
+std::any DOTParser::Map_attrContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<DOTVisitor*>(visitor))
+    return parserVisitor->visitMap_attr(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+DOTParser::Map_attrContext* DOTParser::map_attr() {
+  Map_attrContext *_localctx = _tracker.createInstance<Map_attrContext>(_ctx, getState());
+  enterRule(_localctx, 32, DOTParser::RuleMap_attr);
+  size_t _la = 0;
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(202);
+    id_();
+    setState(203);
+    match(DOTParser::T__3);
+    setState(204);
+    match(DOTParser::T__0);
+    setState(205);
+    mapPair();
+    setState(210);
+    _errHandler->sync(this);
+    _la = _input->LA(1);
+    while (_la == DOTParser::T__6) {
+      setState(206);
+      match(DOTParser::T__6);
+      setState(207);
+      mapPair();
+      setState(212);
+      _errHandler->sync(this);
+      _la = _input->LA(1);
+    }
+    setState(213);
+    match(DOTParser::T__1);
+    setState(215);
+    _errHandler->sync(this);
+
+    _la = _input->LA(1);
+    if (_la == DOTParser::T__2
+
+    || _la == DOTParser::T__6) {
+      setState(214);
+      _la = _input->LA(1);
+      if (!(_la == DOTParser::T__2
+
+      || _la == DOTParser::T__6)) {
+      _errHandler->recoverInline(this);
+      }
+      else {
+        _errHandler->reportMatch(this);
+        consume();
+      }
+    }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- MapPairContext ------------------------------------------------------------------
+
+DOTParser::MapPairContext::MapPairContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+DOTParser::Id_Context* DOTParser::MapPairContext::id_() {
+  return getRuleContext<DOTParser::Id_Context>(0);
+}
+
+tree::TerminalNode* DOTParser::MapPairContext::NUMBER() {
+  return getToken(DOTParser::NUMBER, 0);
+}
+
+
+size_t DOTParser::MapPairContext::getRuleIndex() const {
+  return DOTParser::RuleMapPair;
+}
+
+void DOTParser::MapPairContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<DOTListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterMapPair(this);
+}
+
+void DOTParser::MapPairContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<DOTListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitMapPair(this);
+}
+
+
+std::any DOTParser::MapPairContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<DOTVisitor*>(visitor))
+    return parserVisitor->visitMapPair(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+DOTParser::MapPairContext* DOTParser::mapPair() {
+  MapPairContext *_localctx = _tracker.createInstance<MapPairContext>(_ctx, getState());
+  enterRule(_localctx, 34, DOTParser::RuleMapPair);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(217);
+    id_();
+    setState(218);
+    match(DOTParser::T__7);
+    setState(219);
+    match(DOTParser::NUMBER);
    
   }
   catch (RecognitionException &e) {
@@ -1741,7 +2037,7 @@ std::any DOTParser::Type_attrContext::accept(tree::ParseTreeVisitor *visitor) {
 
 DOTParser::Type_attrContext* DOTParser::type_attr() {
   Type_attrContext *_localctx = _tracker.createInstance<Type_attrContext>(_ctx, getState());
-  enterRule(_localctx, 30, DOTParser::RuleType_attr);
+  enterRule(_localctx, 36, DOTParser::RuleType_attr);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1753,20 +2049,20 @@ DOTParser::Type_attrContext* DOTParser::type_attr() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(188);
-    match(DOTParser::T__7);
-    setState(189);
+    setState(221);
+    match(DOTParser::T__8);
+    setState(222);
     match(DOTParser::T__3);
-    setState(190);
+    setState(223);
     type_();
-    setState(192);
+    setState(225);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == DOTParser::T__2
 
     || _la == DOTParser::T__6) {
-      setState(191);
+      setState(224);
       _la = _input->LA(1);
       if (!(_la == DOTParser::T__2
 
@@ -1815,8 +2111,16 @@ tree::TerminalNode* DOTParser::Type_Context::PRIORITY() {
   return getToken(DOTParser::PRIORITY, 0);
 }
 
+tree::TerminalNode* DOTParser::Type_Context::HYBRID() {
+  return getToken(DOTParser::HYBRID, 0);
+}
+
 tree::TerminalNode* DOTParser::Type_Context::SERVER() {
   return getToken(DOTParser::SERVER, 0);
+}
+
+tree::TerminalNode* DOTParser::Type_Context::SPLIT() {
+  return getToken(DOTParser::SPLIT, 0);
 }
 
 tree::TerminalNode* DOTParser::Type_Context::SINK() {
@@ -1850,7 +2154,7 @@ std::any DOTParser::Type_Context::accept(tree::ParseTreeVisitor *visitor) {
 
 DOTParser::Type_Context* DOTParser::type_() {
   Type_Context *_localctx = _tracker.createInstance<Type_Context>(_ctx, getState());
-  enterRule(_localctx, 32, DOTParser::RuleType_);
+  enterRule(_localctx, 38, DOTParser::RuleType_);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1862,10 +2166,10 @@ DOTParser::Type_Context* DOTParser::type_() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(194);
+    setState(227);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 66584576) != 0))) {
+      ((1ULL << _la) & 1071644672) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {
@@ -1924,7 +2228,7 @@ std::any DOTParser::A_listContext::accept(tree::ParseTreeVisitor *visitor) {
 
 DOTParser::A_listContext* DOTParser::a_list() {
   A_listContext *_localctx = _tracker.createInstance<A_listContext>(_ctx, getState());
-  enterRule(_localctx, 34, DOTParser::RuleA_list);
+  enterRule(_localctx, 40, DOTParser::RuleA_list);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1936,17 +2240,17 @@ DOTParser::A_listContext* DOTParser::a_list() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(197); 
+    setState(230); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(196);
+      setState(229);
       attr_();
-      setState(199); 
+      setState(232); 
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 64425033728) != 0));
+      ((1ULL << _la) & 1030794248192) != 0));
    
   }
   catch (RecognitionException &e) {
@@ -1999,7 +2303,7 @@ std::any DOTParser::Attr_Context::accept(tree::ParseTreeVisitor *visitor) {
 
 DOTParser::Attr_Context* DOTParser::attr_() {
   Attr_Context *_localctx = _tracker.createInstance<Attr_Context>(_ctx, getState());
-  enterRule(_localctx, 36, DOTParser::RuleAttr_);
+  enterRule(_localctx, 42, DOTParser::RuleAttr_);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2011,26 +2315,26 @@ DOTParser::Attr_Context* DOTParser::attr_() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(201);
+    setState(234);
     id_();
-    setState(204);
+    setState(237);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == DOTParser::T__3) {
-      setState(202);
+      setState(235);
       match(DOTParser::T__3);
-      setState(203);
+      setState(236);
       id_();
     }
-    setState(207);
+    setState(240);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == DOTParser::T__2
 
     || _la == DOTParser::T__6) {
-      setState(206);
+      setState(239);
       _la = _input->LA(1);
       if (!(_la == DOTParser::T__2
 
@@ -2102,7 +2406,7 @@ std::any DOTParser::Edge_stmtContext::accept(tree::ParseTreeVisitor *visitor) {
 
 DOTParser::Edge_stmtContext* DOTParser::edge_stmt() {
   Edge_stmtContext *_localctx = _tracker.createInstance<Edge_stmtContext>(_ctx, getState());
-  enterRule(_localctx, 38, DOTParser::RuleEdge_stmt);
+  enterRule(_localctx, 44, DOTParser::RuleEdge_stmt);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2114,7 +2418,7 @@ DOTParser::Edge_stmtContext* DOTParser::edge_stmt() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(211);
+    setState(244);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case DOTParser::SOURCE:
@@ -2122,14 +2426,14 @@ DOTParser::Edge_stmtContext* DOTParser::edge_stmt() {
       case DOTParser::STRING:
       case DOTParser::ID:
       case DOTParser::HTML_STRING: {
-        setState(209);
+        setState(242);
         node_id();
         break;
       }
 
       case DOTParser::T__0:
       case DOTParser::SUBGRAPH: {
-        setState(210);
+        setState(243);
         subgraph();
         break;
       }
@@ -2137,14 +2441,14 @@ DOTParser::Edge_stmtContext* DOTParser::edge_stmt() {
     default:
       throw NoViableAltException(this);
     }
-    setState(213);
+    setState(246);
     edgeRHS();
-    setState(215);
+    setState(248);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == DOTParser::T__4) {
-      setState(214);
+      setState(247);
       edge_attr_list();
     }
    
@@ -2215,7 +2519,7 @@ std::any DOTParser::EdgeRHSContext::accept(tree::ParseTreeVisitor *visitor) {
 
 DOTParser::EdgeRHSContext* DOTParser::edgeRHS() {
   EdgeRHSContext *_localctx = _tracker.createInstance<EdgeRHSContext>(_ctx, getState());
-  enterRule(_localctx, 40, DOTParser::RuleEdgeRHS);
+  enterRule(_localctx, 46, DOTParser::RuleEdgeRHS);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2227,13 +2531,13 @@ DOTParser::EdgeRHSContext* DOTParser::edgeRHS() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(222); 
+    setState(255); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(217);
+      setState(250);
       edgeop();
-      setState(220);
+      setState(253);
       _errHandler->sync(this);
       switch (_input->LA(1)) {
         case DOTParser::SOURCE:
@@ -2241,14 +2545,14 @@ DOTParser::EdgeRHSContext* DOTParser::edgeRHS() {
         case DOTParser::STRING:
         case DOTParser::ID:
         case DOTParser::HTML_STRING: {
-          setState(218);
+          setState(251);
           node_id();
           break;
         }
 
         case DOTParser::T__0:
         case DOTParser::SUBGRAPH: {
-          setState(219);
+          setState(252);
           subgraph();
           break;
         }
@@ -2256,12 +2560,12 @@ DOTParser::EdgeRHSContext* DOTParser::edgeRHS() {
       default:
         throw NoViableAltException(this);
       }
-      setState(224); 
+      setState(257); 
       _errHandler->sync(this);
       _la = _input->LA(1);
-    } while (_la == DOTParser::T__8
+    } while (_la == DOTParser::T__9
 
-    || _la == DOTParser::T__9);
+    || _la == DOTParser::T__10);
    
   }
   catch (RecognitionException &e) {
@@ -2306,7 +2610,7 @@ std::any DOTParser::EdgeopContext::accept(tree::ParseTreeVisitor *visitor) {
 
 DOTParser::EdgeopContext* DOTParser::edgeop() {
   EdgeopContext *_localctx = _tracker.createInstance<EdgeopContext>(_ctx, getState());
-  enterRule(_localctx, 42, DOTParser::RuleEdgeop);
+  enterRule(_localctx, 48, DOTParser::RuleEdgeop);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2318,11 +2622,11 @@ DOTParser::EdgeopContext* DOTParser::edgeop() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(226);
+    setState(259);
     _la = _input->LA(1);
-    if (!(_la == DOTParser::T__8
+    if (!(_la == DOTParser::T__9
 
-    || _la == DOTParser::T__9)) {
+    || _la == DOTParser::T__10)) {
     _errHandler->recoverInline(this);
     }
     else {
@@ -2381,7 +2685,7 @@ std::any DOTParser::Node_stmtContext::accept(tree::ParseTreeVisitor *visitor) {
 
 DOTParser::Node_stmtContext* DOTParser::node_stmt() {
   Node_stmtContext *_localctx = _tracker.createInstance<Node_stmtContext>(_ctx, getState());
-  enterRule(_localctx, 44, DOTParser::RuleNode_stmt);
+  enterRule(_localctx, 50, DOTParser::RuleNode_stmt);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -2392,9 +2696,9 @@ DOTParser::Node_stmtContext* DOTParser::node_stmt() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(228);
+    setState(261);
     node_id();
-    setState(229);
+    setState(262);
     node_attr_list();
    
   }
@@ -2448,7 +2752,7 @@ std::any DOTParser::Node_idContext::accept(tree::ParseTreeVisitor *visitor) {
 
 DOTParser::Node_idContext* DOTParser::node_id() {
   Node_idContext *_localctx = _tracker.createInstance<Node_idContext>(_ctx, getState());
-  enterRule(_localctx, 46, DOTParser::RuleNode_id);
+  enterRule(_localctx, 52, DOTParser::RuleNode_id);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2460,14 +2764,14 @@ DOTParser::Node_idContext* DOTParser::node_id() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(231);
+    setState(264);
     id_();
-    setState(233);
+    setState(266);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
-    if (_la == DOTParser::T__10) {
-      setState(232);
+    if (_la == DOTParser::T__7) {
+      setState(265);
       port();
     }
    
@@ -2522,7 +2826,7 @@ std::any DOTParser::PortContext::accept(tree::ParseTreeVisitor *visitor) {
 
 DOTParser::PortContext* DOTParser::port() {
   PortContext *_localctx = _tracker.createInstance<PortContext>(_ctx, getState());
-  enterRule(_localctx, 48, DOTParser::RulePort);
+  enterRule(_localctx, 54, DOTParser::RulePort);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2534,18 +2838,18 @@ DOTParser::PortContext* DOTParser::port() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(235);
-    match(DOTParser::T__10);
-    setState(236);
+    setState(268);
+    match(DOTParser::T__7);
+    setState(269);
     id_();
-    setState(239);
+    setState(272);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
-    if (_la == DOTParser::T__10) {
-      setState(237);
-      match(DOTParser::T__10);
-      setState(238);
+    if (_la == DOTParser::T__7) {
+      setState(270);
+      match(DOTParser::T__7);
+      setState(271);
       id_();
     }
    
@@ -2604,7 +2908,7 @@ std::any DOTParser::SubgraphContext::accept(tree::ParseTreeVisitor *visitor) {
 
 DOTParser::SubgraphContext* DOTParser::subgraph() {
   SubgraphContext *_localctx = _tracker.createInstance<SubgraphContext>(_ctx, getState());
-  enterRule(_localctx, 50, DOTParser::RuleSubgraph);
+  enterRule(_localctx, 56, DOTParser::RuleSubgraph);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2616,28 +2920,28 @@ DOTParser::SubgraphContext* DOTParser::subgraph() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(245);
+    setState(278);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == DOTParser::SUBGRAPH) {
-      setState(241);
+      setState(274);
       match(DOTParser::SUBGRAPH);
-      setState(243);
+      setState(276);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if ((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & 64425033728) != 0)) {
-        setState(242);
+        ((1ULL << _la) & 1030794248192) != 0)) {
+        setState(275);
         id_();
       }
     }
-    setState(247);
+    setState(280);
     match(DOTParser::T__0);
-    setState(248);
+    setState(281);
     stmt_list();
-    setState(249);
+    setState(282);
     match(DOTParser::T__1);
    
   }
@@ -2703,7 +3007,7 @@ std::any DOTParser::Id_Context::accept(tree::ParseTreeVisitor *visitor) {
 
 DOTParser::Id_Context* DOTParser::id_() {
   Id_Context *_localctx = _tracker.createInstance<Id_Context>(_ctx, getState());
-  enterRule(_localctx, 52, DOTParser::RuleId_);
+  enterRule(_localctx, 58, DOTParser::RuleId_);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2715,10 +3019,10 @@ DOTParser::Id_Context* DOTParser::id_() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(251);
+    setState(284);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 64425033728) != 0))) {
+      ((1ULL << _la) & 1030794248192) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {

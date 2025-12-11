@@ -13,6 +13,7 @@ bool dot_lang::PriorityArbiter::isInjector() const { return false; }
 bool dot_lang::PriorityArbiter::isArbiter() const { return isActive; }
 bool dot_lang::PriorityArbiter::isMerge() const { return false; }
 bool dot_lang::PriorityArbiter::isSink() const { return false; }
+bool dot_lang::PriorityArbiter::isHybridArbiter() const { return false; }
 bool dot_lang::PriorityArbiter::isPRarbiter() const { return isActive; }
 
 void dot_lang::PriorityArbiter::activeFlag() { isActive = true; }
@@ -30,7 +31,9 @@ void dot_lang::PriorityArbiter::arbiter(Mapping& mapping) {
     }
 
     if (PRarbiter) {
-	    model::priority_model(queues, PRarbiter, mapping);
+	    double service_time = PRarbiter->getServiceTime();
+	    double zero_load = PRarbiter->getZeroLoadLatency();
+	    model::priority_model(queues, service_time, zero_load, mapping);
 	    
     }
 }

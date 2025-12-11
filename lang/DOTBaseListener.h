@@ -49,6 +49,9 @@ public:
   virtual void enterCoeff_service_time_attr(DOTParser::Coeff_service_time_attrContext * /*ctx*/) override { }
   virtual void exitCoeff_service_time_attr(DOTParser::Coeff_service_time_attrContext * /*ctx*/) override { }
 
+  virtual void enterSplit_attr(DOTParser::Split_attrContext * /*ctx*/) override { }
+  virtual void exitSplit_attr(DOTParser::Split_attrContext * /*ctx*/) override { }
+
   virtual void enterZero_load_latency_attr(DOTParser::Zero_load_latency_attrContext * /*ctx*/) override { }
   virtual void exitZero_load_latency_attr(DOTParser::Zero_load_latency_attrContext * /*ctx*/) override { }
 
@@ -60,6 +63,12 @@ public:
 
   virtual void enterRate_attr(DOTParser::Rate_attrContext * /*ctx*/) override { }
   virtual void exitRate_attr(DOTParser::Rate_attrContext * /*ctx*/) override { }
+
+  virtual void enterMap_attr(DOTParser::Map_attrContext * /*ctx*/) override { }
+  virtual void exitMap_attr(DOTParser::Map_attrContext * /*ctx*/) override { }
+
+  virtual void enterMapPair(DOTParser::MapPairContext * /*ctx*/) override { }
+  virtual void exitMapPair(DOTParser::MapPairContext * /*ctx*/) override { }
 
   virtual void enterType_attr(DOTParser::Type_attrContext * /*ctx*/) override { }
   virtual void exitType_attr(DOTParser::Type_attrContext * /*ctx*/) override { }

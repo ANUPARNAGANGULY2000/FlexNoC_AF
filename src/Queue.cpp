@@ -1,8 +1,8 @@
 #include "Queue.h"
 #include <sstream>  // for building graphviz output
 
-dot_lang::Queue::Queue(int buffer_size,double waiting_time,double injection_rate,double coeff_interarrival_time):
-           buffer_size(buffer_size),waiting_time(waiting_time),injection_rate(injection_rate),coeff_interarrival_time(coeff_interarrival_time){}
+dot_lang::Queue::Queue(int buffer_size,double waiting_time,double injection_rate,double coeff_interarrival_time, int priority):
+           buffer_size(buffer_size),waiting_time(waiting_time),injection_rate(injection_rate),coeff_interarrival_time(coeff_interarrival_time),priority(priority){}
 
 bool dot_lang::Queue::isQueue() const { return isActive; }
 bool dot_lang::Queue::isServer() const { return false; }
@@ -13,7 +13,7 @@ bool dot_lang::Queue::isSink() const { return false; }
 bool dot_lang::Queue::isMerge() const { return false; }
 bool dot_lang::Queue::isRRarbiter() const { return false; }
 bool dot_lang::Queue::isPRarbiter() const { return false; }
-
+bool dot_lang::Queue::isHybridArbiter() const { return false; }
 void dot_lang::Queue::activeFlag() { isActive = true; }
 
 int dot_lang::Queue::getBufferSize() const { return buffer_size; }
@@ -21,9 +21,15 @@ double dot_lang::Queue::getWaitingTime() const { return waiting_time; }
 double dot_lang::Queue::getInjectionRate() const { return injection_rate; }
 double dot_lang::Queue::getCoeffInterArrivalTime() const { return coeff_interarrival_time; }
 double dot_lang::Queue::getServiceTime() const { return service_time; }
+int dot_lang::Queue::getPriorityValue() const {return priority;}
 
 void dot_lang::Queue::setInjectionRate(double &new_injection_rate) {
     injection_rate = new_injection_rate;
+}
+
+void dot_lang::Queue::setPriorityValue(int &new_priority){
+
+	priority = new_priority;
 }
 
 void dot_lang::Queue::setCoeffInterArrivalTime(double &new_coeff_interarrival_time) {

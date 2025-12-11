@@ -59,6 +59,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitSplit_attr(DOTParser::Split_attrContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitZero_load_latency_attr(DOTParser::Zero_load_latency_attrContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -72,6 +76,14 @@ public:
   }
 
   virtual std::any visitRate_attr(DOTParser::Rate_attrContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitMap_attr(DOTParser::Map_attrContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitMapPair(DOTParser::MapPairContext *ctx) override {
     return visitChildren(ctx);
   }
 

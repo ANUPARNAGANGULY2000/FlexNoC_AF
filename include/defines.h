@@ -6,7 +6,7 @@
 #include<iostream>
 
 namespace dot_lang {
-enum node_types {SOURCE=0, SINK, QUEUE, SERVER, ARBITER, ROUNDROBIN, PRIORITY, NODE_TYPE_COUNT };
+enum node_types {SOURCE=0, SINK, QUEUE, SERVER, ARBITER, SPLIT, ROUNDROBIN, HYBRID, PRIORITY, NODE_TYPE_COUNT };
 }
 
 const std::string _nodeTypeToString[dot_lang::NODE_TYPE_COUNT] = {
@@ -15,8 +15,10 @@ const std::string _nodeTypeToString[dot_lang::NODE_TYPE_COUNT] = {
     "Queue",
     "Server",
     "Arbiter",
+    "Split",
     "roundrobin",
-    "priority"
+    "priority",
+    "hybrid"
 };
 
 struct NodeSchema {
@@ -29,12 +31,14 @@ extern std::map<std::string, std::string> SymbolTable;
 
 inline const std::map<std::string, NodeSchema> NODE_SCHEMAS = {
 	
-	{"source", {{"rate"}, {"rate", "cv", "label", "shape","type","depth","t_serv","coeff_var","zero_load"}}},
-	{"queue", {{"depth"}, {"depth", "label", "shape","type","rate","cv","t_serv","coeff_var","zero_load"}}},
-	{"server", {{"t_serv", "coeff_var"},{"t_serv", "coeff_var", "label", "shape","type","rate","cv","depth","zero_load"}}},
-	{"arbiter", {{"zero_load"}, {"zero_load", "label", "shape","type","rate","cv","depth","t_serv","coeff_var"}}},
-	{"roundrobin", {{"zero_load"}, {"zero_load", "label", "shape","type","rate","cv","depth","t_serv","coeff_var"}}},
-	{"priority", {{"zero_load"}, {"zero_load", "label", "shape","type","rate","cv","depth","t_serv","coeff_var"}}},
+	{"source", {{"rate"}, {"rate", "cv", "label", "shape","type","depth","t_serv","coeff_var","zero_load", "priority_no"}}},
+	{"queue", {{"depth"}, {"depth", "label", "shape","type","rate","cv","t_serv","coeff_var","zero_load","priority_no"}}},
+	{"server", {{"t_serv", "coeff_var"},{"t_serv", "coeff_var", "label", "shape","type","rate","cv","depth","zero_load","priority_no"}}},
+	{"arbiter", {{"zero_load"}, {"zero_load", "label", "shape","type","rate","cv","depth","t_serv","coeff_var","priority_no"}}},
+	{"roundrobin", {{"zero_load"}, {"zero_load", "label", "shape","type","rate","cv","depth","t_serv","coeff_var","priority_no"}}},
+	{"priority", {{"zero_load"}, {"zero_load", "label", "shape","type","rate","cv","depth","t_serv","coeff_var","priority_no"}}},
+	{"hybrid", {{"zero_load"},{"zero_load", "label", "shape", "type", "rate", "cv", "depth", "t_serv", "coeff_var","priority_no"}}},
+	{"split", {{"type"}, {"label", "shape","type"}}},
 	{"sink", {{"type"}, {"label", "shape","type"}}}
 };
 

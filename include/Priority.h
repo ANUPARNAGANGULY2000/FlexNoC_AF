@@ -13,14 +13,15 @@ class PriorityArbiter : public Arbiter{
 
 
         bool isRRarbiter() const override;
-        bool isSplit() const override;
         bool isServer() const override;
         bool isQueue() const override;
         bool isInjector() const override;
         bool isArbiter() const override;
         bool isMerge() const override;
         bool isSink() const override;
+	bool isSplit() const override;
         bool isPRarbiter() const override;
+	bool isHybridArbiter() const override;
         void activeFlag() override;
 
          void arbiter(Mapping& mapping) override;

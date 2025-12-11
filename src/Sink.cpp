@@ -12,6 +12,7 @@ bool dot_lang::Sink::isSink() const { return isActive; }
 bool dot_lang::Sink::isMerge() const { return false; }
 bool dot_lang::Sink::isRRarbiter() const { return false; }
 bool dot_lang::Sink::isPRarbiter() const { return false; }
+bool dot_lang::Sink::isHybridArbiter() const { return false; }
 
 void dot_lang::Sink::activeFlag() { isActive = true; }
 

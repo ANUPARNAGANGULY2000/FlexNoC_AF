@@ -8,6 +8,7 @@
 #include "SingleQueue.h"
 #include "getUtils.h"
 #include "RoundRobin.h"
+#include "Hybrid.h"
 #include "Priority.h"
 
 namespace model{
@@ -42,6 +43,21 @@ void set_nodes(dot_lang::Mapping& mapping){
 	                                 }  
 	                        } 
      			}
+			//Hybrid Arbiter
+			else if(connected_primitive->isHybridArbiter()){
+			
+				std::shared_ptr<dot_lang::HybridArbiter> hybrid_arbiter = std::dynamic_pointer_cast<dot_lang::HybridArbiter>(connected_primitive);
+				if(hybrid_arbiter){
+				
+					for(auto it=mapping.node_names.begin(); it!=mapping.node_names.end(); ++it){
+					
+						if(it->first == connected_primitive_name){
+						
+							set_nodes_for_primitive(hybrid_arbiter, it->second, mapping);
+						}
+					}
+				}
+			}
      			else if(connected_primitive->isQueue()){
      				std::shared_ptr<dot_lang::Queue> queue=std::dynamic_pointer_cast<dot_lang::Queue>(connected_primitive);
 				std::shared_ptr<dot_lang::Server> server=std::dynamic_pointer_cast<dot_lang::Server>(server_primitive);
@@ -76,6 +92,11 @@ void set_nodes_for_primitive(std::shared_ptr<dot_lang::Primitive> primitive, con
         if(std::dynamic_pointer_cast<dot_lang::PriorityArbiter>(primitive)){
 		std::shared_ptr<dot_lang::PriorityArbiter> pr_arbiter = std::dynamic_pointer_cast<dot_lang::PriorityArbiter>(primitive);
 		 pr_arbiter->arbiter(mapping);
+	}
+	if(std::dynamic_pointer_cast<dot_lang::HybridArbiter>(primitive)){
+	
+		std::shared_ptr<dot_lang::HybridArbiter> hybrid_Arbiter = std::dynamic_pointer_cast<dot_lang::HybridArbiter>(primitive);
+		hybrid_Arbiter->arbiter(mapping);
 	}
 	
 }

@@ -36,7 +36,9 @@ add_library(dot_dsl
     src/Priority.cpp
     src/Junction.cpp 
     src/Node.cpp
+    src/Split.cpp
     src/defines.cpp
+    src/Hybrid.cpp
     src/TypeCheckVisitor.cpp
     src/MakeConnection.cpp
     SrcModel/SingleQueue.cpp
@@ -50,6 +52,7 @@ add_library(dot_dsl
     SrcModel/getUtils.cpp
     SrcModel/findQueue.cpp
     src/Sink.cpp
+    auto_generate/SplitProbabilityGenerate.cpp
 
     # Add other source files if needed
 )
@@ -58,6 +61,7 @@ target_include_directories(dot_dsl PUBLIC
     ${CMAKE_SOURCE_DIR}/include
      ${CMAKE_SOURCE_DIR}/lang
      ${CMAKE_SOURCE_DIR}/IncludeModel
+     ${CMAKE_SOURCE_DIR}/auto_generate
      
 )
 

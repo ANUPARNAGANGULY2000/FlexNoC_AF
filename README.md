@@ -21,21 +21,25 @@ Each node must define a `type` attribute. Additional attributes depend on the no
   - type: `queue`
   - Required: `depth`
 
-- **arbiter**
-  - type: `arbiter`
-  - Required: `zero_load`
-
-- **RoundRobin**
+- **RoundRobin Arbiter**
   - type: `RoundRobin`
   - Required: `zero_load`
 
-- **Priority**
+- **Priority Arbiter**
   - type: `Priority`
   - Required: `zero_load`
+
+- **Hybrid Arbiter**
+  -type: `hybrid`
+  -Required: `zero_load`
 
 - **Server**
   - type: `server`
   - Required: `t_serv`, `coeff_var`
+
+- **Split**
+  -type: `split`
+  -Required: `out={port probabilities}`
 
 - **Sink**
   - type: `sink`
@@ -49,7 +53,8 @@ For real examples, check the provided `.dot` files:
 - `graph2.dot`
 - `graph3.dot`
 - `graph4.dot`
-- `graph5.dot`
+- `hybrid1.dot`
+
 
 ## Building with Conan
 
@@ -118,9 +123,40 @@ This will build the main executable `bin/dot_iso`.
 Once the build is complete, run the tool using 
 
    ```bash
-   ./bin/dot_iso ../graph5.dot
+   ./bin/dot_iso irregular ../test/hybrid1.dot
    ```
-Replace `graph5.dot` with any DOT file containing valid NoC specifications.
+Replace `hybrid1.dot` with any DOT file containing valid NoC specifications for irregular topology.
+
+10. Auto-generation of DOT files(Regular Mesh Topology)
+
+This mode generates a full DOT file automatically based on parameters supplied in a `.txt` config file.
+  
+    ```bash
+   ./bin/dot_iso regular ../test/test.txt
+   ```
+Replace `test.txt` with any `.txt` file containing valid NoC specifications for regular topology.
+
+11. Running regression test mode:
+
+Regression mode automatically executes all test DOT files inside the test directory.
+    ```bash
+   ./bin/dot_iso regression
+   ```
+This is useful for verifying correctness after grammar or compiler updates.
+
+## Workflow of FlexNoC Framework
+
+The tool supports both **regular topology(auto-generated)** and **irregular topologies(user-provided DOT file** depending on the mode.
+This framework automatically performs the following steps:
+
+1. Reads the configuration file.
+2. Generates an auto-generated DOT file for regular topology.
+3. Parses the produced DOT file and set the data-structure.
+4. Update injection process and split probability if needed.
+5. Invoke analytical model.
+6. Calculate Waiting time.
+7. Prints Waiting time of each Injector and Queues.
+
 
 **Note:** Java is required to run ANTLR4, which is included as a .jar file.
 

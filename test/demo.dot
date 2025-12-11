@@ -1,0 +1,147 @@
+digraph G{
+
+rankdir ="LR"
+
+//router declaration
+R00[label="Router00", type=RoundRobin, zero_load=0.0, shape="square"];
+R01[label="Router01", type=RoundRobin, zero_load=0.0, shape="square"];
+R02[label="Router02", type=RoundRobin, zero_load=0.0, shape="square"];
+R10[label="Router10", type=RoundRobin, zero_load=0.0, shape="square"];
+R11[label="Router11", type=RoundRobin, zero_load=0.0, shape="square"];
+R12[label="Router12", type=RoundRobin, zero_load=0.0, shape="square"];
+R20[label="Router20", type=RoundRobin, zero_load=0.0, shape="square"];
+R21[label="Router21", type=RoundRobin, zero_load=0.0, shape="square"];
+R22[label="Router22", type=RoundRobin, zero_load=0.0, shape="square"];
+
+//Buffer declaration
+R00_L[label="R00_L", type=QUEUE, depth=4, shape="cylinder"];
+R00_N[label="R00_N", type=QUEUE, depth=4, shape="cylinder"];
+R00_S[label="R00_S", type=QUEUE, depth=4, shape="cylinder"];
+R00_E[label="R00_E", type=QUEUE, depth=4, shape="cylinder"];
+R00_W[label="R00_W", type=QUEUE, depth=4, shape="cylinder"];
+
+R01_L[label="R01_L", type=QUEUE, depth=4, shape="cylinder"];
+R01_N[label="R01_N", type=QUEUE, depth=4, shape="cylinder"];
+R01_S[label="R01_S", type=QUEUE, depth=4, shape="cylinder"];
+R01_E[label="R01_E", type=QUEUE, depth=4, shape="cylinder"];
+R01_W[label="R01_W", type=QUEUE, depth=4, shape="cylinder"];
+
+R02_L[label="R02_L", type=QUEUE, depth=4, shape="cylinder"];
+R02_N[label="R02_N", type=QUEUE, depth=4, shape="cylinder"];
+R02_S[label="R02_S", type=QUEUE, depth=4, shape="cylinder"];
+R02_E[label="R02_E", type=QUEUE, depth=4, shape="cylinder"];
+R02_W[label="R02_W", type=QUEUE, depth=4, shape="cylinder"];
+
+R10_L[label="R10_L", type=QUEUE, depth=4, shape="cylinder"];
+R10_N[label="R10_N", type=QUEUE, depth=4, shape="cylinder"];
+R10_S[label="R10_S", type=QUEUE, depth=4, shape="cylinder"];
+R10_E[label="R10_E", type=QUEUE, depth=4, shape="cylinder"];
+R10_W[label="R10_W", type=QUEUE, depth=4, shape="cylinder"];
+
+R11_L[label="R11_L", type=QUEUE, depth=4, shape="cylinder"];
+R11_N[label="R11_N", type=QUEUE, depth=4, shape="cylinder"];
+R11_S[label="R11_S", type=QUEUE, depth=4, shape="cylinder"];
+R11_E[label="R11_E", type=QUEUE, depth=4, shape="cylinder"];
+R11_W[label="R11_W", type=QUEUE, depth=4, shape="cylinder"];
+
+R12_L[label="R12_L", type=QUEUE, depth=4, shape="cylinder"];
+R12_N[label="R12_N", type=QUEUE, depth=4, shape="cylinder"];
+R12_S[label="R12_S", type=QUEUE, depth=4, shape="cylinder"];
+R12_E[label="R12_E", type=QUEUE, depth=4, shape="cylinder"];
+R12_W[label="R12_W", type=QUEUE, depth=4, shape="cylinder"];
+
+R20_L[label="R20_L", type=QUEUE, depth=4, shape="cylinder"];
+R20_N[label="R20_N", type=QUEUE, depth=4, shape="cylinder"];
+R20_S[label="R20_S", type=QUEUE, depth=4, shape="cylinder"];
+R20_E[label="R20_E", type=QUEUE, depth=4, shape="cylinder"];
+R20_W[label="R20_W", type=QUEUE, depth=4, shape="cylinder"];
+
+R21_L[label="R21_L", type=QUEUE, depth=4, shape="cylinder"];
+R21_N[label="R21_N", type=QUEUE, depth=4, shape="cylinder"];
+R21_S[label="R21_S", type=QUEUE, depth=4, shape="cylinder"];
+R21_E[label="R21_E", type=QUEUE, depth=4, shape="cylinder"];
+R21_W[label="R21_W", type=QUEUE, depth=4, shape="cylinder"];
+
+R22_L[label="R22_L", type=QUEUE, depth=4, shape="cylinder"];
+R22_N[label="R22_N", type=QUEUE, depth=4, shape="cylinder"];
+R22_S[label="R22_S", type=QUEUE, depth=4, shape="cylinder"];
+R22_E[label="R22_E", type=QUEUE, depth=4, shape="cylinder"];
+R22_W[label="R22_W", type=QUEUE, depth=4, shape="cylinder"];
+
+//Server declaration
+SR00[label="SR_00", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR01[label="SR_01", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR02[label="SR_02", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR10[label="SR_10", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR11[label="SR_11", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR12[label="SR_12", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR20[label="SR_20", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR21[label="SR_21", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR22[label="SR_22", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+
+//Source declaration
+PE_1[label="F1", type=Source, rate=0.03, cv=0.97, shape="rarrow"];
+PE_2[label="F2", type=Source, rate=0.03, cv=0.97, shape="rarrow"];
+PE_3[label="F3", type=Source, rate=0.03, cv=0.97, shape="rarrow"];
+PE_4[label="F4", type=Source, rate=0.03, cv=0.97, shape="rarrow"];
+PE_5[label="F5", type=Source, rate=0.03, cv=0.97, shape="rarrow"];
+PE_6[label="F6", type=Source, rate=0.03, cv=0.97, shape="rarrow"];
+PE_7[label="F7", type=Source, rate=0.03, cv=0.97, shape="rarrow"];
+PE_8[label="F8", type=Source, rate=0.03, cv=0.97, shape="rarrow"];
+PE_9[label="F9", type=Source, rate=0.03, cv=0.97, shape="rarrow"];
+
+//Route declaration 
+//PE1 sending req to PE8
+PE_1 -> R00_L
+R00_L -> R00
+R00 -> SR00
+SR00 -> R01_N
+R01_N -> R01
+R01 -> SR01
+SR01 -> R11_N
+R11_N -> R11
+R11 -> SR11
+SR11 -> R21_N
+R21_N -> R21
+R21 -> SR21
+
+//PE6 sending req to PE7
+PE_6 -> R12_L
+R12_L -> R12
+R12 -> SR12
+SR12 -> R11_E
+R11_E -> R11
+R11 -> SR11
+SR11 -> R10_E
+R10_E -> R10
+R10 -> SR10 
+SR10 -> R20_N
+R20_N -> R20
+R20 -> SR20
+
+//PE2 sending PE9
+PE_2 -> R01_L
+R01_L -> R01
+R01 -> SR01
+SR01 -> R02_W
+RO2_W -> R02
+R02 -> SR02
+SR02 -> R12_N
+R12_N -> R12
+R12 -> SR12
+SR12 -> R22_N
+R22_N -> R22
+R22 -> SR22
+
+//PE4 sending PE2
+PE_4 -> R10_L
+R10_L -> R10
+R10 -> SR10
+SR10 -> R11_W
+R11_W -> R11
+R11 -> SR11
+SR11 -> R01_S
+R01_S -> R01
+R01 -> SR01
+}
+

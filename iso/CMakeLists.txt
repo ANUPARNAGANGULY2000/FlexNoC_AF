@@ -5,6 +5,8 @@ target_include_directories(dot_iso
         ${CMAKE_SOURCE_DIR}/include      # your dot_compiler.h, etc
 	${CMAKE_SOURCE_DIR}/lang       # DOTLexer.h, DOTParser.h, etc.
 	${CMAKE_SOURCE_DIR}/IncludeModel #header files includes in model
+	${CMAKE_SOURCE_DIR}/test
+	${CMAKE_SOURCE_DIR}/auto_generate
 )
 
 target_link_libraries(dot_iso PRIVATE dot_dsl fmt::fmt antlr4_static Boost::graph)

@@ -6,8 +6,11 @@
 #include<Server.h>
 #include<Priority.h>
 #include<RoundRobin.h>
+#include<Hybrid.h>
 #include<Queue.h>
 #include<SingleQueue.h>
+#include<Split.h>
+#include "getUtils.h"
 
 namespace dot_lang{
 
@@ -96,7 +99,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
                   node->setCoeffInterArrivalTime(coeff_interarrival_time);
                }
          }  
-	if(primitive_in->isRRarbiter() || primitive_in->isPRarbiter() && primitive_out->isServer()){
+	if(primitive_in->isRRarbiter() || primitive_in->isPRarbiter() || primitive_in->isHybridArbiter() && primitive_out->isServer()){
               std::shared_ptr<dot_lang::Server> server =  std::dynamic_pointer_cast<dot_lang::Server>(primitive_out);
               if(server){
                   double service_time=0.0;
@@ -106,8 +109,14 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
                    if(primitive_in->isPRarbiter()){
 			   std::shared_ptr<dot_lang::PriorityArbiter> PrArbiter = std::dynamic_pointer_cast<dot_lang::PriorityArbiter>(primitive_in);
                            PrArbiter->setServiceTime(service_time);
-                            PrArbiter->setCoeffServiceTime(coeff_service_time);
+                           PrArbiter->setCoeffServiceTime(coeff_service_time);
                     }
+		   else if(primitive_in->isHybridArbiter()){
+		   
+			   std::shared_ptr<dot_lang::HybridArbiter> HybridArbiter = std::dynamic_pointer_cast<dot_lang::HybridArbiter>(primitive_in);
+			   HybridArbiter->setServiceTime(service_time);
+			   HybridArbiter->setCoeffServiceTime(coeff_service_time);
+		   }
                    else if(primitive_in->isRRarbiter()){
 			   std::shared_ptr<dot_lang::RoundRobinArbiter> RRarbiter = std::dynamic_pointer_cast<dot_lang::RoundRobinArbiter>(primitive_in);
                            RRarbiter->setServiceTime(service_time);
@@ -146,7 +155,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
         }
 
       }
-     if(primitive_in->isQueue() && primitive_out->isRRarbiter() || primitive_out->isPRarbiter()|| primitive_out->isServer()){
+     if(primitive_in->isQueue() && primitive_out->isRRarbiter() || primitive_out->isPRarbiter() || primitive_out->isHybridArbiter() || primitive_out->isServer()){
 	     std::shared_ptr<dot_lang::Queue> queue = std::dynamic_pointer_cast<dot_lang::Queue>(primitive_in);
             if(queue){
                     injection_rate = queue->getInjectionRate();
@@ -154,6 +163,21 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
                     node->setInjectionRate(injection_rate);
                     node->setCoeffInterArrivalTime(coeff_interarrival_time);
             }
+    }
+    if(primitive_in->isServer() && primitive_out->isSplit()){
+    
+	    
+	    std::string prevNode = model::getConnectedNode(source, mapping);
+	    std::shared_ptr<dot_lang::Junc> junction_address = mapping.node_data[prevNode];
+	    std::shared_ptr<dot_lang::Primitive> Primitive_in_ptr = junction_address->getPrimitiveIn();
+	    if(Primitive_in_ptr->isQueue()){
+	    std::shared_ptr<dot_lang::Queue> queue = std::dynamic_pointer_cast<dot_lang::Queue>(Primitive_in_ptr);
+	    double injection_rate = queue->getInjectionRate();
+	    std::shared_ptr<dot_lang::Split> split = std::dynamic_pointer_cast<dot_lang::Split>(primitive_out);
+	    split->setInjectionRate(injection_rate);
+	    double split_total = split->getInjectionRate();
+	    }
+	    
     }
     //Single Queue is Connected with server
     if(primitive_in->isQueue() && primitive_out->isServer()){
@@ -183,7 +207,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
                 }
         }
     }
-    if(primitive_out->isRRarbiter() ||primitive_out->isPRarbiter() ||primitive_out->isMerge()){
+    if(primitive_out->isRRarbiter() ||primitive_out->isPRarbiter() || primitive_out->isHybridArbiter() ||primitive_out->isMerge()){
         //for RR,PR,M extract nodes which have them as destination primitive
         for(auto it=mapping.node_connections.begin();it!=mapping.node_connections.end();it++){
             if(it->second==destination){
@@ -202,6 +226,23 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
                 mapping.node_names[source].push_back(it->second);
             }
         }
+    }
+
+    if(primitive_in->isSplit() && primitive_out->isQueue()){
+    
+	    std::shared_ptr<dot_lang::Split> split = std::dynamic_pointer_cast<dot_lang::Split>(primitive_in);
+	    std::shared_ptr<dot_lang::Queue> queue = std::dynamic_pointer_cast<dot_lang::Queue>(primitive_out);
+	    std::map<std::string, double >SplitProbabilityMap = split->getSplitProbability();
+	    double total_injection_rate = split -> getInjectionRate();
+	    auto directional_buffer = SplitProbabilityMap.find(destination);
+	    if(directional_buffer != SplitProbabilityMap.end()){
+	    
+		    double probability = directional_buffer->second;
+		    double new_injection_rate = total_injection_rate * probability;
+		    queue -> setInjectionRate(new_injection_rate);
+		    double inj = queue -> getInjectionRate();
+		    
+	    }
     }
     //if(primitive_in->isRRarbiter() ||primitive_in->isPRarbiter() || primitive_in->isMerge() || primitive_in->isSplit() && primitive_out->isQueue()){
      if(primitive_in->isServer() || primitive_in->isMerge() || primitive_in->isSplit() && primitive_out->isQueue()){
@@ -247,8 +288,10 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
                         //get the first part of that node
                         if(it->second==nodes){
 				std::string connected_queue = it->first;
+				std::shared_ptr<dot_lang::Primitive> Primitive_ptr = mapping.primitive_map[connected_queue];
                                 //just check if it is a queue
-                                if(connected_queue[0]=='Q'){
+                               // if(connected_queue[0]=='Q'){
+			       if(Primitive_ptr->isQueue()){
                                 // if it is a queue then check the primitive flow and get the corresponding injection rate.
 
 					std::shared_ptr<dot_lang::Primitive> primitive_new=mapping.primitive_map[connected_queue];

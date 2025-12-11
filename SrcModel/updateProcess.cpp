@@ -7,6 +7,7 @@
 #include "RoundRobin.h"
 #include "Injector.h"
 #include "Priority.h"
+#include "Hybrid.h"
 #include "findQueue.h"
 #include <cmath>
 //using dot_lang namespace;
@@ -62,6 +63,12 @@ void update_arbiter_service_process(std::shared_ptr<dot_lang::Server> server_pri
  		 	arbiter->setServiceTime(t_cap);
  		 	arbiter->setCoeffServiceTime(Cs_square_cap);
   	       }
+	     else if(primitive->isHybridArbiter()){
+	     
+		     std::shared_ptr<dot_lang::HybridArbiter> arbiter = std::dynamic_pointer_cast<dot_lang::HybridArbiter>(primitive);
+		     arbiter->setServiceTime(t_cap);
+		     arbiter->setCoeffServiceTime(Cs_square_cap);
+	     }
 		  //check node_names to get which nodes is connected to that arbiter
 	       std::vector<std::string> nodes_list = mapping.node_names[connected_primitive];
 	       std::vector<std::shared_ptr<dot_lang::Junc>>nodes;
@@ -119,13 +126,134 @@ void update_arbiter_service_process(std::shared_ptr<dot_lang::Server> server_pri
 		    		         updated_Ca_square = node_prev->getCoeffInterArrivalTime();
 		    		          injector->setInjectionRate(updated_injection_rate);
 		    		          injector->setCoeffInterArrivalTime(updated_Ca_square);
-     	                   }
+     	                         }
+				 //if split primitive is connected to the Queue
+				 else if(primitive_in_node->isSplit() && primitive_out_node->isQueue()){
+			         
+					std::shared_ptr<dot_lang::Split> split = std::dynamic_pointer_cast<dot_lang::Split>(primitive_in_node);
+                      		        std::map<std::string, double >SplitProbabilityMap = split->getSplitProbability();
+
+                        		//first take string of corresponding primitive
+                        		std::string split_primitive = getPrimitiveName(primitive_in_node, mapping);
+					std::string node_connected_with_split = getConnectedNode(split_primitive,mapping);
+					
+                        		double total_injection_rate = 0.0;
+                        		//get the connected nodes with this split
+                        		std::vector<std::string> nodes_list = mapping.node_names[split_primitive];
+                        		//now we have to get the queues from that nodes
+                        		for(const auto& node:nodes_list){
+
+                                		std::shared_ptr<dot_lang::Junc> junction_address = mapping.node_data[node];
+                                		if(junction_address){
+
+                                       		 std::shared_ptr<dot_lang::Primitive> primitive = junction_address->getPrimitiveOut();
+                                        	 if(primitive->isQueue()){
+                                                	std::string queue_name = getPrimitiveName(primitive, mapping);
+                                                        std::shared_ptr<dot_lang::Queue> queue_address = std::dynamic_pointer_cast<dot_lang::Queue>(primitive);
+                                                	double injection_rate = queue_address -> getInjectionRate();
+                                               		 total_injection_rate += injection_rate;
+                                                  }   
+                                               } 
+                                       }
+                      			//set this total injection_rate to split
+                        		split->setInjectionRate(total_injection_rate);
+					double coeff_var = 1-total_injection_rate;
+                        		split->setCoeffInterArrivalTime(coeff_var);
+					
+					//now we have to again get the prev node
+                                        std::shared_ptr<dot_lang::Junc> Prev_to_Prev_node = mapping.node_data[node_connected_with_split];
+                                        Prev_to_Prev_node->setInjectionRate(total_injection_rate);
+                                        Prev_to_Prev_node->setCoeffInterArrivalTime(coeff_var);
+					std::shared_ptr<dot_lang::Primitive> Prev_Primitive_in = Prev_to_Prev_node->getPrimitiveIn();
+					std::shared_ptr<dot_lang::Primitive> Prev_Primitive_out = Prev_to_Prev_node->getPrimitiveOut();
+			
+					if(Prev_Primitive_in->isServer() && Prev_Primitive_out->isSplit()){
+					
+						std::shared_ptr<dot_lang::Server> serverPtr = std::dynamic_pointer_cast<dot_lang::Server>(Prev_Primitive_in);
+						std::shared_ptr<dot_lang::Split> splitPtr = std::dynamic_pointer_cast<dot_lang::Split>(Prev_Primitive_out);
+						
+						//call the function to update the service time
+						update_server_connected_to_Split(serverPtr,splitPtr, mapping);	
+					}
+
+
+				}
 	                } 
 	               }
                 }
            }
    else if(primitive->isQueue()){}
 }
+
+void update_server_connected_to_Split(std::shared_ptr<dot_lang::Server> server, std::shared_ptr<dot_lang::Split> split, dot_lang::Mapping& mapping){
+
+	double service_time = server->getServiceTime();
+	double cs_square_cap = server->getCoeffServiceTime();
+	double injection_rate = split->getInjectionRate();
+	double rho = service_time * injection_rate;
+	double serviceTime = 0.0;
+        std::shared_ptr<dot_lang::Primitive> split_primitive_ptr = std::dynamic_pointer_cast<dot_lang::Primitive>(split);
+	double p_full_cap = 0.0, t_cap=0.0;
+	if(rho<=0.998){
+	 std::map<std::string, double >SplitProbabilityMap = split->getSplitProbability();
+	 //first take string of corresponding primitive
+         std::string split_primitive = getPrimitiveName(split_primitive_ptr, mapping);
+	 //get the connected nodes with this split
+         std::vector<std::string> nodes_list = mapping.node_names[split_primitive];
+	 //now we have to get the queues from that nodes
+         for(const auto& node:nodes_list){
+
+                std::shared_ptr<dot_lang::Junc> junction_address = mapping.node_data[node];
+                if(junction_address){
+			std::shared_ptr<dot_lang::Primitive> primitive = junction_address->getPrimitiveOut();
+                        if(primitive->isQueue()){
+				 std::string queue_name = getPrimitiveName(primitive, mapping);
+                                 auto buffer_details = SplitProbabilityMap.find(queue_name);
+                                 double probability = 0.0;
+                                 if(buffer_details != SplitProbabilityMap.end()){
+                                         probability = buffer_details->second;//get the split probability of that queue
+                                 }
+                                std::shared_ptr<dot_lang::Queue> queue_address = std::dynamic_pointer_cast<dot_lang::Queue>(primitive);
+				std::shared_ptr<dot_lang::Junc> nextJunc = getNextJunction(junction_address, mapping);
+				std::shared_ptr<dot_lang::Primitive> nextJuncPrimitiveOut = nextJunc->getPrimitiveOut();
+				if(nextJuncPrimitiveOut->isArbiter()){
+				
+					std::shared_ptr<dot_lang::Arbiter> arbiter = std::dynamic_pointer_cast<dot_lang::Arbiter>(nextJuncPrimitiveOut);
+					serviceTime = arbiter->getServiceTime();
+				}
+                                 double Probability_Q_full = probability_of_Queue_full(queue_address, serviceTime);
+                                 p_full_cap += Probability_Q_full * probability;
+                         }
+                }
+         }
+	 //Modified service process
+         if(p_full_cap<1.0){
+             t_cap = service_time / (1 - p_full_cap);
+	 }
+        }
+       else if(rho>=0.998){
+             t_cap = service_time;
+             p_full_cap = 1.0;
+       }
+       cs_square_cap = p_full_cap + cs_square_cap*(1 - p_full_cap);
+       server->setServiceTime(t_cap);
+       server->setCoeffServiceTime(cs_square_cap);
+//now check the prev node and check their in and out. in will be server and out will be queue then send it to set_primitive
+       std::shared_ptr<dot_lang::Primitive> server_primitive = std::dynamic_pointer_cast<dot_lang::Primitive>(server);
+       std::string server_string = getPrimitiveName(server_primitive, mapping);
+       std::string junction_string = getConnectedNode(server_string,mapping);
+       std::shared_ptr<dot_lang::Junc> junction_string_address = mapping.node_data[junction_string];
+       //now we have to get the prev junction
+       std::shared_ptr<dot_lang::Junc> Prev_junction = getPrevJunction(junction_string_address, mapping);
+       std::shared_ptr<dot_lang::Primitive> Primitive_in = Prev_junction ->getPrimitiveIn();
+       std::shared_ptr<dot_lang::Primitive> Primitive_out = Prev_junction -> getPrimitiveOut();
+       if(Primitive_in->isServer() && Primitive_out->isQueue()){
+       
+		 set_network_primitive(Primitive_out, mapping);
+       }
+
+}
+
 
 void update_injection_process(std::vector<double> lambda_a, std::vector<double> Ca_square, double t_cap, std::vector<int>BUFFER_SIZE, std::vector<std::shared_ptr<dot_lang::Queue>>& queues, std::vector<std::shared_ptr<dot_lang::Junc>>& nodes){
 
@@ -156,6 +284,33 @@ void update_injection_process(std::vector<double> lambda_a, std::vector<double> 
 	    nodes[l]->setCoeffInterArrivalTime(Ca_square_cap[l]);
         }
 }
+
+double probability_of_Queue_full(std::shared_ptr<dot_lang::Queue>queue, double t_cap){
+
+	double injection_rate = queue->getInjectionRate();
+	double Ca_square = queue->getCoeffInterArrivalTime();
+	int buffer_size = queue->getBufferSize();
+	double rho = 0.0;
+	double avg_occupancy = 0.0;
+	double p_full = 0.0;
+	double sum_p_j = 0.0;
+	 
+	rho = t_cap * injection_rate;
+
+	//average occupancy calculation
+	avg_occupancy = rho * (rho - 1 + Ca_square + Ca_square * rho) / (2 - 2 * rho) + rho;
+
+	//probability of full queue using maximum entropy
+	for(int packet=0; packet < buffer_size; ++packet){
+	
+		double pow_val = (avg_occupancy - rho) / avg_occupancy;
+		sum_p_j += rho * rho * std::pow(pow_val, packet+1) / (avg_occupancy - rho);
+	}
+	p_full = rho - sum_p_j;
+
+	return p_full;
+}
+
 
 void update_injection_process_after_saturation(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, double updated_injection_rate, dot_lang::Mapping& mapping){
 

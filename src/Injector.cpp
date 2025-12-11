@@ -14,6 +14,7 @@ bool dot_lang::Injector::isSplit() const { return false; }
 bool dot_lang::Injector::isSink() const { return false; }
 bool dot_lang::Injector::isRRarbiter() const { return false; }
 bool dot_lang::Injector::isPRarbiter() const { return false; }
+bool dot_lang::Injector::isHybridArbiter() const { return false; }
 
 void dot_lang::Injector::activeFlag() { isActive = true; }
 

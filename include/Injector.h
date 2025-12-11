@@ -19,10 +19,11 @@ namespace dot_lang{
         bool isServer() const override;
         bool isArbiter() const override;
         bool isMerge() const override;
-        bool isSplit() const override;
         bool isSink() const override;
+	bool isSplit() const override;
         bool isRRarbiter() const override;
         bool isPRarbiter() const override;
+	bool isHybridArbiter() const override;
         void activeFlag() override;
 
         // get/set

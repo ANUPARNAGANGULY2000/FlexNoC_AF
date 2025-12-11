@@ -1,0 +1,5 @@
+Injector: F1    Waiting time: 0.0141
+Injector: F2    Waiting time: 0.0141
+Queue: Q1       Waiting time: 0.0141
+Queue: Q2       Waiting time: 0.0141
+Queue: Q3       Waiting time: 0

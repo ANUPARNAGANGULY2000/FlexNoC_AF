@@ -44,19 +44,24 @@ namespace dot_lang {
             	double cv = 1.0 - rate;
             	attrs["cv"] = std::to_string(cv);
              }
-
        	     for(const auto &required_attr : schema.required) {
                 if(attrs.find(required_attr) == attrs.end()){
                         throw std::runtime_error("For '" + node_name + "' missing required attribute: " + required_attr);
                 }
 	      }	
 	     for(const auto &[key, _] : attrs){
+
+		 //special handling for split type node
+		 if(type == "split" && mapping.primitive_map.find(key)!=mapping.primitive_map.end() ){
+			 continue;
+		 }
                  if(schema.allowed.find(key)==schema.allowed.end()) {
                          throw std::runtime_error("For '" + node_name + "' attribute '" + key + "' is not allowed for type '" + type + "'");
                 }
             }
+	    
 	     // create node
-            std::shared_ptr<Node> node = nodeFactory.getNodeFromType(nodeType, std::any_cast<std::string>(nodeName), attrs);
+            std::shared_ptr<Node> node = nodeFactory.getNodeFromType(nodeType, std::any_cast<std::string>(nodeName), attrs, mapping);
 	    
 	    // create a Primitive
 	    std::shared_ptr<Primitive> PrimitivePtr = std::dynamic_pointer_cast<Primitive>(node);
@@ -102,8 +107,12 @@ namespace dot_lang {
 	        return std::any(ROUNDROBIN);
 	    } else if (ctx->PRIORITY()){
 		return std::any(PRIORITY);
-            } else if (ctx->SERVER()) {
+            } else if (ctx->HYBRID()){
+		return std::any(HYBRID);
+	    }else if (ctx->SERVER()) {
                 return std::any(SERVER);
+	    } else if (ctx->SPLIT()) {
+	        return std::any(SPLIT);
             } else if (ctx->SINK()) {
                 return std::any(SINK);
             }
@@ -117,7 +126,9 @@ namespace dot_lang {
        	        case ARBITER: return "ARBITER";
 	        case ROUNDROBIN: return "ROUNDROBIN";
 		case PRIORITY: return "PRIORITY"; 
+		case HYBRID: return "HYBRID";
         	case SERVER: return "SERVER";
+	        case SPLIT: return "SPLIT";
         	case SINK: return "SINK";
         	default: return "UNKNOWN";
     }
@@ -149,11 +160,13 @@ namespace dot_lang {
             // get attr from ctx
 	    std::string key,value;
 	    std::map<std::string, std::string>result;
+
             // any of the possible attribute may or may not exist
-            auto attr = ctx->attr_() ? visitAttr_(ctx->attr_()) : std::any();
+            auto priorityAttr = ctx->priority_attr() ? visitPriority_attr(ctx->priority_attr()) : std::any();
+	    auto attr = ctx->attr_() ? visitAttr_(ctx->attr_()) : std::any();
             auto cvAttr = ctx->cv_attr() ? visitCv_attr(ctx->cv_attr()) : std::any();
             auto depthAttr = ctx->depth_attr() ? visitDepth_attr(ctx->depth_attr()) : std::any();
-            auto priorityAttr = ctx->priority_attr() ? visitPriority_attr(ctx->priority_attr()) : std::any();
+            //auto priorityAttr = ctx->priority_attr() ? visitPriority_attr(ctx->priority_attr()) : std::any();
             auto rateAttr = ctx->rate_attr() ? visitRate_attr(ctx->rate_attr()) : std::any();
 	    auto serviceTimeAttr = ctx->service_time_attr() ? visitService_time_attr(ctx->service_time_attr()) : std::any();
 	    auto coeffVarAttr = ctx->coeff_service_time_attr() ? visitCoeff_service_time_attr(ctx->coeff_service_time_attr()) : std::any();
@@ -174,8 +187,9 @@ namespace dot_lang {
 		result[key]=value;
             }
             if (priorityAttr.has_value()) {
-               // std::cout << "priorityAttr: " << std::any_cast<double>(priorityAttr) << std::endl;
-                // node->setPriority(std::any_cast<int>(priorityAttr));
+                key = "priority_no";
+		value = std::any_cast<std::string>(priorityAttr);
+		result[key]=value;
             }
             if (rateAttr.has_value()) {
 	        key = "rate";
@@ -197,6 +211,18 @@ namespace dot_lang {
 	        value = std::any_cast<std::string>(zeroLoadAttr);
 		result[key]=value;
              }
+	    if (ctx->split_attr()){
+	    	auto splitPortPair = std::any_cast<std::pair<std::string,std::string>>(visitSplit_attr(ctx->split_attr()));
+		result[splitPortPair.first] = splitPortPair.second;
+	     }
+	    if(ctx->map_attr()){
+	    	auto splitProbabilityPair = std::any_cast<std::map<std::string, std::string>>(visitMap_attr(ctx->map_attr()));
+		//result[splitProbabilityPair.first] = splitProbabilityPair.second;
+		 for (const auto &[key, value] : splitProbabilityPair) {
+        		result[key] = value;
+    		}
+	    }
+	    
 	return result;
 	}	    
         std::any visitCv_attr(DOTParser::Cv_attrContext *ctx) override {
@@ -216,8 +242,8 @@ namespace dot_lang {
         std::any visitPriority_attr(DOTParser::Priority_attrContext *ctx) override {
             // PRIORITY '=' NUMBER (';' | ',')?
             // get priority from ctx
-            auto priority = ctx->NUMBER();
-            return std::any(priority->getText());
+            auto priority = ctx->NUMBER()->getText();
+            return priority;
         }
 
         std::any visitRate_attr(DOTParser::Rate_attrContext *ctx) override {
@@ -244,6 +270,26 @@ namespace dot_lang {
 	   auto zero_load = ctx->NUMBER();
         return std::any(zero_load->getText());
   	}
+   
+ 	std::any visitSplit_attr(DOTParser::Split_attrContext *ctx) override {
+           
+		std::string key = ctx->S_ATTR()->getText();
+		std::string value = ctx->NUMBER()->getText();
+		return std::make_pair(key,value);
+ 	  }
+   
+   	std::any visitMap_attr(DOTParser::Map_attrContext *ctx) override {
+		std::string attrName = ctx->id_()->getText();
+		std::map<std::string, std::string> probMapping;
+	        for(auto pair:ctx->mapPair()){
+		
+			std:: string destination = pair->id_()->getText();
+			std::string probability = pair->NUMBER()->getText();
+			probMapping[destination] = probability;
+		}
+    	return probMapping;
+      }
+
 
     };
 }

@@ -20,6 +20,7 @@ public:
     virtual bool isSink() const = 0;
     virtual bool isRRarbiter() const = 0;
     virtual bool isPRarbiter() const = 0;
+    virtual bool isHybridArbiter() const = 0;
 
     virtual void activeFlag() = 0;
     virtual std::vector<double> primitive() = 0;

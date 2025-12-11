@@ -41,6 +41,8 @@ public:
 
     virtual std::any visitCoeff_service_time_attr(DOTParser::Coeff_service_time_attrContext *context) = 0;
 
+    virtual std::any visitSplit_attr(DOTParser::Split_attrContext *context) = 0;
+
     virtual std::any visitZero_load_latency_attr(DOTParser::Zero_load_latency_attrContext *context) = 0;
 
     virtual std::any visitDepth_attr(DOTParser::Depth_attrContext *context) = 0;
@@ -48,6 +50,10 @@ public:
     virtual std::any visitPriority_attr(DOTParser::Priority_attrContext *context) = 0;
 
     virtual std::any visitRate_attr(DOTParser::Rate_attrContext *context) = 0;
+
+    virtual std::any visitMap_attr(DOTParser::Map_attrContext *context) = 0;
+
+    virtual std::any visitMapPair(DOTParser::MapPairContext *context) = 0;
 
     virtual std::any visitType_attr(DOTParser::Type_attrContext *context) = 0;
 

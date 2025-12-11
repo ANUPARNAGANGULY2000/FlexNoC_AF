@@ -13,12 +13,13 @@ class  DOTLexer : public antlr4::Lexer {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
-    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, CV = 12, T_SERV = 13, COEFF_VAR = 14, 
-    ZERO_LOAD = 15, DEPTH = 16, SIZE = 17, RATE = 18, SOURCE = 19, QUEUE = 20, 
-    ARBITER = 21, ROUNDROBIN = 22, PRIORITY = 23, SERVER = 24, SINK = 25, 
-    STRICT = 26, GRAPH = 27, DIGRAPH = 28, NODE = 29, EDGE = 30, SUBGRAPH = 31, 
-    NUMBER = 32, STRING = 33, ID = 34, HTML_STRING = 35, COMMENT = 36, LINE_COMMENT = 37, 
-    PREPROC = 38, WS = 39
+    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, CV = 12, T_SERV = 13, S_ATTR = 14, 
+    COEFF_VAR = 15, ZERO_LOAD = 16, DEPTH = 17, PRIORITY_NO = 18, SIZE = 19, 
+    RATE = 20, SOURCE = 21, QUEUE = 22, ARBITER = 23, ROUNDROBIN = 24, PRIORITY = 25, 
+    HYBRID = 26, SERVER = 27, SPLIT = 28, SINK = 29, STRICT = 30, GRAPH = 31, 
+    DIGRAPH = 32, NODE = 33, EDGE = 34, SUBGRAPH = 35, NUMBER = 36, STRING = 37, 
+    ID = 38, HTML_STRING = 39, COMMENT = 40, LINE_COMMENT = 41, PREPROC = 42, 
+    WS = 43
   };
 
   explicit DOTLexer(antlr4::CharStream *input);

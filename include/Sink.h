@@ -21,6 +21,7 @@ class Sink : public Primitive{
         bool isMerge() const override;
         bool isPRarbiter() const override;
         bool isRRarbiter() const override;
+	bool isHybridArbiter() const override;
         void activeFlag() override;
 	std::vector<double> primitive() override;
 

@@ -12,7 +12,7 @@ bool dot_lang::Arbiter::isMerge() const { return false; }
 bool dot_lang::Arbiter::isSink() const { return false; }
 bool dot_lang::Arbiter::isRRarbiter() const { return false; }
 bool dot_lang::Arbiter::isPRarbiter() const { return false; }
-
+bool dot_lang::Arbiter::isHybridArbiter() const { return false; }
 void dot_lang::Arbiter::activeFlag() { isActive = true; }
 
 void dot_lang::Arbiter::setJunction(const std::vector<std::shared_ptr<dot_lang::Junc>> &junction) {

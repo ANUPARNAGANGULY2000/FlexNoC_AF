@@ -4,10 +4,10 @@
 
 namespace model{
 //Priority Arbitration
-void priority_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, std::shared_ptr<dot_lang::PriorityArbiter> PRarbiter, dot_lang::Mapping& mapping){
+void priority_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, double service_time, double zero_load_latency, dot_lang::Mapping& mapping){
 	//getting service_time and zero_load_latency from the Priority arbiter
-	double service_time = PRarbiter->getServiceTime();
-	double zero_load_latency = PRarbiter->getZeroLoadLatency();
+	//double service_time = PRarbiter->getServiceTime();
+	//double zero_load_latency = PRarbiter->getZeroLoadLatency();
 	// Initialization of intermediate parameters
 	std::vector<double> lambda;
 	std::vector<double> lambda_a_cap(queues.size(),0.0);
@@ -21,7 +21,6 @@ void priority_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, std::
 	std::vector<double> waiting_time(queues.size(),0.0);
 	std::vector<int> Buffer_Size(queues.size(),0);
 	std::vector<double> n(queues.size(),0.0);
-
 	//taking injection rates from queues
         for(auto queue_index=0;queue_index<queues.size(); ++queue_index){
            double injection_rate = queues[queue_index]->getInjectionRate();

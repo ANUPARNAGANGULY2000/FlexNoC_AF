@@ -1,0 +1,470 @@
+digraph G{
+
+rankdir ="LR"
+
+//Each router contains 5 arbiter Local, North, South, East, West
+R00_A_L[label="R00_A_L", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R00_A_N[label="R00_A_N", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R00_A_S[label="R00_A_S", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R00_A_E[label="R00_A_E", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R00_A_W[label="R00_A_W", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+
+R01_A_L[label="R01_A_L", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R01_A_N[label="R01_A_N", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R01_A_S[label="R01_A_S", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R01_A_E[label="R01_A_E", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R01_A_W[label="R01_A_W", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+
+R02_A_L[label="R02_A_L", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R02_A_N[label="R02_A_N", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R02_A_S[label="R02_A_S", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R02_A_E[label="R02_A_E", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R02_A_W[label="R02_A_W", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+
+R10_A_L[label="R10_A_L", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R10_A_N[label="R10_A_N", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R10_A_S[label="R10_A_S", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R10_A_E[label="R10_A_E", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R10_A_W[label="R10_A_W", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+
+R11_A_L[label="R11_A_L", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R11_A_N[label="R11_A_N", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R11_A_S[label="R11_A_S", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R11_A_E[label="R11_A_E", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R11_A_W[label="R11_A_W", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+
+R12_A_L[label="R12_A_L", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R12_A_N[label="R12_A_N", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R12_A_S[label="R12_A_S", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R12_A_E[label="R12_A_E", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R12_A_W[label="R12_A_W", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+
+R20_A_L[label="R20_A_L", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R20_A_N[label="R20_A_N", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R20_A_S[label="R20_A_S", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R20_A_E[label="R20_A_E", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R20_A_W[label="R20_A_W", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+
+R21_A_L[label="R21_A_L", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R21_A_N[label="R21_A_N", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R21_A_S[label="R21_A_S", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R21_A_E[label="R21_A_E", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R21_A_W[label="R21_A_W", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+
+R22_A_L[label="R22_A_L", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R22_A_N[label="R22_A_N", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R22_A_S[label="R22_A_S", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R22_A_E[label="R22_A_E", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+R22_A_W[label="R22_A_W", type=RoundRobin, zero_load=0.0, shape="trapezium",style="filled", fillcolor="green"];
+
+
+//Buffer declaration
+PE_1_L[label="PE_1_L", type=QUEUE, depth=4, shape="cylinder", style="filled", fillcolor="lightblue"];
+R00_L[label="R00_L", type=QUEUE, depth=4, shape="cylinder"];
+R00_N[label="R00_N", type=QUEUE, depth=4, shape="cylinder"];
+R00_S[label="R00_S", type=QUEUE, depth=4, shape="cylinder"];
+R00_E[label="R00_E", type=QUEUE, depth=4, shape="cylinder"];
+R00_W[label="R00_W", type=QUEUE, depth=4, shape="cylinder"];
+
+PE_2_L[label="PE_2_L", type=QUEUE, depth=4, shape="cylinder", style="filled", fillcolor="lightblue"];
+R01_L[label="R01_L", type=QUEUE, depth=4, shape="cylinder"];
+R01_N[label="R01_N", type=QUEUE, depth=4, shape="cylinder"];
+R01_S[label="R01_S", type=QUEUE, depth=4, shape="cylinder"];
+R01_E[label="R01_E", type=QUEUE, depth=4, shape="cylinder"];
+R01_W[label="R01_W", type=QUEUE, depth=4, shape="cylinder"];
+
+PE_3_L[label="PE_3_L", type=QUEUE, depth=4, shape="cylinder", style="filled", fillcolor="lightblue"];
+R02_L[label="R02_L", type=QUEUE, depth=4, shape="cylinder"];
+R02_N[label="R02_N", type=QUEUE, depth=4, shape="cylinder"];
+R02_S[label="R02_S", type=QUEUE, depth=4, shape="cylinder"];
+R02_E[label="R02_E", type=QUEUE, depth=4, shape="cylinder"];
+R02_W[label="R02_W", type=QUEUE, depth=4, shape="cylinder"];
+
+PE_4_L[label="PE_4_L", type=QUEUE, depth=4, shape="cylinder", style="filled", fillcolor="lightblue"];
+R10_L[label="R10_L", type=QUEUE, depth=4, shape="cylinder"];
+R10_N[label="R10_N", type=QUEUE, depth=4, shape="cylinder"];
+R10_S[label="R10_S", type=QUEUE, depth=4, shape="cylinder"];
+R10_E[label="R10_E", type=QUEUE, depth=4, shape="cylinder"];
+R10_W[label="R10_W", type=QUEUE, depth=4, shape="cylinder"];
+
+PE_5_L[label="PE_5_L", type=QUEUE, depth=4, shape="cylinder", style="filled", fillcolor="lightblue"];
+R11_L[label="R11_L", type=QUEUE, depth=4, shape="cylinder"];
+R11_N[label="R11_N", type=QUEUE, depth=4, shape="cylinder"];
+R11_S[label="R11_S", type=QUEUE, depth=4, shape="cylinder"];
+R11_E[label="R11_E", type=QUEUE, depth=4, shape="cylinder"];
+R11_W[label="R11_W", type=QUEUE, depth=4, shape="cylinder"];
+
+PE_6_L[label="PE_6_L", type=QUEUE, depth=4, shape="cylinder", style="filled", fillcolor="lightblue"];
+R12_L[label="R12_L", type=QUEUE, depth=4, shape="cylinder"];
+R12_N[label="R12_N", type=QUEUE, depth=4, shape="cylinder"];
+R12_S[label="R12_S", type=QUEUE, depth=4, shape="cylinder"];
+R12_E[label="R12_E", type=QUEUE, depth=4, shape="cylinder"];
+R12_W[label="R12_W", type=QUEUE, depth=4, shape="cylinder"];
+
+PE_7_L[label="PE_7_L", type=QUEUE, depth=4, shape="cylinder", style="filled", fillcolor="lightblue"];
+R20_L[label="R20_L", type=QUEUE, depth=4, shape="cylinder"];
+R20_N[label="R20_N", type=QUEUE, depth=4, shape="cylinder"];
+R20_S[label="R20_S", type=QUEUE, depth=4, shape="cylinder"];
+R20_E[label="R20_E", type=QUEUE, depth=4, shape="cylinder"];
+R20_W[label="R20_W", type=QUEUE, depth=4, shape="cylinder"];
+
+PE_8_L[label="PE_8_L", type=QUEUE, depth=4, shape="cylinder", style="filled", fillcolor="lightblue"];
+R21_L[label="R21_L", type=QUEUE, depth=4, shape="cylinder"];
+R21_N[label="R21_N", type=QUEUE, depth=4, shape="cylinder"];
+R21_S[label="R21_S", type=QUEUE, depth=4, shape="cylinder"];
+R21_E[label="R21_E", type=QUEUE, depth=4, shape="cylinder"];
+R21_W[label="R21_W", type=QUEUE, depth=4, shape="cylinder"];
+
+PE_9_L[label="PE_9_L", type=QUEUE, depth=4, shape="cylinder", style="filled", fillcolor="lightblue"];
+R22_L[label="R22_L", type=QUEUE, depth=4, shape="cylinder"];
+R22_N[label="R22_N", type=QUEUE, depth=4, shape="cylinder"];
+R22_S[label="R22_S", type=QUEUE, depth=4, shape="cylinder"];
+R22_E[label="R22_E", type=QUEUE, depth=4, shape="cylinder"];
+R22_W[label="R22_W", type=QUEUE, depth=4, shape="cylinder"];
+
+//Server declaration
+R00_SR_L[label="R00_SR_L", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R00_SR_N[label="R00_SR_N", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R00_SR_S[label="R00_SR_S", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R00_SR_E[label="R00_SR_E", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R00_SR_W[label="R00_SR_W", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+PE_SR_00[label="PE_SR_00", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+
+R01_SR_L[label="R00_SR_L", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R01_SR_N[label="R01_SR_N", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R01_SR_S[label="R01_SR_S", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R01_SR_E[label="R01_SR_E", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R01_SR_W[label="R01_SR_W", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+PE_SR_01[label="PE_SR_01", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+
+R02_SR_L[label="R02_SR_L", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R02_SR_N[label="R02_SR_N", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R02_SR_S[label="R02_SR_S", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R02_SR_E[label="R02_SR_E", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R02_SR_W[label="R02_SR_W", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+PE_SR_02[label="PE_SR_02", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+
+R10_SR_L[label="R10_SR_L", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R10_SR_N[label="R10_SR_N", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R10_SR_S[label="R10_SR_S", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R10_SR_E[label="R10_SR_E", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R10_SR_W[label="R10_SR_W", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+PE_SR_10[label="PE_SR_10", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+
+R11_SR_L[label="R11_SR_L", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R11_SR_N[label="R11_SR_N", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R11_SR_S[label="R11_SR_S", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R11_SR_E[label="R11_SR_E", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R11_SR_W[label="R11_SR_W", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+PE_SR_11[label="PE_SR_11", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+
+R12_SR_L[label="R12_SR_L", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R12_SR_N[label="R12_SR_N", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R12_SR_S[label="R12_SR_S", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R12_SR_E[label="R12_SR_E", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R12_SR_W[label="R12_SR_W", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+PE_SR_12[label="PE_SR_12", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+
+R20_SR_L[label="R20_SR_L", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R20_SR_N[label="R20_SR_N", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R20_SR_S[label="R20_SR_S", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R20_SR_E[label="R20_SR_E", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R20_SR_W[label="R20_SR_W", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+PE_SR_20[label="PE_SR_20", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+
+R21_SR_L[label="R21_SR_L", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R21_SR_N[label="R21_SR_N", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R21_SR_S[label="R21_SR_S", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R21_SR_E[label="R21_SR_E", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R21_SR_W[label="R21_SR_W", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+PE_SR_21[label="PE_SR_21", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+
+R22_SR_L[label="R22_SR_L", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R22_SR_N[label="R22_SR_N", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R22_SR_S[label="R22_SR_S", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R22_SR_E[label="R22_SR_E", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+R22_SR_W[label="R22_SR_W", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+PE_SR_22[label="PE_SR_22", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+
+
+//Source declaration
+PE_1[label="F1", type=Source, rate=0.03, cv=0.97, shape="rarrow",style="filled", fillcolor="lightsalmon"];
+PE_2[label="F2", type=Source, rate=0.03, cv=0.97, shape="rarrow",style="filled", fillcolor="lightsalmon"];
+PE_3[label="F3", type=Source, rate=0.03, cv=0.97, shape="rarrow",style="filled", fillcolor="lightsalmon"];
+PE_4[label="F4", type=Source, rate=0.03, cv=0.97, shape="rarrow",style="filled", fillcolor="lightsalmon"];
+PE_5[label="F5", type=Source, rate=0.03, cv=0.97, shape="rarrow",style="filled", fillcolor="lightsalmon"];
+PE_6[label="F6", type=Source, rate=0.03, cv=0.97, shape="rarrow",style="filled", fillcolor="lightsalmon"];
+PE_7[label="F7", type=Source, rate=0.03, cv=0.97, shape="rarrow",style="filled", fillcolor="lightsalmon"];
+PE_8[label="F8", type=Source, rate=0.03, cv=0.97, shape="rarrow",style="filled", fillcolor="lightsalmon"];
+PE_9[label="F9", type=Source, rate=0.03, cv=0.97, shape="rarrow",style="filled", fillcolor="lightsalmon"];
+
+Sink_00[label="sink_00", type=Sink, style="filled", fillcolor="yellow"];
+Sink_01[label="sink_01", type=Sink, style="filled", fillcolor="yellow"];
+Sink_02[label="sink_02", type=Sink, style="filled", fillcolor="yellow"];
+Sink_10[label="sink_10", type=Sink, style="filled", fillcolor="yellow"];
+Sink_11[label="sink_11", type=Sink, style="filled", fillcolor="yellow"];
+Sink_12[label="sink_12", type=Sink, style="filled", fillcolor="yellow"];
+Sink_20[label="sink_20", type=Sink, style="filled", fillcolor="yellow"];
+Sink_21[label="sink_21", type=Sink, style="filled", fillcolor="yellow"];
+Sink_22[label="sink_22", type=Sink, style="filled", fillcolor="yellow"];
+
+//PE_1 Sends to PE_2
+PE_1 -> R00_L;
+R00_L -> R00_A_E;
+R00_A_E -> R00_SR_E;
+R00_SR_E -> R01_W;
+R01_W -> R01_A_L;
+R01_A_L -> R01_SR_L;
+R01_SR_L -> PE_2_L;
+PE_2_L -> PE_SR_01;
+PE_SR_01 -> Sink_01;
+
+//PE_1 Sends to PE_3
+PE_1 -> R00_L;
+R00_L -> R00_A_E;
+R00_A_E -> R00_SR_E;
+R00_SR_E -> R01_W;
+R01_W -> R01_A_E;
+R01_A_E  -> R01_SR_E;
+R01_SR_E -> R02_W;
+R02_W -> R02_A_L;
+R02_A_L -> R02_SR_L;
+R02_SR_L -> PE_3_L;
+PE_3_L -> PE_SR_02;
+PE_SR_02 -> Sink_02;
+
+//PE_1 Sends to PE_4
+PE_1 -> R00_L;
+R00_L -> R00_A_S;
+R00_A_S -> R00_SR_S;
+R00_SR_S -> R10_N;
+R10_N -> R10_A_L;
+R10_A_L -> R10_SR_L;
+R10_SR_L -> PE_4_L;
+PE_4_L -> PE_SR_10;
+PE_SR_10 -> Sink_10;
+
+//PE_1 Sends to PE_5
+PE_1 -> R00_L;
+R00_L -> R00_A_E;
+R00_A_E -> R00_SR_E;
+R00_SR_E -> R01_W;
+R01_W -> R01_A_S;
+R01_A_S  -> R01_SR_S;
+R01_SR_S -> R11_N;
+R11_N -> R11_A_L;
+R11_A_L -> R11_SR_L;
+R11_SR_L -> PE_5_L;
+PE_5_L -> PE_SR_11;
+PE_SR_11 -> Sink_11;
+
+//PE_1 Sends to PE_6
+PE_1 -> R00_L;
+R00_L -> R00_A_E;
+R00_A_E -> R00_SR_E;
+R00_SR_E -> R01_W;
+R01_W -> R01_A_E;
+R01_A_E  -> R01_SR_E;
+R01_SR_E -> R02_W;
+R02_W -> R02_A_S;
+R02_A_S -> R02_SR_S;
+R02_SR_S -> R12_N;
+R12_N -> R12_A_L;
+R12_A_L -> R12_SR_L;
+R12_SR_L -> PE_6_L;
+PE_6_L -> PE_SR_12;
+PE_SR_12 -> Sink_12;
+
+//PE_1 Sends to PE_9
+PE_1 -> R00_L;
+R00_L -> R00_A_E;
+R00_A_E -> R00_SR_E;
+R00_SR_E -> R01_W;
+R01_W -> R01_A_E;
+R01_A_E  -> R01_SR_E;
+R01_SR_E -> R02_W;
+R02_W -> R02_A_S;
+R02_A_S -> R02_SR_S;
+R02_SR_S -> R12_N;
+R12_N -> R12_A_S;
+R12_A_S -> R12_SR_S;
+R12_SR_S -> R22_N;
+R22_N -> R22_A_L;
+R22_A_L -> R22_SR_L;
+R22_SR_L -> PE_8_L;
+PE_8_L -> PE_SR_22;
+PE_SR_22 -> Sink_22;
+
+//PE_1 Sends to PE_8
+PE_1 -> R00_L;
+R00_L -> R00_A_E;
+R00_A_E -> R00_SR_E;
+R00_SR_E -> R01_W;
+R01_W -> R01_A_S;
+R01_A_S  -> R01_SR_S;
+R01_SR_S -> R11_N;
+R11_N -> R11_A_S;
+R11_A_S -> R11_SR_S;
+R11_SR_S -> R21_N;
+R21_N -> R21_A_L;
+R21_A_L -> R21_SR_L;
+R21_SR_L -> PE_8_L;
+PE_8_L -> PE_SR_21;
+PE_SR_21 -> Sink_21;
+
+//PE_2 Sends to PE_1
+PE_2 -> R01_L;
+R01_L -> R01_A_W;
+R01_A_W -> R01_SR_W;
+R01_SR_W -> R00_E;
+R00_E -> R00_A_L;
+R00_A_L -> R00_SR_L;
+R00_SR_L -> PE_1_L;
+PE_1_L -> PE_SR_00;
+PE_SR_00 -> Sink_00;
+
+//PE_2 Sends to PE_3
+PE_2 -> R01_L;
+R01_L -> R01_A_E;
+R01_A_E -> R01_SR_E;
+R01_SR_E -> R02_W;
+R02_W -> R02_A_L;
+R02_A_L -> R02_SR_L;
+R02_SR_L -> PE_3_L;
+PE_3_L -> PE_SR_02;
+PE_SR_02 -> Sink_02;
+
+//PE_2 Sends to PE_5
+PE_2 -> R01_L;
+R01_L -> R01_A_S;
+R01_A_S -> R01_SR_S;
+R01_SR_S -> R11_N;
+R11_N -> R11_A_L;
+R11_A_L -> R11_SR_L;
+R11_SR_L -> PE_5_L;
+PE_5_L -> PE_SR_11;
+PE_SR_11 -> Sink_11;
+
+//PE_2 Sends to PE_4
+PE_2 -> R01_L;
+R01_L -> R01_A_S;
+R01_A_S -> R01_SR_S;
+R01_SR_S -> R11_N;
+R11_N -> R11_A_W;
+R11_A_W -> R11_SR_W;
+R11_SR_W -> R10_E;
+R10_E -> R10_A_L;
+R10_A_L -> R10_SR_L;
+R10_SR_L -> PE_4_L;
+PE_4_L -> PE_SR_10;
+PE_SR_10 -> Sink_10;
+
+//PE_2 Sends to PE_6
+PE_2 -> R01_L;
+R01_L -> R01_A_S;
+R01_A_S -> R01_SR_S;
+R01_SR_S -> R11_N;
+R11_N -> R11_A_E;
+R11_A_E -> R11_SR_E;
+R11_SR_E -> R12_W;
+R12_W -> R12_A_L;
+R12_A_L -> R12_SR_L;
+R12_SR_L -> PE_6_L;
+PE_6_L -> PE_SR_12;
+PE_SR_12 -> Sink_12;
+
+//PE_2 Sends to PE_8
+PE_2 -> R01_L;
+R01_L -> R01_A_S;
+R01_A_S -> R01_SR_S;
+R01_SR_S -> R11_N;
+R11_N -> R11_A_S;
+R11_A_S -> R11_SR_S;
+R11_SR_S -> R21_N;
+R21_N -> R21_A_L;
+R21_A_L -> R21_SR_L;
+R21_SR_L -> PE_8_L;
+PE_8_L -> PE_SR_21;
+PE_SR_21 -> Sink_21;
+
+//PE_2 Sends to PE_9
+PE_2 -> R01_L;
+R01_L -> R01_A_S;
+R01_A_S -> R01_SR_S;
+R01_SR_S -> R11_N;
+R11_N -> R11_A_S;
+R11_A_S -> R11_SR_S;
+R11_SR_S -> R21_N;
+R21_N -> R21_A_E;
+R21_A_E -> R21_SR_E;
+R21_SR_E -> R22_W;
+R22_W -> R22_A_L;
+R22_A_L -> R22_SR_L;
+R22_SR_L -> PE_9_L;
+PE_9_L -> PE_SR_22;
+PE_SR_22 -> Sink_22;
+
+//PE_2 Sends to PE_7
+PE_2 -> R01_L;
+R01_L -> R01_A_S;
+R01_A_S -> R01_SR_S;
+R01_SR_S -> R11_N;
+R11_N -> R11_A_S;
+R11_A_S -> R11_SR_S;
+R11_SR_S -> R21_N;
+R21_N -> R21_A_W;
+R21_A_W -> R21_SR_W;
+R21_SR_W -> R20_E;
+R20_E -> R20_A_L;
+R20_A_L -> R20_SR_L;
+R20_SR_L -> PE_7_L;
+PE_7_L -> PE_SR_20;
+PE_SR_20 -> Sink_20;
+
+//PE_5 Sends to PE_6
+PE_5 -> R11_L;
+R11_L -> R11_A_E;
+R11_A_E -> R11_SR_E;
+R11_SR_E -> R12_W;
+R12_W -> R12_A_L;
+R12_A_L -> R12_SR_L;
+R12_SR_L -> PE_6_L;
+PE_6_L -> PE_SR_12;
+PE_SR_12 -> Sink_12;
+
+//PE_5 Sends to PE_4
+PE_5 -> R11_L;
+R11_L -> R11_A_W;
+R11_A_W -> R11_SR_W;
+R11_SR_W -> R10_E;
+R10_E -> R10_A_L;
+R10_A_L -> R10_SR_L;
+R10_SR_L -> PE_4_L;
+PE_4_L -> PE_SR_10;
+PE_SR_10 -> Sink_10;
+
+//PE_5 Sends to PE_7
+PE_5 -> R11_L;
+R11_L -> R11_A_S;
+R11_A_S -> R11_SR_S;
+R11_SR_S -> R21_N;
+R21_N -> R21_A_W;
+R21_A_W -> R21_SR_W;
+R21_SR_W -> R20_E;
+R20_E -> R20_A_L;
+R20_A_L -> R20_SR_L;
+R20_SR_L -> PE_7_L;
+PE_7_L -> PE_SR_20;
+PE_SR_20 -> Sink_20;
+
+//PE_6 sends to PE_9
+PE_6 -> R12_L;
+R12_L -> R12_A_S;
+R12_A_S -> R12_SR_S;
+R12_SR_S -> R22_N;
+R22_N -> R22_A_L;
+R22_A_L -> R22_SR_L;
+R22_SR_L -> PE_9_L;
+PE_9_L -> PE_SR_22;
+PE_SR_22 -> Sink_22;
+}

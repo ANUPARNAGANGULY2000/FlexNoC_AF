@@ -13,23 +13,24 @@ class  DOTParser : public antlr4::Parser {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
-    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, CV = 12, T_SERV = 13, COEFF_VAR = 14, 
-    ZERO_LOAD = 15, DEPTH = 16, SIZE = 17, RATE = 18, SOURCE = 19, QUEUE = 20, 
-    ARBITER = 21, ROUNDROBIN = 22, PRIORITY = 23, SERVER = 24, SINK = 25, 
-    STRICT = 26, GRAPH = 27, DIGRAPH = 28, NODE = 29, EDGE = 30, SUBGRAPH = 31, 
-    NUMBER = 32, STRING = 33, ID = 34, HTML_STRING = 35, COMMENT = 36, LINE_COMMENT = 37, 
-    PREPROC = 38, WS = 39
+    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, CV = 12, T_SERV = 13, S_ATTR = 14, 
+    COEFF_VAR = 15, ZERO_LOAD = 16, DEPTH = 17, PRIORITY_NO = 18, SIZE = 19, 
+    RATE = 20, SOURCE = 21, QUEUE = 22, ARBITER = 23, ROUNDROBIN = 24, PRIORITY = 25, 
+    HYBRID = 26, SERVER = 27, SPLIT = 28, SINK = 29, STRICT = 30, GRAPH = 31, 
+    DIGRAPH = 32, NODE = 33, EDGE = 34, SUBGRAPH = 35, NUMBER = 36, STRING = 37, 
+    ID = 38, HTML_STRING = 39, COMMENT = 40, LINE_COMMENT = 41, PREPROC = 42, 
+    WS = 43
   };
 
   enum {
     RuleGraph = 0, RuleStmt_list = 1, RuleStmt = 2, RuleAttr_stmt = 3, RuleAttr_list = 4, 
     RuleNode_attr_list = 5, RuleEdge_attr_list = 6, RuleGeneric_attr = 7, 
     RuleCv_attr = 8, RuleService_time_attr = 9, RuleCoeff_service_time_attr = 10, 
-    RuleZero_load_latency_attr = 11, RuleDepth_attr = 12, RulePriority_attr = 13, 
-    RuleRate_attr = 14, RuleType_attr = 15, RuleType_ = 16, RuleA_list = 17, 
-    RuleAttr_ = 18, RuleEdge_stmt = 19, RuleEdgeRHS = 20, RuleEdgeop = 21, 
-    RuleNode_stmt = 22, RuleNode_id = 23, RulePort = 24, RuleSubgraph = 25, 
-    RuleId_ = 26
+    RuleSplit_attr = 11, RuleZero_load_latency_attr = 12, RuleDepth_attr = 13, 
+    RulePriority_attr = 14, RuleRate_attr = 15, RuleMap_attr = 16, RuleMapPair = 17, 
+    RuleType_attr = 18, RuleType_ = 19, RuleA_list = 20, RuleAttr_ = 21, 
+    RuleEdge_stmt = 22, RuleEdgeRHS = 23, RuleEdgeop = 24, RuleNode_stmt = 25, 
+    RuleNode_id = 26, RulePort = 27, RuleSubgraph = 28, RuleId_ = 29
   };
 
   explicit DOTParser(antlr4::TokenStream *input);
@@ -60,10 +61,13 @@ public:
   class Cv_attrContext;
   class Service_time_attrContext;
   class Coeff_service_time_attrContext;
+  class Split_attrContext;
   class Zero_load_latency_attrContext;
   class Depth_attrContext;
   class Priority_attrContext;
   class Rate_attrContext;
+  class Map_attrContext;
+  class MapPairContext;
   class Type_attrContext;
   class Type_Context;
   class A_listContext;
@@ -205,14 +209,16 @@ public:
   public:
     Generic_attrContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    Attr_Context *attr_();
+    Priority_attrContext *priority_attr();
     Cv_attrContext *cv_attr();
     Depth_attrContext *depth_attr();
-    Priority_attrContext *priority_attr();
     Rate_attrContext *rate_attr();
     Service_time_attrContext *service_time_attr();
     Coeff_service_time_attrContext *coeff_service_time_attr();
     Zero_load_latency_attrContext *zero_load_latency_attr();
+    Split_attrContext *split_attr();
+    Map_attrContext *map_attr();
+    Attr_Context *attr_();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -271,6 +277,22 @@ public:
 
   Coeff_service_time_attrContext* coeff_service_time_attr();
 
+  class  Split_attrContext : public antlr4::ParserRuleContext {
+  public:
+    Split_attrContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *S_ATTR();
+    antlr4::tree::TerminalNode *NUMBER();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Split_attrContext* split_attr();
+
   class  Zero_load_latency_attrContext : public antlr4::ParserRuleContext {
   public:
     Zero_load_latency_attrContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -308,7 +330,7 @@ public:
   public:
     Priority_attrContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *PRIORITY();
+    antlr4::tree::TerminalNode *PRIORITY_NO();
     antlr4::tree::TerminalNode *NUMBER();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -336,6 +358,39 @@ public:
 
   Rate_attrContext* rate_attr();
 
+  class  Map_attrContext : public antlr4::ParserRuleContext {
+  public:
+    Map_attrContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    Id_Context *id_();
+    std::vector<MapPairContext *> mapPair();
+    MapPairContext* mapPair(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Map_attrContext* map_attr();
+
+  class  MapPairContext : public antlr4::ParserRuleContext {
+  public:
+    MapPairContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    Id_Context *id_();
+    antlr4::tree::TerminalNode *NUMBER();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  MapPairContext* mapPair();
+
   class  Type_attrContext : public antlr4::ParserRuleContext {
   public:
     Type_attrContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -360,7 +415,9 @@ public:
     antlr4::tree::TerminalNode *ARBITER();
     antlr4::tree::TerminalNode *ROUNDROBIN();
     antlr4::tree::TerminalNode *PRIORITY();
+    antlr4::tree::TerminalNode *HYBRID();
     antlr4::tree::TerminalNode *SERVER();
+    antlr4::tree::TerminalNode *SPLIT();
     antlr4::tree::TerminalNode *SINK();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;

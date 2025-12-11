@@ -14,6 +14,7 @@ bool dot_lang::RoundRobinArbiter::isArbiter() const { return isActive; }
 bool dot_lang::RoundRobinArbiter::isMerge() const { return false; }
 bool dot_lang::RoundRobinArbiter::isSink() const { return false; }
 bool dot_lang::RoundRobinArbiter::isPRarbiter() const { return false; }
+bool dot_lang::RoundRobinArbiter::isHybridArbiter() const { return false; }
 
 void dot_lang::RoundRobinArbiter::activeFlag() { isActive = true; }
 
@@ -30,7 +31,9 @@ void dot_lang::RoundRobinArbiter::arbiter(Mapping& mapping) {
     }
 
     if (RRarbiter) {
-	    model::roundrobin_model(queues, RRarbiter, mapping);
+	    double service_time = RRarbiter->getServiceTime();
+	    double zero_load = RRarbiter->getZeroLoadLatency();
+	    model::roundrobin_model(queues, service_time, zero_load, mapping);
     }
 }
 

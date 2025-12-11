@@ -13,7 +13,8 @@ dot_lang::Server:: Server(double service_time,double coeff_service_time):
                 bool dot_lang::Server::isSink() const {return false;}
                 bool dot_lang::Server::isRRarbiter() const{return false;}
                 bool dot_lang::Server::isPRarbiter() const{return false;}
-                //active flag variable for server
+                bool dot_lang::Server::isHybridArbiter() const{return false;}
+	   	//active flag variable for server
                 void dot_lang::Server::activeFlag() {isActive = true;}
 
                 double dot_lang::Server::getServiceTime() const{return service_time;}

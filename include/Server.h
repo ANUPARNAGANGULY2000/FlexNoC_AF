@@ -22,7 +22,9 @@ class Server : public Primitive{
                 bool isSink() const override;
                 bool isRRarbiter() const override;
                 bool isPRarbiter() const override;
-                //active flag variable for server
+		bool isHybridArbiter() const override;
+                
+		//active flag variable for server
                 void activeFlag() override;
 
 

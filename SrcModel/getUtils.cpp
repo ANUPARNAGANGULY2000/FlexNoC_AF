@@ -40,4 +40,30 @@ std::shared_ptr<dot_lang::Server> getServer(std::shared_ptr<dot_lang::Junc> node
        }
    return nullptr;
 }
+
+std::shared_ptr<dot_lang::Junc> getPrevJunction(std::shared_ptr<dot_lang::Junc> junction, dot_lang::Mapping& mapping){
+
+         
+	 for(auto it=mapping.node_files.begin(); it!=mapping.node_files.end(); ++it){
+                 if(it->second == junction){
+		    std::shared_ptr<dot_lang::Junc> PrevJunction = it->first;
+		    return PrevJunction;
+		 }
+	 }
+	 return nullptr;
+}
+
+std::shared_ptr<dot_lang::Junc> getNextJunction(std::shared_ptr<dot_lang::Junc> prevJunc, dot_lang::Mapping& mapping){
+
+	std::shared_ptr<dot_lang::Junc> NextJunc = nullptr;
+	for(auto it=mapping.node_files.begin(); it!=mapping.node_files.end(); ++it){
+	
+		if(it->first == prevJunc){
+		
+			NextJunc = it->second;
+		}
+	}
+	return NextJunc;
+
+}
 }

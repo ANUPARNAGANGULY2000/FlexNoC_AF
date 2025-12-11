@@ -81,14 +81,16 @@ edge_attr_list
     ;
 
 generic_attr
-    : attr_
+    : priority_attr
     | cv_attr
     | depth_attr
-    | priority_attr
     | rate_attr
     | service_time_attr
     | coeff_service_time_attr
     | zero_load_latency_attr
+    | split_attr
+    | map_attr
+    | attr_
     ;
 
 cv_attr
@@ -103,6 +105,10 @@ coeff_service_time_attr
     : COEFF_VAR '=' NUMBER (';' | ',')?
     ;
 
+split_attr
+    : S_ATTR '=' NUMBER (';' | ',')?
+    ;
+
 zero_load_latency_attr
     : ZERO_LOAD '=' NUMBER (';' | ',')?
     ; 
@@ -113,11 +119,19 @@ depth_attr
     ;
 
 priority_attr
-    : PRIORITY '=' NUMBER (';' | ',')?
+    : PRIORITY_NO '=' NUMBER (';' | ',')?
     ;
 
 rate_attr
     : RATE '=' NUMBER (';' | ',')?
+    ;
+
+map_attr
+    : id_ '=' '{' mapPair (',' mapPair)* '}' (';'|',')?
+    ;
+
+mapPair
+    : id_ ':' NUMBER
     ;
 
 type_attr
@@ -130,7 +144,9 @@ type_
     | ARBITER
     | ROUNDROBIN
     | PRIORITY
+    | HYBRID
     | SERVER
+    | SPLIT
     | SINK
     ;
 
@@ -188,6 +204,10 @@ T_SERV
     : [Tt] '_'? [Ss] [Ee] [Rr] [Vv]
     ;
 
+S_ATTR
+    : [Ss] [0-9]+
+    ;
+
 COEFF_VAR
     : [Cc] [Oo] [Ee] [Ff] [Ff] '_'? [Vv] [Aa] [Rr]
     ;
@@ -199,6 +219,11 @@ ZERO_LOAD
 DEPTH
     : [Dd] [Ee] [Pp] [Tt] [Hh]
     ;
+
+PRIORITY_NO
+    : [Pp] [Rr] [Ii] [Oo] [Rr] [Ii] [Tt] [Yy] '_'? [Nn] [Oo]
+    ;
+
 
 SIZE
     : [Ss] [Ii] [Zz] [Ee]
@@ -228,8 +253,16 @@ PRIORITY
     : [Pp] [Rr] [Ii] [Oo] [Rr] [Ii] [Tt] [Yy]
     ;
 
+HYBRID
+    : [Hh] [Yy] [Bb] [Rr] [Ii] [Dd]
+    ;
+
 SERVER
     : [Ss] [Ee] [Rr] [Vv] [Ee] [Rr]
+    ;
+
+SPLIT
+    : [Ss] [Pp] [Ll] [Ii] [Tt]
     ;
 
 SINK
