@@ -131,18 +131,18 @@ Replace `hybrid1.dot` with any DOT file containing valid NoC specifications for 
 
 This mode generates a full DOT file automatically based on parameters supplied in a `.txt` config file.
   
-    ```bash
-    ./bin/dot_iso regular ../test/test.txt
-    ```
+   ```bash
+   ./bin/dot_iso regular ../test/test.txt
+   ```
 Replace `test.txt` with any `.txt` file containing valid NoC specifications for regular topology.
 
 11. Running regression test mode:
 
 Regression mode automatically executes all test DOT files inside the test directory.
 
-    ```bash
-    ./bin/dot_iso regression
-    ```
+   ```bash
+   ./bin/dot_iso regression
+   ```
 This is useful for verifying correctness after grammar or compiler updates.
 
 ## Workflow of FlexNoC Framework
