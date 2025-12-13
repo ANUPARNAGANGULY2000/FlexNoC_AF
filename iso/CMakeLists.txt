@@ -1,6 +1,6 @@
-add_executable(dot_iso main.cpp)
+add_executable(flexnoc main.cpp)
 
-target_include_directories(dot_iso
+target_include_directories(flexnoc
     PRIVATE
         ${CMAKE_SOURCE_DIR}/include      # your dot_compiler.h, etc
 	${CMAKE_SOURCE_DIR}/lang       # DOTLexer.h, DOTParser.h, etc.
@@ -9,4 +9,4 @@ target_include_directories(dot_iso
 	${CMAKE_SOURCE_DIR}/auto_generate
 )
 
-target_link_libraries(dot_iso PRIVATE dot_dsl fmt::fmt antlr4_static Boost::graph)
+target_link_libraries(flexnoc PRIVATE FlexNoC_core fmt::fmt antlr4_static Boost::graph)

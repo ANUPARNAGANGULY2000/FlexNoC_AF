@@ -1,10 +1,9 @@
-# DOT Domain-Specific Language (DSL) Extension for Network Topologies
+# FlexNoC Framework
 
-This project extends the DOT language using ANTLR to define a Domain-Specific Language(DSL) for describing custom Network-on-Chip(NoC) topologies. It supports user-defined attributes for components such as injectors, queues, arbiters, and servers and enable clear specification of the network-on-chip (NoC). The DSL simplifies parsing, validation, and simulation of communication behavior on NoCs using analytical models.
+FlexNoC is a Fast and Flexible Analysis framework for NoCs with Arbitrary Topologies andHybrid Arbitration. This project extends the DOT language using ANTLR to define a Domain-SpecificLanguage(DSL) for describing custom Network-on-Chip(NoC) topologies. It supports user-defined attributes for components such as injectors, queues, arbiters, and servers and enable clearspecification of the network-on-chip (NoC) to explore irregular topology. FlexNoC offers automatic generation of .dot for regular NoC topologies. This automatic topology generation feature simplifies the process of exploring regular NoC topologies such as mesh, torus, and ring The DSL simplifies parsing, validation, and simulation of communication behavior on NoCs using analytical model.
 
-## Overview
+FlexNoC is designed for architectural exploration, research prototyping, and performance evaluation of NoC designs.
 
-The DSL project is a domain-specific language designed to simplify the development of specific applications within a particular domain. It provides a set of abstractions and syntax tailored to the needs of that domain, making it easier for developers to express their intent and solve problems efficiently.
 
 ## DOT File Syntax Guide (DSL Rules)
 
@@ -55,6 +54,27 @@ For real examples, check the provided `.dot` files:
 - `graph4.dot`
 - `hybrid1.dot`
 
+## Prerequisites
+
+###System Requirements
+
+- Linux (tested on Ubuntu-like environments)
+
+- GCC ≥ 9
+
+- Python ≥ 3.7
+
+- CMake ≥ 3.16
+
+###Required Tools
+
+- Conan (version < 2.0)
+
+- CMake
+
+- Make
+
+Important: This project currently relies on Conan 1.x APIs and is not compatible with Conan 2.x.
 
 ## Building with Conan
 
@@ -64,7 +84,7 @@ To build the project, you can use Conan, a package manager for C and C++ librari
 
     **Note** the conanfile.py used here relies upon conan version < 2.0.  If you have a python installation, you can install using e.g., 
     ```bash
-    python -m pip install conan==1.66.0
+    python3 -m pip install conan==1.66.0
     ```
 2. Ensure conancenter is added as a remote to grab dependencies:
 
@@ -75,13 +95,13 @@ To build the project, you can use Conan, a package manager for C and C++ librari
 2. Clone the DSL project repository from the following location:
 
     ```bash
-    git clone https://github.com/path/to/dsl-project.git
+    git clone https://github.com/anonymous-author/FlexNoC.git
     ```
 
 3. Change to the project directory:
 
     ```bash
-    cd dsl-project/dsl
+    cd FlexNoC
     ```
 
 4. Create a Conan profile for your build environment:

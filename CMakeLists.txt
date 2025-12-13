@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(dot_dsl LANGUAGES CXX)
+project(FlexNoC LANGUAGES CXX)
 
 # ─── Force C++17 for all targets ──────────────────────────────────────────────
 set(CMAKE_CXX_STANDARD 17)
@@ -23,7 +23,7 @@ enable_testing()
 
 
 # ─── Define the dot_dsl library ──────────────────────────────────────────────
-add_library(dot_dsl
+add_library(FlexNoC_core
     src/dot_compiler.cpp         # <-- Replace with actual .cpp files
     lang/DOTLexer.cpp
     lang/DOTParser.cpp
@@ -57,7 +57,7 @@ add_library(dot_dsl
     # Add other source files if needed
 )
 
-target_include_directories(dot_dsl PUBLIC
+target_include_directories(FlexNoC_core PUBLIC
     ${CMAKE_SOURCE_DIR}/include
      ${CMAKE_SOURCE_DIR}/lang
      ${CMAKE_SOURCE_DIR}/IncludeModel
@@ -65,7 +65,7 @@ target_include_directories(dot_dsl PUBLIC
      
 )
 
-target_link_libraries(dot_dsl PUBLIC
+target_link_libraries(FlexNoC_core PUBLIC
     antlr4_static
     fmt::fmt
     Boost::graph
