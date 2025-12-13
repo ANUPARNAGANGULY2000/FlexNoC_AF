@@ -56,7 +56,7 @@ For real examples, check the provided `.dot` files:
 
 ## Prerequisites
 
-###System Requirements
+### System Requirements
 
 - Linux (tested on Ubuntu-like environments)
 
@@ -66,7 +66,7 @@ For real examples, check the provided `.dot` files:
 
 - CMake ≥ 3.16
 
-###Required Tools
+### Required Tools
 
 - Conan (version < 2.0)
 
@@ -143,7 +143,7 @@ This will build the main executable `bin/dot_iso`.
 Once the build is complete, run the tool using 
 
    ```bash
-   ./bin/dot_iso irregular ../test/hybrid1.dot
+   ./bin/flexnoc irregular ../test/hybrid1.dot
    ```
 Replace `hybrid1.dot` with any DOT file containing valid NoC specifications for irregular topology.
 
@@ -152,7 +152,7 @@ Replace `hybrid1.dot` with any DOT file containing valid NoC specifications for 
 This mode generates a full DOT file automatically based on parameters supplied in a `.txt` config file.
   
    ```bash
-   ./bin/dot_iso regular ../test/test.txt
+   ./bin/flexnoc regular ../test/test.txt
    ```
 Replace `test.txt` with any `.txt` file containing valid NoC specifications for regular topology.
 
@@ -161,7 +161,7 @@ Replace `test.txt` with any `.txt` file containing valid NoC specifications for 
 Regression mode automatically executes all test DOT files inside the test directory.
 
    ```bash
-   ./bin/dot_iso regression
+   ./bin/flexnoc regression
    ```
 This is useful for verifying correctness after grammar or compiler updates.
 
