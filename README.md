@@ -95,7 +95,7 @@ To build the project, you can use Conan, a package manager for C and C++ librari
 2. Clone the DSL project repository from the following location:
 
     ```bash
-    git clone https://github.com/anonymous-author/FlexNoC.git
+    git clone https://anonymous.4open.science/r/FlexNoC
     ```
 
 3. Change to the project directory:

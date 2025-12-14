@@ -4,9 +4,14 @@
 #include <antlr4-runtime.h>
 #include <fstream>
 #include <sstream>
+#include <filesystem>
+
 
 std::string readFile(const std::string& filePath) {
     std::ifstream file(filePath);
+    if (!file.is_open()) {
+        throw std::runtime_error("Cannot open DOT file: " + filePath);
+    }
     std::stringstream buffer;
     buffer << file.rdbuf();
     return buffer.str();
@@ -55,14 +60,39 @@ protected:
     }
 };
 
-TEST_F(DOTParserTest, ParseValidDotFile) {
-    std::string dotFilePath = "../../test_graph.dot";
+/*TEST_F(DOTParserTest, ParseValidDotFile) {
+    std::string dotFilePath = "../test/test_graph.dot";
     bool success = parseDotFile(dotFilePath);
     ASSERT_TRUE(success);
 }
 
 TEST_F(DOTParserTest, ParseInvalidDotFileRaisesException) {
-    std::string dotFilePath = "../invalid_graph.dot";
+    std::string dotFilePath = "../test/invalid_graph.dot";
     bool success = parseDotFile(dotFilePath);
+    ASSERT_FALSE(success);
+}*/
+
+TEST_F(DOTParserTest, ParseValidDotFile) {
+    std::filesystem::path testDir =
+        std::filesystem::path(__FILE__).parent_path();
+
+    std::filesystem::path dotFile =
+        testDir / "test_graph.dot";
+
+    std::cout << "DOT file path: " << dotFile << std::endl;
+
+    bool success = parseDotFile(dotFile.string());
+    ASSERT_TRUE(success);
+}
+
+
+TEST_F(DOTParserTest, ParseInvalidDotFileRaisesException) {
+    std::filesystem::path testDir =
+        std::filesystem::path(__FILE__).parent_path();
+
+    std::filesystem::path dotFile =
+        testDir / "invalid_graph.dot";
+
+    bool success = parseDotFile(dotFile.string());
     ASSERT_FALSE(success);
 }
