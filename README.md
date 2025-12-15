@@ -1,4 +1,4 @@
-# FlexNoC Framework
+# FlexNoC: Fast and Flexible Analysis for NoCs with Arbitrary Topologies and Hybrid Arbitration
 
 FlexNoC is a Fast and Flexible Analysis framework for NoCs with Arbitrary Topologies andHybrid Arbitration. This project extends the DOT language using ANTLR to define a Domain-SpecificLanguage(DSL) for describing custom Network-on-Chip(NoC) topologies. It supports user-defined attributes for components such as injectors, queues, arbiters, and servers and enable clearspecification of the network-on-chip (NoC) to explore irregular topology. FlexNoC offers automatic generation of .dot for regular NoC topologies. This automatic topology generation feature simplifies the process of exploring regular NoC topologies such as mesh, torus, and ring The DSL simplifies parsing, validation, and simulation of communication behavior on NoCs using analytical model.
 
@@ -79,6 +79,19 @@ Important: This project currently relies on Conan 1.x APIs and is not compatible
 ## Building with Conan
 
 To build the project, you can use Conan, a package manager for C and C++ libraries. Follow the steps below to set up and build the project:
+
+### Note on Conan Dependency Fetching
+
+This project uses Conan for dependency management.  
+In some restricted network environments (e.g., institutional or firewall-restricted systems),
+access to `conan.io` may be blocked, which can cause dependency resolution to fail.
+
+If such an issue occurs, please ensure that:
+- Internet access to `conan.io` is permitted, or
+- Conan is configured to use a local cache or an alternative mirror.
+
+Once dependencies are available locally, the build and tests proceed normally.
+
 
 1. Install Conan by following the instructions in the [Conan documentation](https://docs.conan.io/en/latest/installation.html).
 
