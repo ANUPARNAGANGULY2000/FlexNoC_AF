@@ -1,0 +1,42 @@
+digraph G{
+
+	rankdir = "LR"
+
+IP3[label="IP3", type=Source, rate=0.4, cv=0.55, t_serv=1.0, shape="rarrow"];
+IP0[label="IP0", type=SOURCE, rate=0.05, cv=0.55, shape="rarrow"];
+Temp_buffer0[label="Temp_buffer0", type=QUEUE, depth=4, shape="cylinder"];
+BF3_buffer[label="BF3_buffer", type=Queue, depth=4, shape="cylinder"];
+BF3_arbiter[label="BF3_arbiter", type=PRioRity, zero_load=1.0, t_serv=0.0, coeff_var=0.0, shape="trapezium"];
+BF2_arbiter[label="BF2_arbiter", type=PRioRity, zero_load=1.0, t_serv=0.0, coeff_var=0.0, shape="trapezium"];
+BF1_arbiter[label="BF1_arbiter", type=PRioRity, zero_load=1.0, t_serv=0.0, coeff_var=0.0, shape="trapezium"];
+BF0_arbiter[label="BF0_arbiter", type=PRioRity, zero_load=1.0, t_serv=0.0, coeff_var=0.0, shape="trapezium"];
+BF3_SR[label="BF3_SR", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+BF2_buffer[label="BF2_buffer", type=Queue, depth=4, shape="cylinder"];
+BF1_buffer[label="BF1_buffer", type=Queue, depth=4, shape="cylinder"];
+Temp_buffer1[label="Temp_buffer1", type=Queue, depth=4, shape="cylinder"];
+BF0_buffer[label="BF0_buffer", type=Queue, depth=4, shape="cylinder"];
+BF2_SR[label="BF2_SR", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+BF1_SR[label="BF1_SR", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+BF0_SR[label="BF0_SR", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+DIE0_SR[label="DIE0_SR", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+Sink1[label="sink", type=Sink];
+
+IP3 -> Temp_buffer0;
+Temp_buffer0 -> BF3_arbiter;
+BF3_arbiter -> BF3_SR;
+BF3_SR -> BF3_buffer;
+BF3_buffer -> BF2_arbiter;
+BF2_arbiter -> BF2_SR;
+BF2_SR -> BF2_buffer;
+BF2_buffer -> BF1_arbiter;
+BF1_arbiter -> BF1_SR;
+BF1_SR -> BF1_buffer;
+IP0 -> Temp_buffer1;
+Temp_buffer1 -> BF0_arbiter;
+BF1_buffer -> BF0_arbiter;
+BF0_arbiter ->BF0_SR;
+BF0_SR -> BF0_buffer;
+BF0_buffer -> DIE0_SR;
+DIE0_SR -> Sink1;
+}
+

@@ -1,0 +1,60 @@
+digraph G{
+
+	rankdir = "LR"
+
+F1[label="injector1", type=Source, rate=0.11, cv=0.89, shape="rarrow"];
+F2[label="injector2", type=SOURCE, rate=0.11, cv=0.89, shape="rarrow"];
+F3[label="injector3", type=SOURCE, rate=0.11, cv=0.89, shape="rarrow"];
+F4[label="injector4", type=SOURCE, rate=0.11, cv=0.89, shape="rarrow"];
+F5[label="injector5", type=SOURCE, rate=0.11, cv=0.89, shape="rarrow"];
+Q1[label="buffer1", type=QUEUE, depth=6, shape="cylinder"];
+Q2[label="buffer2", type=Queue, depth=6, shape="cylinder"];
+Q3[label="buffer3", type=QUEUE, depth=6, shape="cylinder"];
+Q4[label="buffer4", type=QUEUE, depth=6, priority_no=1, shape="cylinder"];
+Q5[label="buffer5", type=QUEUE, depth=6, priority_no=1, shape="cylinder"];
+Q6[label="buffer6", type=QUEUE, depth=6, priority_no=2, shape="cylinder"];
+Q7[label="buffer7", type=QUEUE, depth=6, shape="cylinder"];
+Q8[label="buffer8", type=QUEUE, depth=6, shape="cylinder"];
+Q9[label="buffer9", type=QUEUE, depth=6, shape="cylinder"];
+Q10[label="buffer10", type=QUEUE, depth=6, shape="cylinder"];
+RoundRobin1[label="RR1", type=RoundRobin, zero_load=0.0, t_serv=0.0, coeff_var=0.0, shape="trapezium"];
+Hybrid1[label="Hybrid1", type=Hybrid, zero_load=0.0, t_serv=0.0, coeff_var=0.0, shape="trapezium"];
+Priority1[label="PR1", type=RoundRobin, zero_load=0.0, t_serv=0.0, coeff_var=0.0, shape="trapezium"];
+split1[label="split1",type=split, out={Q6:0.5, Q7:0.5}, shape="triangle"];
+SR1[label="SR1", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR2[label="SR2", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR3[label="SR3", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR4[label="SR4", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR5[label="SR5", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR6[label="SR6", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+Sink1[label="sink", type=Sink];
+Sink2[label="sink", type=Sink];
+
+F1 -> Q1;
+F2 -> Q2;
+F3 -> Q4;
+F4 -> Q5;
+F5 -> Q8;
+Q1 -> RoundRobin1;
+Q2 -> RoundRobin1;
+RoundRobin1 ->SR1;
+SR1 -> Q3;
+Q3 -> SR2;
+SR2 -> split1;
+split1 ->Q6;
+split1 -> Q7;
+Q4 -> Hybrid1;
+Q5 -> Hybrid1;
+Q6 -> Hybrid1;
+Hybrid1 -> SR3;
+SR3 -> Q9;
+Q9 -> SR4;
+SR4 -> Sink1;
+Q7 -> Priority1;
+Q8 -> Priority1;
+Priority1 -> SR5;
+SR5 -> Q10;
+Q10 -> SR6;
+SR6 -> Sink2;
+}
+

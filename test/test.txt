@@ -1,0 +1,9 @@
+topology = mesh
+routing = YX
+size = 10
+arbiter = roundrobin
+rate = 0.5
+buffer = 12
+t_serv = 1.0
+load = 0.0
+

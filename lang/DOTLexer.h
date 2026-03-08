@@ -1,0 +1,56 @@
+
+// Generated from DOT.g4 by ANTLR 4.13.2
+
+#pragma once
+
+
+#include "antlr4-runtime.h"
+
+
+
+
+class  DOTLexer : public antlr4::Lexer {
+public:
+  enum {
+    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
+    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, CV = 12, T_SERV = 13, S_ATTR = 14, 
+    COEFF_VAR = 15, ZERO_LOAD = 16, DEPTH = 17, PRIORITY_NO = 18, SIZE = 19, 
+    RATE = 20, SOURCE = 21, QUEUE = 22, ARBITER = 23, ROUNDROBIN = 24, PRIORITY = 25, 
+    HYBRID = 26, SERVER = 27, SPLIT = 28, SINK = 29, STRICT = 30, GRAPH = 31, 
+    DIGRAPH = 32, NODE = 33, EDGE = 34, SUBGRAPH = 35, NUMBER = 36, STRING = 37, 
+    ID = 38, HTML_STRING = 39, COMMENT = 40, LINE_COMMENT = 41, PREPROC = 42, 
+    WS = 43
+  };
+
+  explicit DOTLexer(antlr4::CharStream *input);
+
+  ~DOTLexer() override;
+
+
+  std::string getGrammarFileName() const override;
+
+  const std::vector<std::string>& getRuleNames() const override;
+
+  const std::vector<std::string>& getChannelNames() const override;
+
+  const std::vector<std::string>& getModeNames() const override;
+
+  const antlr4::dfa::Vocabulary& getVocabulary() const override;
+
+  antlr4::atn::SerializedATNView getSerializedATN() const override;
+
+  const antlr4::atn::ATN& getATN() const override;
+
+  // By default the static state used to implement the lexer is lazily initialized during the first
+  // call to the constructor. You can call this function if you wish to initialize the static state
+  // ahead of time.
+  static void initialize();
+
+private:
+
+  // Individual action functions triggered by action() above.
+
+  // Individual semantic predicate functions triggered by sempred() above.
+
+};
+

@@ -1,0 +1,30 @@
+digraph G{
+
+	rankdir = "LR"
+
+IP6[label="IP6", type=Source, rate=0.4, cv=0.5, t_serv=1.0, shape="rarrow"];
+IP0[label="IP0", type=Source, rate=0.5, cv=0.5, t_serv=1.0, shape="rarrow"];
+Temp_buffer0[label="Temp_buffer0", type=QUEUE, depth=12, shape="cylinder"];
+Temp_buffer1[label="Temp_buffer1", type=QUEUE, depth=12, shape="cylinder"];
+BF6_arbiter[label="BF6_arbiter", type=PRioRity, zero_load=25.0, t_serv=0.0, coeff_var=0.0, shape="trapezium"];
+BF0_arbiter[label="BF0_arbiter", type=PRioRity, zero_load=34.0, t_serv=0.0, coeff_var=0.0, shape="trapezium"];
+BF0_SR[label="BF0_SR", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+BF6_SR[label="BF6_SR", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+BF6_buffer[label="BF6_buffer", type=Queue, depth=12, shape="cylinder"];
+BF0_buffer[label="BF0_buffer", type=Queue, depth=12, shape="cylinder"];
+DIE0_SR[label="DIE0_SR", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+Sink1[label="DIE0 Sink", type=Sink];
+
+IP6 -> Temp_buffer0[link_load=1];
+Temp_buffer0 -> BF6_arbiter[link_load=4];
+BF6_arbiter -> BF6_SR;
+BF6_SR -> BF6_buffer[link_load=7];
+IP0 -> Temp_buffer1[link_load=1];
+Temp_buffer1 -> BF0_arbiter;
+BF6_buffer -> BF0_arbiter[link_load=18];
+BF0_arbiter -> BF0_SR;
+BF0_SR -> BF0_buffer[link_load=7];
+BF0_buffer -> DIE0_SR[link_load=22];
+DIE0_SR -> Sink1;
+}
+

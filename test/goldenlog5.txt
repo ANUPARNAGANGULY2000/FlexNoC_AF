@@ -1,0 +1,15 @@
+Injector: F1    Waiting time: 0.226466
+Injector: F2    Waiting time: 0.226466
+Injector: F3    Waiting time: 0.282243
+Injector: F4    Waiting time: 0.153233
+Injector: F5    Waiting time: 0.0170142
+Queue: Q1       Waiting time: 0.0141175
+Queue: Q2       Waiting time: 0.0141175
+Queue: Q3       Waiting time: 0.0699075
+Queue: Q4       Waiting time: 1.29072e-05
+Queue: Q5       Waiting time: 0.0591112
+Queue: Q6       Waiting time: 8.50893e-06
+Queue: Q7       Waiting time: 0.153224
+Queue: Q8       Waiting time: 0.0170142
+Queue: Q9       Waiting time: 0
+

@@ -1,0 +1,34 @@
+digraph G{
+
+	rankdir = "LR"
+
+PE_1[label="F1", type=Source, rate=0.03, cv=0.97, t_serv=1.0, shape="rarrow"];
+PE_2[label="F2", type=SOURCE, rate=0.03, cv=0.97, shape="rarrow"];
+R01_L[label="Q1", type=QUEUE, depth=4, shape="cylinder"];
+R02_N[label="Q2", type=Queue, depth=4, shape="cylinder"];
+R03_S[label="Q2", type=Queue, depth=4, shape="cylinder"];
+R04_E[label="Q2", type=Queue, depth=4, shape="cylinder"];
+R05_W[label="Q2", type=Queue, depth=4, shape="cylinder"];
+RR1[label="RR1", type=RoundRobin, zero_load=0.0, t_serv=0.0, coeff_var=0.0, shape="trapezium"];
+RR2[label="RR1", type=RoundRobin, zero_load=0.0, t_serv=0.0, coeff_var=0.0, shape="trapezium"];
+SR1[label="SR1", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR2[label="SR2", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR3[label="SR2", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+SR4[label="SR2", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
+Sink1[label="sink", type=Sink];
+
+PE_1 -> R01_L;
+R01_L -> RR2;
+RR2 -> SR1;
+SR1 -> R02_N;
+R02_N -> SR2;
+SR2 -> R03_S;
+PE_2 -> R04_E;
+R03_S -> RR1;
+R04_E -> RR1;
+RR1 -> SR3;
+SR3 -> R05_W;
+R05_W -> SR4;
+SR4 -> Sink1;
+}
+
