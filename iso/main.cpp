@@ -5,7 +5,9 @@
 #include <cassert>
 #include "dot_file_generator.h"
 #include "config_file_reader.h"
+#include "RunRegular.cpp"
 #include "RundotFile.cpp"
+
 
 
 int main(int argc, char* argv[]) {
@@ -59,7 +61,8 @@ else if(mode == "regular"){
 	auto end = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> elapsed = end - start;
 	std::cout<<"Time taken to generate auto .dot file: "<<elapsed.count()<<" seconds\n";
-	DotFileProcess(generatedDotFile);
+//	DotFileProcess(generatedDotFile);
+	RunRegular(generatedDotFile);
 	}
 }
 else if( mode == "regression"){

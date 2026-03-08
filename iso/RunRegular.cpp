@@ -13,7 +13,7 @@
 #include <random>
 #include <cassert>
 
-void DotFileProcess(std::string& fileName){
+void RunRegular(std::string& fileName){
 
    //Phase 1: Parsing & set data structure
    auto parse_start = std::chrono::high_resolution_clock::now();
@@ -23,7 +23,7 @@ void DotFileProcess(std::string& fileName){
 
    //phase 2:set injection_rate and coeff_inter_arrival_time
    auto model_exec_start = std::chrono::high_resolution_clock::now();
-   for(double rate = 0.05; rate <= 0.25; rate += 0.05){
+   
    for(int iteration=0; iteration<1; iteration++){
    
 
@@ -45,9 +45,9 @@ void DotFileProcess(std::string& fileName){
 			   double coeff_inter_arrival_time = injector->getCoeffInterArrivalTime();
 
                
-			   injector->setInjectionRate(rate);
+			   injector->setInjectionRate(injection_rate);
                 
-			   injector->setCoeffInterArrivalTime(1-rate);
+			   injector->setCoeffInterArrivalTime(1-injection_rate);
                
 			   model::update_connected_node(iter->first,mapping, injection_rate);
 		
@@ -203,7 +203,7 @@ void DotFileProcess(std::string& fileName){
    //std::cout<<"Parsing Time in sec: "<<parsing_time_in_sec.count()<<" second"<<std::endl;
   
    //std::cout<<"Total Analytical Model Execution Time: "<<total_model_time_in_sec.count()<<" second"<<std::endl;
-   }
+   
  
    delete obj;
 }

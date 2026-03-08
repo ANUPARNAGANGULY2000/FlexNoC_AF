@@ -312,3 +312,6 @@ ANTLR runtime is used for parsing the DSL grammar.
 
 For more information see:
 https://www.antlr.org/
+
+
+© 2026 Anuparna Gangopadhyay. Released under the MIT License.
