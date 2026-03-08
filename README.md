@@ -1,197 +1,309 @@
 # FlexNoC: Fast and Flexible Analysis for NoCs with Arbitrary Topologies and Hybrid Arbitration
 
-FlexNoC is a Fast and Flexible Analysis framework for NoCs with Arbitrary Topologies andHybrid Arbitration. This project extends the DOT language using ANTLR to define a Domain-SpecificLanguage(DSL) for describing custom Network-on-Chip(NoC) topologies. It supports user-defined attributes for components such as injectors, queues, arbiters, and servers and enable clearspecification of the network-on-chip (NoC) to explore irregular topology. FlexNoC offers automatic generation of .dot for regular NoC topologies. This automatic topology generation feature simplifies the process of exploring regular NoC topologies such as mesh, torus, and ring The DSL simplifies parsing, validation, and simulation of communication behavior on NoCs using analytical model.
+FlexNoC is a fast and flexible analytical framework for Network-on-Chip (NoC) performance modeling with arbitrary topologies and hybrid arbitration policies.
 
-FlexNoC is designed for architectural exploration, research prototyping, and performance evaluation of NoC designs.
+The framework extends the DOT language using ANTLR to define a Domain-Specific Language (DSL) for describing custom NoC architectures. The DSL supports user-defined attributes for components such as injectors, queues, arbiters, and servers, enabling clear specification of both regular and irregular network topologies.
+
+FlexNoC also supports automatic generation of DOT files for regular NoC topologies such as mesh, torus, and ring networks. These descriptions are parsed and translated into analytical queueing models used to evaluate communication performance.
+
+FlexNoC is designed for:
+
+- Architectural exploration
+- Research prototyping
+- Performance evaluation of NoC designs
 
 
-## DOT File Syntax Guide (DSL Rules)
+------------------------------------------------------------
+Quick Start (Recommended for Artifact Reviewers)
+------------------------------------------------------------
 
-This DSL extends the DOT language to describe **Network-on-Chip (NoC)** components using custom attributes. The compiler parses these attributes to construct the analytical model.
-Each node must define a `type` attribute. Additional attributes depend on the node type.
+The easiest way to run FlexNoC is using Docker.
 
-### Supported Node Types and their Attributes:
+Clone the repository:
 
-- **injector**
-  - type: `Source`
-  - Required: `rate`
+git clone https://github.com/ANUPARNAGANGULY2000/FlexNoC_AF.git
+cd FlexNoC_AF
 
-- **queue**
-  - type: `queue`
-  - Required: `depth`
 
-- **RoundRobin Arbiter**
-  - type: `RoundRobin`
-  - Required: `zero_load`
+Build the Docker image:
 
-- **Priority Arbiter**
-  - type: `Priority`
-  - Required: `zero_load`
+docker build -t flexnoc .
 
-- **Hybrid Arbiter**
-  - type: `hybrid`
-  - Required: `zero_load`
 
-- **Server**
-  - type: `server`
-  - Required: `t_serv`, `coeff_var`
+Run regression tests:
 
-- **Split**
-  - type: `split`
-  - Required: `out={port probabilities}`
+docker run flexnoc
 
-- **Sink**
-  - type: `sink`
 
-**Note** 
-- The compiler will validate all **required** attributes. Missing or incorrect attributes will raise an **error**.
-- Ensure every node is connected to correct node and every node is defined properly with its type and parameters.
+This command builds the project inside the container and executes the regression test suite automatically.
 
-For real examples, check the provided `.dot` files:
 
-- `graph2.dot`
-- `graph3.dot`
-- `graph4.dot`
-- `hybrid1.dot`
+------------------------------------------------------------
+Running a Specific Example (Docker)
+------------------------------------------------------------
 
-## Prerequisites
+docker run -it flexnoc ./bin/flexnoc irregular ../test/hybrid1.dot
 
-### System Requirements
+
+
+------------------------------------------------------------
+Native Build (Without Docker)
+------------------------------------------------------------
+
+If Docker is not available, the project can be built directly.
+
+System Requirements:
 
 - Linux (tested on Ubuntu-like environments)
+- GCC >= 9
+- Python >= 3.7
+- CMake >= 3.16
+- Java (required for ANTLR)
 
-- GCC ≥ 9
 
-- Python ≥ 3.7
-
-- CMake ≥ 3.16
-
-### Required Tools
+Required Tools:
 
 - Conan (version < 2.0)
-
 - CMake
-
 - Make
 
-Important: This project currently relies on Conan 1.x APIs and is not compatible with Conan 2.x.
 
-## Building with Conan
+Install Conan:
 
-To build the project, you can use Conan, a package manager for C and C++ libraries. Follow the steps below to set up and build the project:
-
-### Note on Conan Dependency Fetching
-
-This project uses Conan for dependency management.  
-In some restricted network environments (e.g., institutional or firewall-restricted systems),
-access to `conan.io` may be blocked, which can cause dependency resolution to fail.
-
-If such an issue occurs, please ensure that:
-- Internet access to `conan.io` is permitted, or
-- Conan is configured to use a local cache or an alternative mirror.
-
-Once dependencies are available locally, the build and tests proceed normally.
+python3 -m pip install conan==1.66.0
 
 
-1. Install Conan by following the instructions in the [Conan documentation](https://docs.conan.io/en/latest/installation.html).
+Add Conan Center remote:
 
-    **Note** the conanfile.py used here relies upon conan version < 2.0.  If you have a python installation, you can install using e.g., 
-    ```bash
-    python3 -m pip install conan==1.66.0
-    ```
-2. Ensure conancenter is added as a remote to grab dependencies:
-
-    ```bash
-    conan remote add conancenter https://center.conan.io
-    ```
-
-2. Clone the DSL project repository from the following location:
-
-    ```bash
-    git clone https://anonymous.4open.science/r/FlexNoC
-    ```
-
-3. Change to the project directory:
-
-    ```bash
-    cd FlexNoC
-    ```
-
-4. Create a Conan profile for your build environment:
-
-    ```bash
-    conan profile new default --detect
-    ```
-
-5. Create and cd into a build directory:
-    ```bash
-    mkdir build && cd build
-    ```
-
-6. Add the required dependencies to Conan:
-
-    ```bash
-    conan install .. --update --build=missing --build=outdated
-    ```
-
-7. Build the project:
-
-    ```bash
-    conan build ..
-    ```
-This final build step invokes cmake to build the project.
-
-8. (Optional) Manual Build with CMake and Make:
-
-    If `conan build ..` does not automatically compile everything, you can manually configure and compile the project.
-
-    ```bash
-     cmake ..
-     make -j
-    ```
-This will build the main executable `bin/dot_iso`.
-
-9. Running the Executable:
-
-Once the build is complete, run the tool using 
-
-   ```bash
-   ./bin/flexnoc irregular ../test/hybrid1.dot
-   ```
-Replace `hybrid1.dot` with any DOT file containing valid NoC specifications for irregular topology.
-
-10. Auto-generation of DOT files(Regular Mesh Topology):
-
-This mode generates a full DOT file automatically based on parameters supplied in a `.txt` config file.
-  
-   ```bash
-   ./bin/flexnoc regular ../test/test.txt
-   ```
-Replace `test.txt` with any `.txt` file containing valid NoC specifications for regular topology.
-
-11. Running regression test mode:
-
-Regression mode automatically executes all test DOT files inside the test directory.
-
-   ```bash
-   ./bin/flexnoc regression
-   ```
-This is useful for verifying correctness after grammar or compiler updates.
-
-## Workflow of FlexNoC Framework
-
-The tool supports both **regular topology(auto-generated)** and **irregular topologies(user-provided DOT file** depending on the mode.
-This framework automatically performs the following steps:
-
-1. Reads the configuration file.
-2. Generates an auto-generated DOT file for regular topology.
-3. Parses the produced DOT file and set the data-structure.
-4. Update injection process and split probability if needed.
-5. Invoke analytical model.
-6. Calculate Waiting time.
-7. Prints Waiting time of each Injector and Queues.
+conan remote add conancenter https://center.conan.io
 
 
-**Note:** Java is required to run ANTLR4, which is included as a .jar file.
+Create Conan profile:
 
-For more information on antlr4, please see [their documentation](https://www.antlr.org/).
+conan profile new default --detect
+
+
+Create build directory:
+
+mkdir build
+cd build
+
+
+Install dependencies:
+
+conan install .. --update --build=missing --build=outdated
+
+
+Build the project:
+
+conan build ..
+
+
+Optional manual build:
+
+cmake ..
+make -j
+
+
+This produces the executable:
+
+bin/flexnoc
+
+
+
+------------------------------------------------------------
+Running the Executable
+------------------------------------------------------------
+
+Run FlexNoC with a user-defined DOT topology:
+
+./bin/flexnoc irregular ../test/hybrid1.dot
+
+
+
+------------------------------------------------------------
+Regular Topology Generation
+------------------------------------------------------------
+
+FlexNoC can automatically generate DOT files for regular topologies using a configuration file.
+
+Example:
+
+./bin/flexnoc regular ../test/test.txt
+
+
+
+------------------------------------------------------------
+Regression Mode
+------------------------------------------------------------
+
+Regression mode executes all test DOT files in the test directory.
+
+./bin/flexnoc regression
+
+
+This mode is useful for validating correctness after updates to the grammar or analytical model.
+
+
+
+------------------------------------------------------------
+DOT DSL Syntax Guide
+------------------------------------------------------------
+
+The DSL extends the DOT language to describe Network-on-Chip (NoC) components using custom attributes.
+
+Each node must define a "type" attribute.
+
+
+Supported Node Types:
+
+
+Injector
+
+type: Source
+rate: <injection_rate>
+
+
+Queue
+
+type: queue
+depth: <buffer_depth>
+
+
+RoundRobin Arbiter
+
+type: RoundRobin
+zero_load: <latency>
+
+
+Priority Arbiter
+
+type: Priority
+zero_load: <latency>
+
+
+Hybrid Arbiter
+
+type: hybrid
+zero_load: <latency>
+
+
+Server
+
+type: server
+t_serv: <service_time>
+coeff_var: <coefficient_of_variation>
+
+
+Split
+
+type: split
+out={port_probabilities}
+
+
+Sink
+
+type: sink
+
+
+Notes:
+
+- Missing required attributes will generate an error.
+- Each node must define its type and required parameters.
+- All nodes must be properly connected.
+
+
+
+Example DSL files are provided in:
+
+test/graph2.dot
+test/graph3.dot
+test/graph4.dot
+test/hybrid1.dot
+
+
+
+------------------------------------------------------------
+Workflow of the FlexNoC Framework
+------------------------------------------------------------
+
+FlexNoC supports both regular (auto-generated) and irregular (user-defined) NoC topologies.
+
+The framework performs the following steps automatically:
+
+1. Read configuration file or DOT specification
+2. Generate DOT topology for regular mode
+3. Parse DOT DSL using ANTLR
+4. Construct internal network data structures
+5. Update injection process and split probabilities
+6. Execute the analytical queueing model
+7. Compute waiting times
+8. Print injector and queue waiting times
+
+
+
+------------------------------------------------------------
+Output Metrics
+------------------------------------------------------------
+
+FlexNoC reports the following performance metrics:
+
+- Waiting time of each injector
+- Waiting time of each queue
+- Analytical latency estimates
+
+Results are printed directly to the console.
+
+
+
+------------------------------------------------------------
+Artifact Information
+------------------------------------------------------------
+
+Algorithm:
+Analytical queueing-theory-based NoC performance modeling
+
+Program:
+FlexNoC (C++ implementation)
+
+Compilation:
+GCC, CMake, Conan (<2.0)
+
+Execution:
+Command-line interface
+
+Runtime environment:
+Linux
+
+Metrics:
+Waiting time and latency
+
+Output:
+Console-based performance metrics
+
+Disk space required:
+< 100 MB
+
+Execution time:
+Seconds to minutes depending on topology size
+
+
+
+------------------------------------------------------------
+License
+------------------------------------------------------------
+
+This project is released under the MIT License.
+
+See the LICENSE file for details.
+
+
+
+------------------------------------------------------------
+Acknowledgements
+------------------------------------------------------------
+
+ANTLR runtime is used for parsing the DSL grammar.
+
+For more information see:
+https://www.antlr.org/
