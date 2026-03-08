@@ -173,14 +173,13 @@ The DSL extends the DOT language to describe Network-on-Chip (NoC) components us
 Each node must define a "type" attribute.
 
 
-Supported Node Types
+Supported Node Types:
 
 
 Injector
 
 type: Source
 rate: <injection_rate>
-
 
 Queue
 
@@ -205,9 +204,111 @@ Hybrid Arbiter
 type: hybrid
 zero_load: <latency>
 
-
 Server
 
 type: server
 t_serv: <service_time>
 coeff_var: <coefficient_of_variation>
+
+
+Split
+
+type: split
+out={port_probabilities}
+
+
+Sink
+
+type: sink
+
+Notes:
+
+- Missing required attributes will generate an error.
+- Each node must define its type and required parameters.
+- All nodes must be properly connected.
+
+
+
+Example DSL files are provided in:
+
+test/graph2.dot
+test/graph3.dot
+test/graph4.dot
+test/hybrid1.dot
+
+------------------------------------------------------------
+Workflow of the FlexNoC Framework
+------------------------------------------------------------
+
+FlexNoC supports both regular (auto-generated) and irregular (user-defined) NoC topologies.
+
+The framework performs the following steps automatically:
+
+1. Read configuration file or DOT specification
+2. Generate DOT topology for regular mode
+3. Parse DOT DSL using ANTLR
+4. Construct internal network data structures
+5. Update injection process and split probabilities
+6. Execute the analytical queueing model
+7. Compute waiting times
+8. Print injector and queue waiting times
+
+------------------------------------------------------------
+Output Metrics
+------------------------------------------------------------
+
+FlexNoC reports the following performance metrics:
+
+- Waiting time of each injector
+- Waiting time of each queue
+- Analytical latency estimates
+
+Results are printed directly to the console.
+
+------------------------------------------------------------
+Artifact Information
+------------------------------------------------------------
+
+Algorithm:
+Analytical queueing-theory-based NoC performance modeling
+
+Program:
+FlexNoC (C++ implementation)
+
+Compilation:
+GCC, CMake, Conan (<2.0)
+
+Execution:
+Command-line interface
+
+Runtime environment:
+Linux
+
+Metrics:
+Waiting time and latency
+
+Output:
+Console-based performance metrics
+
+Disk space required:
+< 100 MB
+
+Execution time:
+Seconds to minutes depending on topology size
+
+------------------------------------------------------------
+License
+------------------------------------------------------------
+
+This project is released under the MIT License.
+
+See the LICENSE file for details.
+
+------------------------------------------------------------
+Acknowledgements
+------------------------------------------------------------
+
+ANTLR runtime is used for parsing the DSL grammar.
+
+For more information see:
+https://www.antlr.org/
