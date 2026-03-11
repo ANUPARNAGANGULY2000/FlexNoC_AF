@@ -10,12 +10,10 @@
 #include "Queue.h"
 #include "Split.h"
 #include "UpdateNodeQueue.h"
-#include "getUtils.h"
 #include <random>
 #include <cassert>
-#include <set>
 
-void DotFileProcess(std::string& fileName){
+void RunRegular(std::string& fileName){
 
    //Phase 1: Parsing & set data structure
    auto parse_start = std::chrono::high_resolution_clock::now();
@@ -23,27 +21,13 @@ void DotFileProcess(std::string& fileName){
    auto parse_end = std::chrono::high_resolution_clock::now();
 
 
-   //track injector is going through which junction
-   dot_lang::Mapping& mapping = obj->getMapping();
-   for(auto iterator=mapping.junction_track.begin(); iterator!=mapping.junction_track.end(); ++iterator){
-   	
-	   std::shared_ptr<dot_lang::Injector> injector = std::dynamic_pointer_cast<dot_lang::Injector>(iterator -> first);
-	   //std::vector<std::shared_ptr<dot_lang::Junc>> junction_list = iterator->second;
-	   auto &junction_list = iterator->second;
-	   std::shared_ptr<dot_lang::Junc> junction = std::dynamic_pointer_cast<dot_lang::Junc>(junction_list[0]);
-	   model::trackJunction(injector, junction, mapping);
-	   
-   }
-   
-
    //phase 2:set injection_rate and coeff_inter_arrival_time
    auto model_exec_start = std::chrono::high_resolution_clock::now();
-  // for(double rate = 0.05; rate <= 0.25; rate += 0.05){
-//	   std::cout<<"rate: "<<rate<<std::endl;
+   
    for(int iteration=0; iteration<1; iteration++){
    
 
-//	   dot_lang::Mapping& mapping=obj->getMapping();
+	   dot_lang::Mapping& mapping=obj->getMapping();
    
 	   for(auto iter=mapping.primitive_map.begin();iter!=mapping.primitive_map.end();++iter){
 	
@@ -61,9 +45,9 @@ void DotFileProcess(std::string& fileName){
 			   double coeff_inter_arrival_time = injector->getCoeffInterArrivalTime();
 
                
-			//   injector->setInjectionRate(rate);
+			   injector->setInjectionRate(injection_rate);
                 
-			  // injector->setCoeffInterArrivalTime(1-rate);
+			   injector->setCoeffInterArrivalTime(1-injection_rate);
                
 			   model::update_connected_node(iter->first,mapping, injection_rate);
 		
@@ -180,7 +164,7 @@ void DotFileProcess(std::string& fileName){
 
    //Result Printing.
 
- //  dot_lang::Mapping& mapping=obj->getMapping();
+   dot_lang::Mapping& mapping=obj->getMapping();
 
    for(auto it=mapping.primitive_map.begin();it!=mapping.primitive_map.end();++it){
 
@@ -219,7 +203,7 @@ void DotFileProcess(std::string& fileName){
    //std::cout<<"Parsing Time in sec: "<<parsing_time_in_sec.count()<<" second"<<std::endl;
   
    //std::cout<<"Total Analytical Model Execution Time: "<<total_model_time_in_sec.count()<<" second"<<std::endl;
-   //}
+   
  
    delete obj;
 }

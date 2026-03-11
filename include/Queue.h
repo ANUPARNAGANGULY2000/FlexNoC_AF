@@ -9,7 +9,7 @@ namespace dot_lang {
 
 class Queue : public Primitive {
 public:
-    Queue(int buffer_size, double waiting_time, double injection_rate, double coeff_interarrival_time, int priority = 0);
+    Queue(int buffer_size, double waiting_time, double injection_rate, double coeff_interarrival_time, int priority = 0, double latency=0.0);
     virtual ~Queue() = default;
 
     // Type identification
@@ -33,6 +33,7 @@ public:
     double getCoeffInterArrivalTime() const;
     double getServiceTime() const;
     int getPriorityValue() const;
+    double getLatency() const;
 
     // Set
     void setInjectionRate(double &new_injection_rate);
@@ -40,6 +41,7 @@ public:
     void setWaitingTime(double &new_waiting_time);
     void setServiceTime(double &new_service_time);
     void setPriorityValue(int &new_priority);
+    void setLatency(double &new_latency);
 
     std::vector<double> primitive() override;
 
@@ -56,6 +58,7 @@ protected:
     double injection_rate;
     double coeff_interarrival_time;
     double service_time;
+    double latency;
     int priority;
     bool isActive = false;
     bool is_injection_rate_updated_after_saturation = false;

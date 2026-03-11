@@ -51,9 +51,17 @@ public:
 
     virtual std::any visitRate_attr(DOTParser::Rate_attrContext *context) = 0;
 
+    virtual std::any visitPipeline_delay_attr(DOTParser::Pipeline_delay_attrContext *context) = 0;
+
     virtual std::any visitMap_attr(DOTParser::Map_attrContext *context) = 0;
 
     virtual std::any visitMapPair(DOTParser::MapPairContext *context) = 0;
+
+    virtual std::any visitLatency_attr(DOTParser::Latency_attrContext *context) = 0;
+
+    virtual std::any visitExpr(DOTParser::ExprContext *context) = 0;
+
+    virtual std::any visitTerm(DOTParser::TermContext *context) = 0;
 
     virtual std::any visitType_attr(DOTParser::Type_attrContext *context) = 0;
 

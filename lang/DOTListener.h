@@ -62,11 +62,23 @@ public:
   virtual void enterRate_attr(DOTParser::Rate_attrContext *ctx) = 0;
   virtual void exitRate_attr(DOTParser::Rate_attrContext *ctx) = 0;
 
+  virtual void enterPipeline_delay_attr(DOTParser::Pipeline_delay_attrContext *ctx) = 0;
+  virtual void exitPipeline_delay_attr(DOTParser::Pipeline_delay_attrContext *ctx) = 0;
+
   virtual void enterMap_attr(DOTParser::Map_attrContext *ctx) = 0;
   virtual void exitMap_attr(DOTParser::Map_attrContext *ctx) = 0;
 
   virtual void enterMapPair(DOTParser::MapPairContext *ctx) = 0;
   virtual void exitMapPair(DOTParser::MapPairContext *ctx) = 0;
+
+  virtual void enterLatency_attr(DOTParser::Latency_attrContext *ctx) = 0;
+  virtual void exitLatency_attr(DOTParser::Latency_attrContext *ctx) = 0;
+
+  virtual void enterExpr(DOTParser::ExprContext *ctx) = 0;
+  virtual void exitExpr(DOTParser::ExprContext *ctx) = 0;
+
+  virtual void enterTerm(DOTParser::TermContext *ctx) = 0;
+  virtual void exitTerm(DOTParser::TermContext *ctx) = 0;
 
   virtual void enterType_attr(DOTParser::Type_attrContext *ctx) = 0;
   virtual void exitType_attr(DOTParser::Type_attrContext *ctx) = 0;

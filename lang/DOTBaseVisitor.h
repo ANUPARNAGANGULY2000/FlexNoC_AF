@@ -79,11 +79,27 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitPipeline_delay_attr(DOTParser::Pipeline_delay_attrContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitMap_attr(DOTParser::Map_attrContext *ctx) override {
     return visitChildren(ctx);
   }
 
   virtual std::any visitMapPair(DOTParser::MapPairContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitLatency_attr(DOTParser::Latency_attrContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitExpr(DOTParser::ExprContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitTerm(DOTParser::TermContext *ctx) override {
     return visitChildren(ctx);
   }
 

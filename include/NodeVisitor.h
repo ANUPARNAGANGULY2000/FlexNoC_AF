@@ -83,7 +83,22 @@ namespace dot_lang {
 	}
 
 	std::any visitStmt(DOTParser::StmtContext* ctx) override {
-   	 return visitChildren(ctx);
+
+ 
+	     	if(ctx->id_().size() == 2){
+       
+		       	std::string var = ctx->id_(0)->getText();
+        
+			std::string value = ctx->id_(1)->getText();
+			if(ctx->id_(1)->NUMBER()){
+ 			  mapping.globalVariable[var] = std::stod(ctx->id_(1)->getText());
+			}
+       			
+        		 return nullptr;
+    		}	
+
+    
+		return visitChildren(ctx);
 	}
 
         std::any visitNode_id(DOTParser::Node_idContext *ctx) override {
@@ -154,6 +169,7 @@ namespace dot_lang {
 	    return attrs;
         }
 
+
 	std::any visitGeneric_attr(DOTParser::Generic_attrContext *ctx) {
             // generic_attr
             // attr_ cv_attr depth_attr priority_attr rate_attr
@@ -171,6 +187,7 @@ namespace dot_lang {
 	    auto serviceTimeAttr = ctx->service_time_attr() ? visitService_time_attr(ctx->service_time_attr()) : std::any();
 	    auto coeffVarAttr = ctx->coeff_service_time_attr() ? visitCoeff_service_time_attr(ctx->coeff_service_time_attr()) : std::any();
 	    auto zeroLoadAttr = ctx->zero_load_latency_attr() ? visitZero_load_latency_attr(ctx->zero_load_latency_attr()) : std::any();
+	    auto latencyAttr = ctx->latency_attr() ? visitLatency_attr(ctx->latency_attr()) : std::any();
 
             if (attr.has_value()) {
                 std::cout << "attr: " << std::any_cast<std::string>(attr) << std::endl;
@@ -222,6 +239,14 @@ namespace dot_lang {
         		result[key] = value;
     		}
 	    }
+	    if(latencyAttr.has_value()){
+ 
+		    key = "latency";
+    
+		    value = std::any_cast<std::string>(latencyAttr);
+		    result[key] = value;
+
+	    }
 	    
 	return result;
 	}	    
@@ -270,6 +295,7 @@ namespace dot_lang {
 	   auto zero_load = ctx->NUMBER();
         return std::any(zero_load->getText());
   	}
+       
    
  	std::any visitSplit_attr(DOTParser::Split_attrContext *ctx) override {
            
@@ -290,6 +316,58 @@ namespace dot_lang {
     	return probMapping;
       }
 
+std::any visitLatency_attr(DOTParser::Latency_attrContext *ctx) override {
 
+
+    	double value = evaluateExpr(ctx->expr());
+    
+	return std::to_string(value);
+}
+
+double evaluateExpr(DOTParser::ExprContext* ctx){
+
+ 
+	   double result = evaluateTerm(ctx->term(0));
+
+    
+	   for(size_t i = 1; i < ctx->term().size(); ++i){
+        
+		   result += evaluateTerm(ctx->term(i));
+    
+	   }
+
+    
+	   return result;
+}
+
+
+double evaluateTerm(DOTParser::TermContext* ctx){
+
+
+    	if(ctx->NUMBER()){
+    
+	    	return std::stod(ctx->NUMBER()->getText());
+    
+	}
+
+    
+	if(ctx->id_()){
+        
+		std::string var = ctx->id_()->getText();
+
+       
+	       	if(mapping.globalVariable.find(var) == mapping.globalVariable.end()){
+           
+		       	throw std::runtime_error("Undefined global variable: " + var);
+        
+		}
+
+        
+		return mapping.globalVariable[var];
+    
+	}
+
+    return 0;
+}
     };
 }

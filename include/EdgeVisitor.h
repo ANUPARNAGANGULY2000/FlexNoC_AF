@@ -19,6 +19,7 @@ namespace dot_lang {
         EdgeVisitor(Network* net, Mapping& m) : network(net), mapping(m) {}
 
 	 std::any visitEdge_stmt(DOTParser::Edge_stmtContext *ctx) override {
+		double pipeline_delay = 0.0;
 		std::string source, destination;
 		auto node_id = ctx->node_id();
 		if(node_id){
@@ -38,9 +39,54 @@ namespace dot_lang {
 			}
 			
 		}
+		auto edgeAttr = ctx->edge_attr_list();
+
+		/*if(edgeAttr){
+    
+			for(auto list : edgeAttr->children){
+        
+				auto delayCtx = dynamic_cast<DOTParser::Pipeline_delay_attrContext*>(list);
+       
+			       	if(delayCtx){
+           
+				       	pipeline_delay = std::stod(delayCtx->NUMBER()->getText());
+					std::cout<<"pipeline delay: "<<pipeline_delay<<std::endl;
+        
+				}
+    
+			}
+
+		}*/
+
+
+
+		if(edgeAttr){
+
+		    for(auto attr : edgeAttr->generic_attr()){
+
+     		   if(attr->attr_()){
+
+            		auto ids = attr->attr_()->id_();
+
+            		if(ids.size() == 2){
+
+                		std::string key = ids[0]->getText();
+                		std::string value = ids[1]->getText();
+
+               			 if(key == "pipeline_delay"){
+
+                    			pipeline_delay = std::stod(value);
+
+                		}
+            		}
+        	   }
+    		  }	
+		}
+
+    
 
 		 std::string JunctionName = Junc::generateJunctionName();
-		 MakeConnection::create_connection(JunctionName,source,destination,mapping);
+		 MakeConnection::create_connection(JunctionName,source,destination,mapping,pipeline_delay);
 		 auto srcIt = SymbolTable.find(source);
 		 auto dstIt = SymbolTable.find(destination);
 		 if(srcIt!=SymbolTable.end() && dstIt!=SymbolTable.end()){

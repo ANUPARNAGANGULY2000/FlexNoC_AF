@@ -1,8 +1,8 @@
 #include "Queue.h"
 #include <sstream>  // for building graphviz output
 
-dot_lang::Queue::Queue(int buffer_size,double waiting_time,double injection_rate,double coeff_interarrival_time, int priority):
-           buffer_size(buffer_size),waiting_time(waiting_time),injection_rate(injection_rate),coeff_interarrival_time(coeff_interarrival_time),priority(priority){}
+dot_lang::Queue::Queue(int buffer_size,double waiting_time,double injection_rate,double coeff_interarrival_time, int priority, double latency):
+           buffer_size(buffer_size),waiting_time(waiting_time),injection_rate(injection_rate),coeff_interarrival_time(coeff_interarrival_time),priority(priority),latency(latency){}
 
 bool dot_lang::Queue::isQueue() const { return isActive; }
 bool dot_lang::Queue::isServer() const { return false; }
@@ -22,6 +22,7 @@ double dot_lang::Queue::getInjectionRate() const { return injection_rate; }
 double dot_lang::Queue::getCoeffInterArrivalTime() const { return coeff_interarrival_time; }
 double dot_lang::Queue::getServiceTime() const { return service_time; }
 int dot_lang::Queue::getPriorityValue() const {return priority;}
+double dot_lang::Queue::getLatency() const {return latency;}
 
 void dot_lang::Queue::setInjectionRate(double &new_injection_rate) {
     injection_rate = new_injection_rate;
@@ -42,6 +43,10 @@ void dot_lang::Queue::setWaitingTime(double &new_waiting_time) {
 
 void dot_lang::Queue::setServiceTime(double &new_service_time) {
     service_time = new_service_time;
+}
+void dot_lang::Queue::setLatency(double &new_latency){
+
+	latency = new_latency;
 }
 
 std::vector<double> dot_lang::Queue::primitive() {

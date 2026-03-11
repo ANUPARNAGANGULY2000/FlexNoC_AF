@@ -81,7 +81,8 @@ edge_attr_list
     ;
 
 generic_attr
-    : priority_attr
+    : pipeline_delay_attr
+    | priority_attr
     | cv_attr
     | depth_attr
     | rate_attr
@@ -90,6 +91,7 @@ generic_attr
     | zero_load_latency_attr
     | split_attr
     | map_attr
+    | latency_attr
     | attr_
     ;
 
@@ -126,12 +128,29 @@ rate_attr
     : RATE '=' NUMBER (';' | ',')?
     ;
 
+pipeline_delay_attr
+    : PIPELINE_DELAY '=' NUMBER (';' | ',')?
+    ;
+
 map_attr
     : id_ '=' '{' mapPair (',' mapPair)* '}' (';'|',')?
     ;
 
 mapPair
     : id_ ':' NUMBER
+    ;
+
+latency_attr
+    : LATENCY '=' expr (';' | ',')?
+    ;
+
+expr
+    : term ('+' term)*
+    ;
+
+term
+    : NUMBER
+    | id_
     ;
 
 type_attr
@@ -224,13 +243,20 @@ PRIORITY_NO
     : [Pp] [Rr] [Ii] [Oo] [Rr] [Ii] [Tt] [Yy] '_'? [Nn] [Oo]
     ;
 
-
 SIZE
     : [Ss] [Ii] [Zz] [Ee]
     ;
 
 RATE
     : [Rr] [Aa] [Tt] [Ee]
+    ;
+
+LATENCY
+    : [Ll] [Aa] [Tt] [Ee] [Nn] [Cc] [Yy]
+    ;
+
+PIPELINE_DELAY
+    : [Pp] [Ii] [Pe] [Ee] [Ll] [Ii] [Nn] [Ee] '_'? [Dd] [Ee] [Ll] [Aa] [Yy]
     ;
 
 SOURCE

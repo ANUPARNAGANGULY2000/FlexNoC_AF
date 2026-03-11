@@ -31,13 +31,13 @@ extern std::map<std::string, std::string> SymbolTable;
 
 inline const std::map<std::string, NodeSchema> NODE_SCHEMAS = {
 	
-	{"source", {{"rate"}, {"rate", "cv", "label", "shape","type","depth","t_serv","coeff_var","zero_load", "priority_no"}}},
-	{"queue", {{"depth"}, {"depth", "label", "shape","type","rate","cv","t_serv","coeff_var","zero_load","priority_no"}}},
-	{"server", {{"t_serv", "coeff_var"},{"t_serv", "coeff_var", "label", "shape","type","rate","cv","depth","zero_load","priority_no"}}},
-	{"arbiter", {{"zero_load"}, {"zero_load", "label", "shape","type","rate","cv","depth","t_serv","coeff_var","priority_no"}}},
-	{"roundrobin", {{"zero_load"}, {"zero_load", "label", "shape","type","rate","cv","depth","t_serv","coeff_var","priority_no"}}},
-	{"priority", {{"zero_load"}, {"zero_load", "label", "shape","type","rate","cv","depth","t_serv","coeff_var","priority_no"}}},
-	{"hybrid", {{"zero_load"},{"zero_load", "label", "shape", "type", "rate", "cv", "depth", "t_serv", "coeff_var","priority_no"}}},
+	{"source", {{"rate"}, {"rate", "cv", "label", "shape","type","depth","t_serv","coeff_var","zero_load", "priority_no", "latency"}}},
+	{"queue", {{"depth"}, {"depth", "label", "shape","type","rate","cv","t_serv","coeff_var","zero_load","priority_no", "latency"}}},
+	{"server", {{"t_serv", "coeff_var"},{"t_serv", "coeff_var", "label", "shape","type","rate","cv","depth","zero_load","priority_no", "latency"}}},
+	{"arbiter", {{"zero_load"}, {"zero_load", "label", "shape","type","rate","cv","depth","t_serv","coeff_var","priority_no", "latency"}}},
+	{"roundrobin", {{"zero_load"}, {"zero_load", "label", "shape","type","rate","cv","depth","t_serv","coeff_var","priority_no", "latency"}}},
+	{"priority", {{"zero_load"}, {"zero_load", "label", "shape","type","rate","cv","depth","t_serv","coeff_var","priority_no", "latency"}}},
+	{"hybrid", {{"zero_load"},{"zero_load", "label", "shape", "type", "rate", "cv", "depth", "t_serv", "coeff_var","priority_no", "latency"}}},
 	{"split", {{"type"}, {"label", "shape","type"}}},
 	{"sink", {{"type"}, {"label", "shape","type"}}}
 };

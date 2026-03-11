@@ -64,11 +64,23 @@ public:
   virtual void enterRate_attr(DOTParser::Rate_attrContext * /*ctx*/) override { }
   virtual void exitRate_attr(DOTParser::Rate_attrContext * /*ctx*/) override { }
 
+  virtual void enterPipeline_delay_attr(DOTParser::Pipeline_delay_attrContext * /*ctx*/) override { }
+  virtual void exitPipeline_delay_attr(DOTParser::Pipeline_delay_attrContext * /*ctx*/) override { }
+
   virtual void enterMap_attr(DOTParser::Map_attrContext * /*ctx*/) override { }
   virtual void exitMap_attr(DOTParser::Map_attrContext * /*ctx*/) override { }
 
   virtual void enterMapPair(DOTParser::MapPairContext * /*ctx*/) override { }
   virtual void exitMapPair(DOTParser::MapPairContext * /*ctx*/) override { }
+
+  virtual void enterLatency_attr(DOTParser::Latency_attrContext * /*ctx*/) override { }
+  virtual void exitLatency_attr(DOTParser::Latency_attrContext * /*ctx*/) override { }
+
+  virtual void enterExpr(DOTParser::ExprContext * /*ctx*/) override { }
+  virtual void exitExpr(DOTParser::ExprContext * /*ctx*/) override { }
+
+  virtual void enterTerm(DOTParser::TermContext * /*ctx*/) override { }
+  virtual void exitTerm(DOTParser::TermContext * /*ctx*/) override { }
 
   virtual void enterType_attr(DOTParser::Type_attrContext * /*ctx*/) override { }
   virtual void exitType_attr(DOTParser::Type_attrContext * /*ctx*/) override { }

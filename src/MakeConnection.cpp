@@ -14,12 +14,13 @@
 
 namespace dot_lang{
 
-void MakeConnection::create_connection(const std::string &node_name,const std::string &source, const std::string &destination, Mapping &mapping){
+void MakeConnection::create_connection(const std::string &node_name,const std::string &source, const std::string &destination, Mapping &mapping, double pipeline_delay){
 
 	std::shared_ptr<dot_lang::Primitive> primitive_out = nullptr;
         std::shared_ptr<dot_lang::Primitive> primitive_in = nullptr;
         double injection_rate=0.0;
         double coeff_interarrival_time=0.0;
+
 
 	 //if source is already present just make the pointers to the node
          if(mapping.primitive_map.find(source)!=mapping.primitive_map.end()){
@@ -66,7 +67,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
             }
 
             //create the node
-	    std::shared_ptr<dot_lang::Junc> node = std::make_shared<dot_lang::Junc>(primitive_in, primitive_out, injection_rate, coeff_interarrival_time);
+	    std::shared_ptr<dot_lang::Junc> node = std::make_shared<dot_lang::Junc>(primitive_in, primitive_out, injection_rate, coeff_interarrival_time, pipeline_delay);
             //update the node_data here
             mapping.node_data[node_name]=node;
 
@@ -74,7 +75,12 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
             //update the node_connections
             mapping.node_connections[source]=node_name;
             mapping.node_connections[node_name]=destination;
+	   
+	    if(primitive_in -> isInjector()){
 	    
+		   std::shared_ptr<dot_lang::Injector> injector = std::dynamic_pointer_cast<dot_lang::Injector>(primitive_in);
+		    mapping.junction_track[injector].push_back(node);
+	    }
 	    //for Q,PR,RR,M
               if(!primitive_in->isInjector()){
 		      std::shared_ptr<dot_lang::Junc> node_in = nullptr;
@@ -239,13 +245,16 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
 	    
 		    double probability = directional_buffer->second;
 		    double new_injection_rate = total_injection_rate * probability;
+		    double coeff_var = 1 - new_injection_rate;
 		    queue -> setInjectionRate(new_injection_rate);
+		    queue -> setCoeffInterArrivalTime(coeff_var);
 		    double inj = queue -> getInjectionRate();
 		    
 	    }
     }
     //if(primitive_in->isRRarbiter() ||primitive_in->isPRarbiter() || primitive_in->isMerge() || primitive_in->isSplit() && primitive_out->isQueue()){
      if(primitive_in->isServer() || primitive_in->isMerge() || primitive_in->isSplit() && primitive_out->isQueue()){
+	   
 	     std::string key = source;
              if(primitive_in->isServer()){
                      auto iter = mapping.server_track.find(source);
@@ -290,7 +299,6 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
 				std::string connected_queue = it->first;
 				std::shared_ptr<dot_lang::Primitive> Primitive_ptr = mapping.primitive_map[connected_queue];
                                 //just check if it is a queue
-                               // if(connected_queue[0]=='Q'){
 			       if(Primitive_ptr->isQueue()){
                                 // if it is a queue then check the primitive flow and get the corresponding injection rate.
 
@@ -314,7 +322,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
                     node->setInjectionRate(avg_injection_rate);
                     node->setCoeffInterArrivalTime(avg_coeff_interarrival_time);
 		    std::shared_ptr<dot_lang::Queue> queue = std::dynamic_pointer_cast<dot_lang::Queue>(primitive_out);
-                    if(queue){
+                    if(queue && avg_injection_rate != 0.0){
                             queue->setInjectionRate(avg_injection_rate);
                             queue->setCoeffInterArrivalTime(avg_coeff_interarrival_time);
                     }
@@ -323,8 +331,7 @@ void MakeConnection::create_connection(const std::string &node_name,const std::s
 
 
     }
-    //connections made from source to destination with the help of this node
-   // std::cout<<"Connected: "<<source<<" -> "<<destination<<"\n";
+    
 }
 
 //Merging the flows

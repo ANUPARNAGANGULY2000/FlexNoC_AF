@@ -1,6 +1,7 @@
 #include "Priority.h"
 #include <iostream>
 #include "PriorityModel.h"
+#include "UpdateNodeQueue.h"
 
 dot_lang::PriorityArbiter::PriorityArbiter(double zero_load_latency)
     : dot_lang::Arbiter(zero_load_latency) {}
@@ -34,6 +35,7 @@ void dot_lang::PriorityArbiter::arbiter(Mapping& mapping) {
 	    double service_time = PRarbiter->getServiceTime();
 	    double zero_load = PRarbiter->getZeroLoadLatency();
 	    model::priority_model(queues, service_time, zero_load, mapping);
+	    model::update_node_from_Queue(queues, mapping);
 	    
     }
 }

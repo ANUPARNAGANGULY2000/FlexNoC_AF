@@ -10,7 +10,10 @@ namespace model{
 
 //void read_network(dot_lang::Mapping& mapping){
 void Invoke_analytical_model(dot_lang::Mapping& mapping){
-    set_nodes(mapping);
+
+    
+
+     set_nodes(mapping);
 
     //check Sink is getting full or not
     for(auto it=mapping.node_connections.begin();it!=mapping.node_connections.end();++it){
@@ -38,4 +41,5 @@ void Invoke_analytical_model(dot_lang::Mapping& mapping){
     set_nodes(mapping);
 
 }
+
 }

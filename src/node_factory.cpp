@@ -57,10 +57,16 @@ namespace dot_lang
 			 {
                          int depth = std::stod(attributes.at("depth"));
 			 int priority = 0;
+			 double latency = 0.0;
 			 if( attributes.count("priority_no")){
 				 priority=std::stod(attributes.at("priority_no"));
 		         }
-			 node = std::make_shared<Queue>(depth,0.0,0.0,0.0,priority);
+			 if( attributes.count("latency")){
+			 
+				 latency = std::stod(attributes.at("latency"));
+			 }
+
+			 node = std::make_shared<Queue>(depth,0.0,0.0,0.0,priority,latency);
 			 }
            		 break;
         	case SERVER:

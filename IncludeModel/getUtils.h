@@ -15,5 +15,7 @@ namespace model{
 	std::string getConnectedNode(std::string primitive_string, dot_lang::Mapping& mapping);
 	std::shared_ptr<dot_lang::Junc> getPrevJunction(std::shared_ptr<dot_lang::Junc> junction, dot_lang::Mapping& mapping);
 	std::shared_ptr<dot_lang::Junc> getNextJunction(std::shared_ptr<dot_lang::Junc> prevJunc, dot_lang::Mapping& mapping);
+	void trackJunction(std::shared_ptr<dot_lang::Injector> injector, std::shared_ptr<dot_lang::Junc> junction, dot_lang::Mapping& mapping);
+	double totalPipelineDelay(std::shared_ptr<dot_lang::Injector> injector, dot_lang::Mapping& mapping);
 };
 #endif

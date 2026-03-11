@@ -9,7 +9,7 @@ class ConfigFileReader{
 
 	private:
 		std::map<std::string, std::string> configData;
-		static void trim(std::string str){
+		static void trim(std::string &str){
 		
 			size_t start = str.find_first_not_of(" \t\n\r");
 			size_t end = str.find_last_not_of(" \t\r\n");
@@ -41,7 +41,8 @@ class ConfigFileReader{
 				}
 				std::string key = line.substr(0,position);
 				std::string value = line.substr(position+1);
-
+				trim(key);
+				trim(value);
 				if(!key.empty() && !value.empty()){
 				
 					configData[key] = value;

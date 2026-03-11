@@ -2,13 +2,13 @@ digraph G{
 
 	rankdir = "LR"
 
-F1[label="injector1", type=Source, rate=0.9, cv=0.1, shape="rarrow"];
+F1[label="injector1", type=Source, rate=0.05, cv=0.1, shape="rarrow"];
 F2[label="injector2", type=SOURCE, rate=0.1, cv=0.9, shape="rarrow"];
 F3[label="injector3", type=SOURCE, rate=0.1, cv=0.9, shape="rarrow"];
-Q1[label="buffer4", type=QUEUE, depth=3, priority_no=1, shape="cylinder"];
-Q2[label="buffer5", type=QUEUE, depth=3, priority_no=1, shape="cylinder"];
-Q3[label="buffer6", type=QUEUE, depth=3, priority_no=2, shape="cylinder"];
-Q4[label="buffer7", type=QUEUE, depth=6, shape="cylinder"];
+Q1[label="Q1", type=QUEUE, depth=3, priority_no=1, shape="cylinder"];
+Q2[label="Q2", type=QUEUE, depth=3, priority_no=1, shape="cylinder"];
+Q3[label="Q3", type=QUEUE, depth=3, priority_no=2, shape="cylinder"];
+Q4[label="Q4", type=QUEUE, depth=6, shape="cylinder"];
 Hybrid1[label="Hybrid1", type=Hybrid, zero_load=0.0, t_serv=1.0, coeff_var=0.0, shape="trapezium"];
 SR1[label="SR1", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];
 SR2[label="SR2", type=Server, t_serv=1.0, coeff_var=0.0, shape="circle"];

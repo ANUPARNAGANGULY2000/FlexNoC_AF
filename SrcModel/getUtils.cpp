@@ -1,6 +1,7 @@
 #include "getUtils.h"
 #include "Mapping.h"
 #include "Server.h"
+#include <algorithm>
 
 namespace model{
 std::string getPrimitiveName(std::shared_ptr<dot_lang::Primitive> primitive, dot_lang::Mapping& mapping){
@@ -65,5 +66,49 @@ std::shared_ptr<dot_lang::Junc> getNextJunction(std::shared_ptr<dot_lang::Junc> 
 	}
 	return NextJunc;
 
+}
+
+
+void trackJunction(std::shared_ptr<dot_lang::Injector> injector,
+                   std::shared_ptr<dot_lang::Junc> junction,
+                   dot_lang::Mapping& mapping)
+{
+    auto& junction_list = mapping.junction_track[injector];
+
+    // check if junction already exists
+    auto it = std::find(junction_list.begin(), junction_list.end(), junction);
+
+    if(it == junction_list.end())
+    {
+        // add junction
+        junction_list.push_back(junction);
+    }
+
+        // get next junction
+        auto nextJunction = getNextJunction(junction, mapping);
+
+        if(nextJunction)
+        {
+            trackJunction(injector, nextJunction, mapping);
+        }
+    
+}
+
+double totalPipelineDelay(std::shared_ptr<dot_lang::Injector> injector, dot_lang::Mapping& mapping){
+
+	auto ref = mapping.junction_track.find(injector);
+	double delay = 0.0;
+	if(ref != mapping.junction_track.end()){
+	
+		std::vector<std::shared_ptr<dot_lang::Junc>> junction_list = ref ->second;
+                for(auto junction_iter : junction_list){
+		
+
+			delay += junction_iter ->getPipelineDelay();
+			
+		}
+
+	}
+	return delay;
 }
 }

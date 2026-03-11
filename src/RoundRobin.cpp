@@ -1,6 +1,7 @@
 #include "RoundRobin.h"
 #include <iostream>
 #include "RoundRobinModel.h"
+#include "UpdateNodeQueue.h"
 
 dot_lang::RoundRobinArbiter::RoundRobinArbiter(double zero_load_latency)
     : dot_lang::Arbiter(zero_load_latency) {}
@@ -34,6 +35,7 @@ void dot_lang::RoundRobinArbiter::arbiter(Mapping& mapping) {
 	    double service_time = RRarbiter->getServiceTime();
 	    double zero_load = RRarbiter->getZeroLoadLatency();
 	    model::roundrobin_model(queues, service_time, zero_load, mapping);
+	    model::update_node_from_Queue(queues, mapping);
     }
 }
 

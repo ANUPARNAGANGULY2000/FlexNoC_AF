@@ -4,6 +4,7 @@
 #include "RoundRobinModel.h"
 #include "MakeConnection.h"
 #include <unordered_map>
+#include "UpdateNodeQueue.h"
 #include<vector>
 #include<memory>
 
@@ -27,6 +28,7 @@ void dot_lang::HybridArbiter::arbiter(Mapping& mapping) {
 
      	std::vector<std::shared_ptr<Queue>> queues_Priority_arbiter;
     	std::vector<std::shared_ptr<Queue>> queues_RoundRobin_arbiter;
+	std::vector<std::shared_ptr<Queue>> Queues;
     	std::shared_ptr<HybridArbiter> Hybrid_Arbiter = nullptr;
     	std::unordered_map<int, std::vector<std::shared_ptr<Queue>>>QueuePriorityList;
         
@@ -35,6 +37,7 @@ void dot_lang::HybridArbiter::arbiter(Mapping& mapping) {
 	for (const auto& junc : junction) {
             std::shared_ptr<Queue> queue_in = std::dynamic_pointer_cast<Queue>(junc->getPrimitiveIn());
             if (queue_in) {
+		 Queues.push_back(queue_in);
 	    	int priority_of_Queue = queue_in->getPriorityValue();
 	    	QueuePriorityList[priority_of_Queue].push_back(queue_in);
              }
@@ -107,6 +110,8 @@ void dot_lang::HybridArbiter::arbiter(Mapping& mapping) {
 
 	       }
        }
+     
+      model::update_node_from_Queue(Queues, mapping);
 
 }
 

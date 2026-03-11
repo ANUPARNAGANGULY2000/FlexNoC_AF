@@ -23,6 +23,10 @@ namespace dot_lang{
 
 //maps the injector to the queues in the flow
 	std::map<std::shared_ptr<dot_lang::Injector>,std::vector<std::shared_ptr<dot_lang::Queue>>> queue_flow;
+	
+//maps the injector to the junction in the flow
+        std::map<std::shared_ptr<dot_lang::Injector>,std::vector<std::shared_ptr<dot_lang::Junc>>> junction_track;
+
 
 //maps the name of the node to its pointer
 	std::map<std::string, std::shared_ptr<dot_lang::Junc>> node_data;
@@ -38,6 +42,9 @@ namespace dot_lang{
 
 //maps the server is connected to which primitive
 	std::map<std::string, std::string> server_track;
+
+//maps to store global variable
+	std::map<std::string, double> globalVariable;
 
 
 };

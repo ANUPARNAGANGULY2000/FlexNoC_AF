@@ -9,6 +9,7 @@ void priority_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, doubl
 	//double service_time = PRarbiter->getServiceTime();
 	//double zero_load_latency = PRarbiter->getZeroLoadLatency();
 	// Initialization of intermediate parameters	
+	
 	std::vector<double> lambda;
 	std::vector<double> lambda_a_cap(queues.size(),0.0);
 	std::vector<double> Ca_square_cap(queues.size(),0.0);
@@ -68,7 +69,7 @@ void priority_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, doubl
       for(auto queue_index=0;queue_index<queues.size(); ++queue_index){
 
       if(queue_index!=0){
-     /*   double P = 0.0, delta_t=0.0;
+        double P = 0.0, delta_t=0.0;
         double sum_rho=0.0, sum_lambda=0.0, sum_t = 0.0;
         for(auto high_priority_queue_index=0; high_priority_queue_index<queue_index; ++high_priority_queue_index){
            sum_rho += rho[high_priority_queue_index];
@@ -86,15 +87,14 @@ void priority_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, doubl
         R_cap[queue_index]=0.5*rho_cap[queue_index]*(t_cap[queue_index]-1);
 
         //modified waiting time
-        waiting_time[queue_index]=R_cap[queue_index]/(1-rho_cap[queue_index]) + delta_t;
+        /* waiting_time[queue_index]=R_cap[queue_index]/(1-rho_cap[queue_index]) + delta_t;
 
-	std::cout<<"waiting time(before index 1): "<<waiting_time[queue_index]<<std::endl;
         //add zero load latency
-        waiting_time[queue_index] = waiting_time[queue_index] + zero_load_latency;
-	std::cout<<"waiting time(after index 1): "<<waiting_time[queue_index]<<std::endl;*/
+        waiting_time[queue_index] = waiting_time[queue_index] + zero_load_latency;*/
 
-	 waiting_time[queue_index]=R[queue_index]/(1-rho[0] - rho[queue_index]);
-	 waiting_time[queue_index] = waiting_time[queue_index] + zero_load_latency;
+
+	waiting_time[queue_index]=R[queue_index]/(1-rho[0] - rho[queue_index]);
+	waiting_time[queue_index] = waiting_time[queue_index] + zero_load_latency;
 
 
 
@@ -161,6 +161,8 @@ if(total_utilization >=0.998){
 		double X = 1.0 / Buffer_Size[priority_queue];
 		n[priority_queue] = Ca_square_cap[priority_queue] / X + 1.0;
 		waiting_time[priority_queue] = n[priority_queue] / lambda_a_cap[priority_queue] - service_time;
+		
+
 		waiting_time[priority_queue] = waiting_time[priority_queue] + zero_load_latency;
 		queues[priority_queue]->setWaitingTime(waiting_time[priority_queue]);
  	}

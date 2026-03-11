@@ -13,13 +13,13 @@ class  DOTParser : public antlr4::Parser {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
-    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, CV = 12, T_SERV = 13, S_ATTR = 14, 
-    COEFF_VAR = 15, ZERO_LOAD = 16, DEPTH = 17, PRIORITY_NO = 18, SIZE = 19, 
-    RATE = 20, SOURCE = 21, QUEUE = 22, ARBITER = 23, ROUNDROBIN = 24, PRIORITY = 25, 
-    HYBRID = 26, SERVER = 27, SPLIT = 28, SINK = 29, STRICT = 30, GRAPH = 31, 
-    DIGRAPH = 32, NODE = 33, EDGE = 34, SUBGRAPH = 35, NUMBER = 36, STRING = 37, 
-    ID = 38, HTML_STRING = 39, COMMENT = 40, LINE_COMMENT = 41, PREPROC = 42, 
-    WS = 43
+    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, CV = 13, T_SERV = 14, 
+    S_ATTR = 15, COEFF_VAR = 16, ZERO_LOAD = 17, DEPTH = 18, PRIORITY_NO = 19, 
+    SIZE = 20, RATE = 21, LATENCY = 22, PIPELINE_DELAY = 23, SOURCE = 24, 
+    QUEUE = 25, ARBITER = 26, ROUNDROBIN = 27, PRIORITY = 28, HYBRID = 29, 
+    SERVER = 30, SPLIT = 31, SINK = 32, STRICT = 33, GRAPH = 34, DIGRAPH = 35, 
+    NODE = 36, EDGE = 37, SUBGRAPH = 38, NUMBER = 39, STRING = 40, ID = 41, 
+    HTML_STRING = 42, COMMENT = 43, LINE_COMMENT = 44, PREPROC = 45, WS = 46
   };
 
   enum {
@@ -27,10 +27,12 @@ public:
     RuleNode_attr_list = 5, RuleEdge_attr_list = 6, RuleGeneric_attr = 7, 
     RuleCv_attr = 8, RuleService_time_attr = 9, RuleCoeff_service_time_attr = 10, 
     RuleSplit_attr = 11, RuleZero_load_latency_attr = 12, RuleDepth_attr = 13, 
-    RulePriority_attr = 14, RuleRate_attr = 15, RuleMap_attr = 16, RuleMapPair = 17, 
-    RuleType_attr = 18, RuleType_ = 19, RuleA_list = 20, RuleAttr_ = 21, 
-    RuleEdge_stmt = 22, RuleEdgeRHS = 23, RuleEdgeop = 24, RuleNode_stmt = 25, 
-    RuleNode_id = 26, RulePort = 27, RuleSubgraph = 28, RuleId_ = 29
+    RulePriority_attr = 14, RuleRate_attr = 15, RulePipeline_delay_attr = 16, 
+    RuleMap_attr = 17, RuleMapPair = 18, RuleLatency_attr = 19, RuleExpr = 20, 
+    RuleTerm = 21, RuleType_attr = 22, RuleType_ = 23, RuleA_list = 24, 
+    RuleAttr_ = 25, RuleEdge_stmt = 26, RuleEdgeRHS = 27, RuleEdgeop = 28, 
+    RuleNode_stmt = 29, RuleNode_id = 30, RulePort = 31, RuleSubgraph = 32, 
+    RuleId_ = 33
   };
 
   explicit DOTParser(antlr4::TokenStream *input);
@@ -66,8 +68,12 @@ public:
   class Depth_attrContext;
   class Priority_attrContext;
   class Rate_attrContext;
+  class Pipeline_delay_attrContext;
   class Map_attrContext;
   class MapPairContext;
+  class Latency_attrContext;
+  class ExprContext;
+  class TermContext;
   class Type_attrContext;
   class Type_Context;
   class A_listContext;
@@ -209,6 +215,7 @@ public:
   public:
     Generic_attrContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    Pipeline_delay_attrContext *pipeline_delay_attr();
     Priority_attrContext *priority_attr();
     Cv_attrContext *cv_attr();
     Depth_attrContext *depth_attr();
@@ -218,6 +225,7 @@ public:
     Zero_load_latency_attrContext *zero_load_latency_attr();
     Split_attrContext *split_attr();
     Map_attrContext *map_attr();
+    Latency_attrContext *latency_attr();
     Attr_Context *attr_();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -358,6 +366,22 @@ public:
 
   Rate_attrContext* rate_attr();
 
+  class  Pipeline_delay_attrContext : public antlr4::ParserRuleContext {
+  public:
+    Pipeline_delay_attrContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *PIPELINE_DELAY();
+    antlr4::tree::TerminalNode *NUMBER();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Pipeline_delay_attrContext* pipeline_delay_attr();
+
   class  Map_attrContext : public antlr4::ParserRuleContext {
   public:
     Map_attrContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -390,6 +414,54 @@ public:
   };
 
   MapPairContext* mapPair();
+
+  class  Latency_attrContext : public antlr4::ParserRuleContext {
+  public:
+    Latency_attrContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *LATENCY();
+    ExprContext *expr();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Latency_attrContext* latency_attr();
+
+  class  ExprContext : public antlr4::ParserRuleContext {
+  public:
+    ExprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<TermContext *> term();
+    TermContext* term(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ExprContext* expr();
+
+  class  TermContext : public antlr4::ParserRuleContext {
+  public:
+    TermContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *NUMBER();
+    Id_Context *id_();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  TermContext* term();
 
   class  Type_attrContext : public antlr4::ParserRuleContext {
   public:

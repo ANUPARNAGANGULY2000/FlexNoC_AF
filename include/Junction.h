@@ -10,7 +10,7 @@ namespace dot_lang {
 //class representing node
 class Junc{
     public:
-        Junc(std::shared_ptr<Primitive> primitive_in , std::shared_ptr<Primitive> primitive_out, double injection_rate, double coeff_interarrival_time);
+        Junc(std::shared_ptr<Primitive> primitive_in , std::shared_ptr<Primitive> primitive_out, double injection_rate, double coeff_interarrival_time, double pipeline_delay);
 	virtual ~Junc() = default;
 
 
@@ -23,10 +23,12 @@ class Junc{
         //get
         double getInjectionRate() const;
         double getCoeffInterArrivalTime() const;
-
+	double getPipelineDelay() const;
+	
 	//set
         void setInjectionRate(double &new_injection_rate);
         void setCoeffInterArrivalTime(double &new_coeff_interarrival_time);
+	void setPipelineDelay(double &new_pipeline_delay);
 
 	//create junction name
 	static std::string generateJunctionName(){
@@ -37,6 +39,7 @@ class Junc{
 	std::shared_ptr<Primitive> primitive_in;
 	std::shared_ptr<Primitive> primitive_out;
         double injection_rate;
+	double pipeline_delay;
         double coeff_interarrival_time;
 	static int JunctionCounter;
 };
