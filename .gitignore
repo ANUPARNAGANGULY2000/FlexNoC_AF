@@ -1,5 +1,14 @@
 # --- Build artifacts ---
-build/
+# --- Build artifacts ---
+# Allow build folder but ignore generated files
+build/*
+!build/run_all_experiments.sh
+
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
