@@ -1,0 +1,5 @@
+add_test([=[new:DOTParserTest.ParseValidDotFile]=]  /home/anuparna/anuparna/dsl/build/bin/flexnoc_unit_tests [==[--gtest_filter=DOTParserTest.ParseValidDotFile]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[new:DOTParserTest.ParseValidDotFile]=]  PROPERTIES WORKING_DIRECTORY /home/anuparna/anuparna/dsl/build/test SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+add_test([=[new:DOTParserTest.ParseInvalidDotFileRaisesException]=]  /home/anuparna/anuparna/dsl/build/bin/flexnoc_unit_tests [==[--gtest_filter=DOTParserTest.ParseInvalidDotFileRaisesException]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[new:DOTParserTest.ParseInvalidDotFileRaisesException]=]  PROPERTIES WORKING_DIRECTORY /home/anuparna/anuparna/dsl/build/test SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+set(  flexnoc_unit_tests_TESTS new:DOTParserTest.ParseValidDotFile new:DOTParserTest.ParseInvalidDotFileRaisesException)

@@ -1,0 +1,12 @@
+/home/anuparna/anuparna/dsl/build/CMakeFiles/FlexNoC_core.dir
+/home/anuparna/anuparna/dsl/build/CMakeFiles/test.dir
+/home/anuparna/anuparna/dsl/build/CMakeFiles/edit_cache.dir
+/home/anuparna/anuparna/dsl/build/CMakeFiles/rebuild_cache.dir
+/home/anuparna/anuparna/dsl/build/iso/CMakeFiles/flexnoc.dir
+/home/anuparna/anuparna/dsl/build/iso/CMakeFiles/test.dir
+/home/anuparna/anuparna/dsl/build/iso/CMakeFiles/edit_cache.dir
+/home/anuparna/anuparna/dsl/build/iso/CMakeFiles/rebuild_cache.dir
+/home/anuparna/anuparna/dsl/build/test/CMakeFiles/flexnoc_unit_tests.dir
+/home/anuparna/anuparna/dsl/build/test/CMakeFiles/test.dir
+/home/anuparna/anuparna/dsl/build/test/CMakeFiles/edit_cache.dir
+/home/anuparna/anuparna/dsl/build/test/CMakeFiles/rebuild_cache.dir

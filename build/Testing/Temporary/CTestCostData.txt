@@ -1,0 +1,3 @@
+new:DOTParserTest.ParseValidDotFile 1 0.00271336
+new:DOTParserTest.ParseInvalidDotFileRaisesException 3 0.00550994
+---

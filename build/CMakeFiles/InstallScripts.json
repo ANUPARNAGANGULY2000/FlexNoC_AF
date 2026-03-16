@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/anuparna/anuparna/dsl/build/cmake_install.cmake",
+		"/home/anuparna/anuparna/dsl/build/iso/cmake_install.cmake",
+		"/home/anuparna/anuparna/dsl/build/test/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

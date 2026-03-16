@@ -1,0 +1,5 @@
+if(EXISTS "/home/anuparna/anuparna/dsl/build/test/flexnoc_unit_tests[1]_tests.cmake")
+  include("/home/anuparna/anuparna/dsl/build/test/flexnoc_unit_tests[1]_tests.cmake")
+else()
+  add_test(flexnoc_unit_tests_NOT_BUILT flexnoc_unit_tests_NOT_BUILT)
+endif()
