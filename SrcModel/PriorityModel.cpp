@@ -8,8 +8,7 @@ void priority_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, doubl
 	//getting service_time and zero_load_latency from the Priority arbiter
 	//double service_time = PRarbiter->getServiceTime();
 	//double zero_load_latency = PRarbiter->getZeroLoadLatency();
-	// Initialization of intermediate parameters	
-	
+	// Initialization of intermediate parameters		
 	std::vector<double> lambda;
 	std::vector<double> lambda_a_cap(queues.size(),0.0);
 	std::vector<double> Ca_square_cap(queues.size(),0.0);
@@ -112,7 +111,7 @@ void priority_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, doubl
 
         //modified waiting time
         waiting_time[queue_index]=R_cap[queue_index]/(1-rho_cap[queue_index]);
-
+//	std::cout<<"High Priority Q"<<queue_index<<"t_cap "<<t_cap[queue_index]<<" injection_rate: "<<lambda[queue_index]<<" Waiting Time: "<<waiting_time[queue_index]<<std::endl;
 
         //add zero load latency
         waiting_time[queue_index] = waiting_time[queue_index] + zero_load_latency;
@@ -141,6 +140,7 @@ if(total_utilization >=0.998){
 		R[0] = 0.5 * rho[0] * (t_cap[0] - 1);
 		waiting_time[0] = R[0] / (1 - rho[0] );
 		waiting_time[0] = waiting_time[0] + zero_load_latency;
+              //  std::cout<<"After Saturation High Priority Q0, t_cap "<<t_cap[0]<<"  injection_rate: "<<lambda_a_cap[0]<<" Waiting Time: "<<waiting_time[0]<<std::endl;
         	queues[priority_queue]->setWaitingTime(waiting_time[0]);
 	 }
 	 else{
@@ -169,5 +169,7 @@ if(total_utilization >=0.998){
     }
      //update_node_from_Queue(queues, mapping);
   }
+
 }
+
 }

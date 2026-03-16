@@ -12,10 +12,14 @@
 #include "UpdateNodeQueue.h"
 #include "getUtils.h"
 #include <random>
+#include <vector>
+#include <fstream>
 #include <cassert>
 #include <set>
+#include <filesystem>
+namespace fs = std::filesystem;
 
-void DotFileProcess(std::string& fileName){
+void DotFileProcess(std::string& fileName, double start_rate, double end_rate, double step){
 
    //Phase 1: Parsing & set data structure
    auto parse_start = std::chrono::high_resolution_clock::now();
@@ -35,21 +39,31 @@ void DotFileProcess(std::string& fileName){
 	   
    }
    
+    int num_injectors = mapping.queue_flow.size();
 
-   //phase 2:set injection_rate and coeff_inter_arrival_time
+    std::vector<std::vector<double>> latency_matrix;
+    latency_matrix.resize(num_injectors);
+   
+    //phase 2:set injection_rate and coeff_inter_arrival_time
    auto model_exec_start = std::chrono::high_resolution_clock::now();
-  // for(double rate = 0.05; rate <= 0.25; rate += 0.05){
-//	   std::cout<<"rate: "<<rate<<std::endl;
-   for(int iteration=0; iteration<1; iteration++){
-   
 
-//	   dot_lang::Mapping& mapping=obj->getMapping();
+   std::vector<double> injection_rates;
+   std::vector<std::shared_ptr<dot_lang::Injector>> injector_list;
+
+	for(auto &it : mapping.queue_flow)
+	{
+    		injector_list.push_back(it.first);
+	}
    
+   for(double rate = start_rate; rate <= end_rate; rate += step){
+	  
+   for(int iteration=0; iteration<1; iteration++){
+      
 	   for(auto iter=mapping.primitive_map.begin();iter!=mapping.primitive_map.end();++iter){
 	
 		   //update injection process
         
-		   if(iter->second->isInjector()){
+		  if(iter->second->isInjector()){
                 
 			   std::shared_ptr<dot_lang::Injector> injector = std::dynamic_pointer_cast<dot_lang::Injector>(iter->second);
 		
@@ -61,11 +75,12 @@ void DotFileProcess(std::string& fileName){
 			   double coeff_inter_arrival_time = injector->getCoeffInterArrivalTime();
 
                
-			//   injector->setInjectionRate(rate);
+				injector->setInjectionRate(rate);
                 
-			  // injector->setCoeffInterArrivalTime(1-rate);
+			  	injector->setCoeffInterArrivalTime(1-rate);
                
-			   model::update_connected_node(iter->first,mapping, injection_rate);
+			   model::update_connected_node(iter->first,mapping, rate);
+			  // model::update_connected_node(iter->first,mapping, injection_rate);
 		
         
 		   }
@@ -89,9 +104,9 @@ void DotFileProcess(std::string& fileName){
 			
 				   //if user wants to update probability port wise
                         
-				   /*std::cout<<"Existing port: "<<port<<"\t enter new probability: ";
+				   //std::cout<<"Existing port: "<<port<<"\t enter new probability: ";
                         
-				     std::cin>>Probability;*/
+				     //std::cin>>Probability;
 
 
 			
@@ -146,7 +161,7 @@ void DotFileProcess(std::string& fileName){
 
 
    
-   }
+  }
    
   
    auto model_exec_end = std::chrono::high_resolution_clock::now();
@@ -157,6 +172,16 @@ void DotFileProcess(std::string& fileName){
  
    model::waiting_time_calc(obj->getMapping());
 
+
+   //for artifact evaluation
+   injection_rates.push_back(rate);
+
+	for(int i=0;i<injector_list.size();i++)
+	{
+    		double latency = injector_list[i]->getWaitingTime();
+    		latency_matrix[i].push_back(latency);
+	}
+    //its done
    auto model_agg_end = std::chrono::high_resolution_clock::now();
 
    std::chrono::microseconds parsing_time = std::chrono::duration_cast<std::chrono::microseconds>(parse_end - parse_start);
@@ -219,8 +244,68 @@ void DotFileProcess(std::string& fileName){
    //std::cout<<"Parsing Time in sec: "<<parsing_time_in_sec.count()<<" second"<<std::endl;
   
    //std::cout<<"Total Analytical Model Execution Time: "<<total_model_time_in_sec.count()<<" second"<<std::endl;
-   //}
- 
+   }
+
+
+//to write results in a  csv file
+std::ofstream file("injector_latency.csv");
+
+file << "InjectionRate";
+
+for(int i=0;i<injector_list.size();i++)
+{
+    file << ",F" << i+1;
+}
+
+file << "\n";
+for(int r=0;r<injection_rates.size();r++)
+{
+    file << injection_rates[r];
+
+    for(int i=0;i<injector_list.size();i++)
+    {
+        file << "," << latency_matrix[i][r];
+    }
+
+    file << "\n";
+}
+
+file.close();
+
+// Create result directory
+std::string base = fileName;
+size_t pos = base.find_last_of("/\\");
+if(pos != std::string::npos)
+    base = base.substr(pos + 1);
+
+pos = base.find_last_of(".");
+if(pos != std::string::npos)
+    base = base.substr(0, pos);
+
+std::string result_dir = "Results_" + base;
+
+fs::create_directory(result_dir);
+
+// Call python script to generate plots
+
+for(int i = 0; i < injector_list.size(); i++)
+{
+    std::string injector_name = "F" + std::to_string(i+1);
+
+    std::string command =
+        "python3 ../scripts/plot_single_injector.py injector_latency.csv "
+        + injector_name + " " + result_dir;
+
+    int status = system(command.c_str());
+	if(status != 0)
+	{
+    		std::cerr << "Plot generation failed for injector\n";
+	}
+}
+
+//its done
+
+
    delete obj;
 }
 

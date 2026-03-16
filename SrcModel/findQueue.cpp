@@ -48,7 +48,6 @@ void finding_queue(std::shared_ptr<dot_lang::Queue> queue, dot_lang::Mapping& ma
 
 		//queue can also be connected to split
 		else if(primitive_in ->isSplit()){
-		 
 			std::shared_ptr<dot_lang::Split> split = std::dynamic_pointer_cast<dot_lang::Split>(primitive_in);
 			std::map<std::string, double >SplitProbabilityMap = split->getSplitProbability();
 
@@ -82,8 +81,17 @@ void finding_queue(std::shared_ptr<dot_lang::Queue> queue, dot_lang::Mapping& ma
 			split->setInjectionRate(total_injection_rate);
 			double coeff_var = 1-total_injection_rate;
 		        split->setCoeffInterArrivalTime(coeff_var);
-		       //now we have to again get the prev node
-                        std::shared_ptr<dot_lang::Junc> Prev_to_Prev_node = getPrevJunction(node, mapping);
+			std::string node_connected_to_split = "";
+			for(auto it=mapping.node_connections.begin(); it!=mapping.node_connections.end(); it++){
+				if(it->second == split_primitive){
+					node_connected_to_split = it->first;
+				}
+			}
+		       auto ptr = mapping.node_data.find(node_connected_to_split);
+
+		       if(ptr!=mapping.node_data.end()){
+			//now we have to again get the prev node
+                        std::shared_ptr<dot_lang::Junc> Prev_to_Prev_node = ptr->second;
                         Prev_to_Prev_node->setInjectionRate(total_injection_rate);
                         Prev_to_Prev_node->setCoeffInterArrivalTime(coeff_var);
                         std::shared_ptr<dot_lang::Primitive> Prev_Primitive_in = Prev_to_Prev_node->getPrimitiveIn();
@@ -95,6 +103,7 @@ void finding_queue(std::shared_ptr<dot_lang::Queue> queue, dot_lang::Mapping& ma
 				update_server_connected_to_Split(serverPtr,splitPtr, mapping);
                          }
 	
+		}
 		}
 	    }
 }

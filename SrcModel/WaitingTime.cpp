@@ -76,7 +76,8 @@ void waiting_time_calc(dot_lang::Mapping& mapping){
 	    new_waiting_time += queueWaitingTime ;
             
         }
-	double total_waiting_time= injector->getWaitingTime() +  pipelineDelay +  new_waiting_time;
+//	double total_waiting_time= injector->getWaitingTime() +  pipelineDelay +  new_waiting_time;
+	 double total_waiting_time=  pipelineDelay +  new_waiting_time;
 	injector->setWaitingTime(total_waiting_time);
 
 	   

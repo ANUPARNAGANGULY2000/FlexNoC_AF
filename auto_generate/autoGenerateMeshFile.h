@@ -1,4 +1,4 @@
-#ifndef MESH_TOPOLOGY
+/*#ifndef MESH_TOPOLOGY
 #define MESH_TOPOLOGY
 #include<fstream>
 #include"SplitProbabilityGenerate.h"
@@ -253,6 +253,7 @@ int uniqueIndex(int row, int col, int size){
 	return row * size + col;
 }
 #endif
+*/
 
 
 
@@ -270,8 +271,7 @@ int uniqueIndex(int row, int col, int size){
 
 
 
-
-/*#ifndef MESH_TOPOLOGY
+#ifndef MESH_TOPOLOGY
 #define MESH_TOPOLOGY
 #include<fstream>
 #include"SplitProbabilityGenerate.cpp"
@@ -768,4 +768,4 @@ void splitGeneratein(int i, int j, std::ofstream &fout, int uniqueRowColId, std:
 fout<<"}];\n";	
 }
 #endif
-*/
+

@@ -8,6 +8,7 @@ namespace model{
 //Round Robin Arbitration
 void roundrobin_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, double service_time, double zero_load_latency, dot_lang::Mapping& mapping){
 
+	
 	if (queues.empty()) {
  	   std::cerr << "[RR] ERROR: queues vector is empty\n";
     	   return;
@@ -224,6 +225,7 @@ void roundrobin_model(std::vector<std::shared_ptr<dot_lang::Queue>>& queues, dou
 		    }
                 }
         }
+    
 	//update_node_from_Queue(queues, mapping);
 
    // return waiting_times;

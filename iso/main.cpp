@@ -14,23 +14,35 @@ int main(int argc, char* argv[]) {
     if (argc < 2) {
         std::cerr << "Usage:\n";
 	std::cerr <<" "<< argv[0]<<"regular <input.dot> - to explore regular topology\n";
-	std::cerr <<" "<< argv[0]<<"irregular <input.txt> - to explore irregular topology\n"; 
-        std::cerr << " "<<argv[0]<<"regression - Run regression suite logic\n";
+	//std::cerr <<" "<< argv[0]<<"irregular <input.txt> - to explore irregular topology\n"; 
+        std::cerr <<" "<< argv[0]<<" irregular <input.dot> <start_rate> <end_rate> <step>\n";
+	std::cerr << " "<<argv[0]<<"regression - Run regression suite logic\n";
         return 1;
     }
 
     std::string mode = argv[1];
 
     if(mode == "irregular"){
-    	if(argc != 3){
+    /*	if(argc != 3){
 		std::cerr<< "Error: Please provide .dot input file\n";
 		return 1;
-	}
+	}*/
 
-    const char* file_path = argv[2];
+	    if(argc != 6){
+ 		   std::cerr << "Usage: " << argv[0] << " irregular <input.dot> <start_rate> <end_rate> <step>\n";
+   		    return 1;
+        	}
+
+   /* const char* file_path = argv[2];
     std::string file = file_path;
-    DotFileProcess(file);
-   
+    DotFileProcess(file);*/
+	const char* file_path = argv[2];
+	std::string file = file_path;
+
+	double start_rate = std::stod(argv[3]);
+	double end_rate   = std::stod(argv[4]);
+	double step       = std::stod(argv[5]);
+   DotFileProcess(file, start_rate, end_rate, step);
 }
 else if(mode == "regular"){
 

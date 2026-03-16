@@ -1,7 +1,0 @@
-digraph G {
-  injector1 [rate=0.19, label="F1", type=SOURCE, cv=0.82, shape="rarrow"];
-  Q1 [shape="cylinder", label="Q1", type=QUEUE, depth=3];
-  RR [label="RR", shape="diamond", type=ARBITER];
-  SR1 [label="SR1", shape="box3d", type=SERVER];
-}
-

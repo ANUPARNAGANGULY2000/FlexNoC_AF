@@ -222,6 +222,7 @@ void update_server_connected_to_Split(std::shared_ptr<dot_lang::Server> server, 
 					serviceTime = arbiter->getServiceTime();
 				}
                                  double Probability_Q_full = probability_of_Queue_full(queue_address, serviceTime);
+                            //     std::cout << "Probability of full for " << queue_name << " is " << Probability_Q_full << std::endl;
                                  p_full_cap += Probability_Q_full * probability;
                          }
                 }
@@ -320,7 +321,7 @@ void update_injection_process_after_saturation(std::vector<std::shared_ptr<dot_l
         	double injection_rate_of_queue = queues[queue_index]->getInjectionRate();
 		sum_of_injection_rate += injection_rate_of_queue;
    	}
-
+	
    //getting proportion of updated_injection_rate and set it to each queue
    for(auto queue_index=0; queue_index<queues.size(); ++queue_index){
    	double injection_rate_of_queue = queues[queue_index]->getInjectionRate();
@@ -344,7 +345,6 @@ std::shared_ptr<double[]> update_service_process(double lambda_a_sink,double ca_
 
 	std::vector<double> p_sink(buffer_size,0.0);
         rho_sink = lambda_a_sink * service_time;
-
 	if(rho_sink<=0.998){
      		   //The average occupancy of Q_sink
         	n_sink = rho_sink*(rho_sink - 1 + ca_square_sink + rho_sink*ca_square_sink)/(2-2*rho_sink)+rho_sink;
@@ -359,9 +359,8 @@ std::shared_ptr<double[]> update_service_process(double lambda_a_sink,double ca_
 			sum_p_sink = sum_p_sink + p_sink[k];
         	}
        		 //probability  that Qsink is full
-        	 pi_sink = rho_sink - sum_p_sink;
-		 
-
+        	  pi_sink = rho_sink - sum_p_sink;
+		 //pi_sink = 1 - sum_p_sink;
                 //Modified service process
    		if(pi_sink<1.0){
         	       t_cap = service_time / (1 - pi_sink);
@@ -371,7 +370,7 @@ std::shared_ptr<double[]> update_service_process(double lambda_a_sink,double ca_
 	     t_cap = service_time;
 	     pi_sink = 1.0;
 	}
-       
+      
         cs_square_sink = pi_sink + cs_square_sink*(1 - pi_sink);
         service_process.get()[0]=t_cap;
 	service_process.get()[1]=cs_square_sink;

@@ -21,6 +21,7 @@ void dot_lang::Injector::activeFlag() { isActive = true; }
 double dot_lang::Injector::getInjectionRate() const { return injection_rate; }
 void dot_lang::Injector::setInjectionRate(double &updated_injection_rate) {
     injection_rate = updated_injection_rate;
+    
 }
 
 double dot_lang::Injector::getCoeffInterArrivalTime() const { return coeff_interarrival_time; }
