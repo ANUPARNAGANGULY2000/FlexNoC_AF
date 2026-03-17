@@ -32,7 +32,7 @@ COPY . .
 RUN conan profile new default --detect --force
 
 # Build project
-RUN mkdir build && cd build && \
+RUN mkdir -p build && cd build && \
     conan install .. --build=missing && \
     conan build ..
 
