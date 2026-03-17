@@ -24,8 +24,7 @@ https://github.com/ANUPARNAGANGULY2000/FlexNoC_AF
 
 Docker Image
 
-https://hub.docker.com/r/anuparnaganguly2000/flexnoc
-
+https://hub.docker.com/r/anuparnaganguly2000/flexnoc_artifact
 
 ------------------------------------------------------------
 Quick Start (Recommended for Artifact Reviewers)
@@ -35,12 +34,12 @@ The easiest way to run FlexNoC is using the pre-built Docker image.
 
 Pull the Docker image:
 
-docker pull anuparnaganguly2000/flexnoc:latest
+docker pull anuparnaganguly2000/flexnoc_artifact:latest
 
 
 Run regression tests:
 
-docker run -it anuparnaganguly2000/flexnoc:latest
+docker run -it anuparnaganguly2000/flexnoc_artifact:latest
 
 Note: The -it flags are required to allocate a terminal for the container.
 Without these flags the program may produce the error:
