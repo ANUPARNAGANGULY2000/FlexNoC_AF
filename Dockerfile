@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     wget
 
 # Install Conan (version compatible with project)
-RUN python3 -m pip install conan==1.66.0
+RUN python3 -m pip install conan==1.66.0 pandas 
 
 # Configure Conan (idempotent for rebuilds)
 RUN if conan remote list | grep -q '^conancenter:'; then \

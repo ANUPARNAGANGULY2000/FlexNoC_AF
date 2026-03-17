@@ -54,7 +54,7 @@ This command downloads the container and executes the regression test suite auto
 Running a Specific Example (Docker)
 ------------------------------------------------------------
 
-docker run -it anuparnaganguly2000/flexnoc:latest ./bin/flexnoc irregular ../test/hybrid1.dot 0.05 0.25 0.02
+docker run -it anuparnaganguly2000/flexnoc_artifact:latest ./bin/flexnoc irregular ../test/hybrid1.dot 0.05 0.25 0.02
 
 
 ------------------------------------------------------------
